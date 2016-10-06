@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Code Player</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<style>
+		body, h1, h2, h3, h4, h5 {
+			padding: 0;
+			margin: 0;
+			font-family: helvetica, sans-serif;
+		}
+		header {
+			background: #f0f0f0;
+			height: 3em;
+		}
+		#runToggle {
+			position: absolute;
+			top: 3px;
+			right: 20px;
+			padding: 12px;
+			border-radius: 15px;
+			background: lightgray;
+		}
+		.title {
+			padding: 0.5%;
+			float: left;
+		}
+		.panelToggle {
+			margin: 4px 24% 0px 24%;
+			float: left;
+		}
+		.panelToggle div {
+			cursor: pointer;
+			float: left;
+		}
+		.panelToggle #htmlToggle {
+			padding: 6px;
+			margin: 6px 0px;
+			border-top: 1px solid gray;
+			border-left: 1px solid gray;
+			border-bottom: 1px solid gray;
+			border-radius: 5px 0px 0px 5px;
+		}
+		.panelToggle #cssToggle {
+			padding: 6px;
+			margin: 6px 0px;
+			border-top: 1px solid gray;
+			border-bottom: 1px solid gray;
+			border-radius: 0px;
+		}
+		.panelToggle #jsToggle {
+			padding: 6px;
+			margin: 6px 0px;
+			border-top: 1px solid gray;
+			border-bottom: 1px solid gray;
+			border-radius: 0px;
+		}
+		.panelToggle #resultToggle {
+			padding: 6px;
+			margin: 6px 0px;
+			border-top: 1px solid gray;
+			border-right: 1px solid gray;
+			border-bottom: 1px solid gray;
+			border-radius: 0px 5px 5px 0px;
+		}
+		#formRun {
+			width: 100%;
+		}
+		#html, #css, #js, #result {
+			position: relative;
+			box-sizing: border-box;
+			height: auto;
+			float: left;
+		}
+		.sectionName {
+			position: absolute;
+			top: 0px;
+			right: 20px;
+			height: 1em;
+			width: 50px;
+			padding: 6px;
+			border: 1px solid gray;
+			border-radius: 3px;
+			text-align: center;
+			background: white;
+		}
+		textarea {
+			font-family: monotype;
+			font-size: 1.3em;
+			padding: 12px;
+		}
+		#htmlInput, #cssInput, #jsInput, #resultInput {
+			width: 98%;
+			height: 900px;
+			padding: 1%;
+		}
+		#resultInput {
+			border-top: 1px solid gray;
+		}
+		.clear {
+			clear: both;
+		}
+		.activated {
+			background: darkslategray;
+			color: white;
+		}
+		.width {
+			width: 24.964%;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+		<header id="header">
+			<h1 class="title">CodePlayer</h1>
+			<div class="panelToggle">
+				<div id="htmlToggle" class="activated">HTML</div>
+				<div id="cssToggle" class="activated">CSS</div>
+				<div id="jsToggle" class="activated">JS</div>
+				<div id="resultToggle" class="activated">Result</div>
+			</div>
+		</header>
+		<div class="clear"></div>
+		<form id="formRun">
+			<div id="html" class="width">
+				<textarea name="html" id="htmlInput" placeholder="Example HTML"><div id="test"></div></textarea>
+					<p class="sectionName">HTML</p>
+			</div>
+			<div id="css" class="width">
+				<textarea name="css" id="cssInput" placeholder="Example CSS">html {background:blue;}</textarea>
+					<p class="sectionName">CSS</p>
+			</div>
+			<div id="js" class="width">
+				<textarea name="js" id="jsInput" placeholder="Example JS">document.getElementById("test").innerHTML="It worked?";</textarea>
+					<p class="sectionName">JS</p>
+			</div>
+			<div id="result" class="width">
+				<iframe id="resultInput" frameBorder="0"></iframe>
+					<p class="sectionName">Result</p>
+			</div>
+			<div id="run">
+				<input type="submit" value="R-u-n-n-o-f-t" id="runToggle"></input>
+			</div>
+		</form>
+	
+	<!-- END OF WRAPPER DIV -->
+	</div>
+	
+	<script type="text/javascript">
+		var width = '24.652%';
+		
+		function setWidth() {
+			var i = $('.activated').size();
+			var width = 100/i;
+			return $('.width').css('width', width+'%');
+		}
+		
+		$('#htmlToggle').click(function() {
+			$(this).toggleClass('activated');
+			$('#html').toggle();
+			setWidth();
+		});
+		$('#cssToggle').click(function() {
+			$(this).toggleClass('activated');
+			$('#css').toggle();
+			setWidth();
+		});
+		$('#jsToggle').click(function() {
+			$(this).toggleClass('activated');
+			$('#js').toggle();
+			setWidth();
+		});
+		$('#resultToggle').click(function() {
+			$(this).toggleClass('activated');
+			$('#result').toggle();
+			setWidth();
+		});
+		
+		$('#runToggle').click(function formRun(event) {
+			event.preventDefault();
+			
+			var htmlOutput = $('textarea[name="html"]').val();
+			var cssOutput = '<br><style>'+$('textarea[name="css"]').val()+'</style><br>';
+			var jsOutput = '<br><script>'+$('textarea[name="js"]').val()+'<\/script>';
+			
+			$('iframe').contents().find('html').html(cssOutput+htmlOutput+jsOutput);
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>jQuery Practice</title>
+	<style>
+		p, span, div {
+			color: black;
+			text-shadow:  -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+		}
+		#box {
+			background: red;
+			height:300px;
+			width:300px;
+			display: none;
+		}
+		
+		#rt {
+			position: absolute;
+			top: 200px;
+		}
+		.scoreboard {
+			height: 50px;
+			width: auto;
+			overflow: hidden;
+			position: absolute;
+			top: 300px;
+			clear: both;
+			font-size: 2em;
+			font-weight: bold;
+		}
+		#scoreboard {
+		}
+		
+		.circle {
+			border-radius: 50%;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+</head>
+<body>
+	<h1>Test Your Reactions!</h1>
+	<div id="box"></div>
+	<p id="rt">Your time: <span id="reaction-time">0</span>s</p>
+	<div class="scoreboard">Top Score: <span id="scoreboard">Wait for it...</span>s</div>
+
+	<script type="text/javascript">
+		var clickedTime; var createdTime; var reactionTime; var time; var topScore;
+		
+		var record = [];
+		
+		function isEven(n) {
+			return n % 2 == 0;
+		}
+		
+		function getRandomColor() {
+			var letters = '0123456789ABCDEF'.split('');
+			var color = '#';
+			for (var i = 0; i < 6; i++) {
+				color+= letters[Math.round(Math.random() * 15)];
+			}
+			return color;
+		}
+		
+		function randomBox() {
+			var left = (1000*Math.random());
+			var top = (1000*Math.random());
+			var maxWidth = window.innerWidth;
+			var maxHeight = window.innerHeight;
+			if (top > maxHeight || left > maxWidth) {
+				top = Math.abs(top-750);
+				left = Math.abs(left-750);
+			}
+			document.getElementById("box").style.position="absolute";
+			document.getElementById("box").style.top=top+"px";
+			document.getElementById("box").style.left=left+"px";
+			if (Math.random() > 0.25) {
+				document.getElementById("box").className="circle";
+			}
+			console.log(left);
+			console.log(top);
+		}
+		
+		function makeBox() {
+			time = Math.random();
+			time = time*5000;
+		
+			setTimeout(function() {
+				document.getElementById("box").style.display="block";
+				document.getElementById("box").style.background=getRandomColor();
+				randomBox();
+				createdTime = Date.now();
+			}, time);
+		}
+
+		document.getElementById("box").onclick=function() {
+			clickedTime = Date.now();
+			reactionTime = (clickedTime - createdTime)/1000;
+			this.style.display="none";
+			document.getElementById("reaction-time").innerHTML=reactionTime;
+			record.push(reactionTime);
+			topScore = Math.min(...record);
+			document.getElementById("scoreboard").innerHTML=topScore;
+			makeBox();
+		}
+		
+		makeBox();
+	</script>
+</body>
+</html>
