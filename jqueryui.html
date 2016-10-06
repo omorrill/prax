@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>jQuery Practice</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<style>
+		#square {
+			height: 100px;
+			width: 100px;
+			background: gray;
+			color: white;
+		}
+		#resquare {
+			height: 200px;
+			width: 200px;
+			background: yellow;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="accordion">
+		<h3>Title1</h3>
+		<div>
+		<p>Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. </p>
+		</div>
+		<h3>Title2</h3>
+		<div>
+		<p>Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. </p>
+		</div>
+		<h3>Title3</h3>
+		<div>
+		<p>Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. </p>
+		</div>
+		<h3>Title4</h3>
+		<div>
+		<p>Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. </p>
+		</div>
+		<h3>Title5</h3>
+		<div>
+		<p>Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. Alawatsikima mershemyr doppleganger drow. </p>
+		</div>
+	</div>
+	<p>Sortable list:</p>
+	<ul>
+		<li>Pizza</li>
+		<li>Cheese</li>
+		<li>Tomatoes</li>
+		<li>Vodka</li>
+		<li>Oranges</li>
+	</ul>
+	
+	<script type="text/javascript">
+		$('#accordion').accordion();
+		$('ul').sortable();
+	</script>
+</body>
+</html>
