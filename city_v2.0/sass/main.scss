@@ -1,0 +1,81 @@
+
+// Olympic Ring Colors
+$oc_blue:            #0076bc;
+$oc_lightest_blue:   lighten($oc_blue, 55%);
+$oc_lt_blue:      	 lighten($oc_blue, 10%);
+$oc_dk_blue:      	 darken($oc_blue, 10%);
+$oc_green:        	 #00954c;
+$oc_red:             #eb1947;
+$oc_gold:            #faa21b;
+$oc_gray:            #b4b2b2;
+
+// Color variables
+$black:            #262626;
+$text_black:       #41302c;
+
+$dk_gray:          #5f5e5c;
+$mid_gray:         #808083;
+$lt_gray:          #cecece;
+$ltr_gray:         #eeeeee;
+$offwhite:         #f5f5f5;
+
+$white:            #fff;
+
+// END OF COLOR VARIABLES
+
+@import 'global_overrides';
+@import 'responsive_layout';
+@import 'paragraphs_module';
+@import 'buttons';
+@import 'bootstrap_overrides';
+@import 'typography';
+@import 'menus';
+@import 'blocks';
+@import 'search';
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+/*
+div {
+	border: 1px solid red !important;
+}
+section {
+	border: 1px solid blue !important;
+}
+
+aside {
+	border: 1px solid yellow !important;
+}
+*/
+
+/*
+NOTES ON THEME SETUP
+
+Create partials for specific grouping of CSS styles--for example,
+_responsive_layout.scss has all of the scaffolding for the theme.
+
+Use media queries alongside the mobile-first item. So if I set
+#hero to be 480px high, right after that I'd add a media query
+with the sizing for the desktop.
+
+#hero {
+	height: 480px;
+}
+@media (min-width: 1200px) {
+	hero {
+		height: 500px;
+	}
+}
+*.
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { }

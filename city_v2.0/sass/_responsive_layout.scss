@@ -1,0 +1,141 @@
+#header, #content, #footer {
+	width: 100%;
+}
+
+#topbar, #footer-first-column, #footer-second-column, #footer-third-column, #footer-fourth-column, #collab-2, #collab-1, #stay-tuned, #city-hall, #calendar, #calendar-sidebar, #press-eleases, #carousel, #featured, #featured-sidebar {
+	float: left;
+}
+
+#logo {
+	text-align: center;
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+	#logo {
+		float: left;
+	}
+}
+
+#mobile-toggles {
+	margin: 0;
+	padding: 0;
+
+	& span {
+		font-size: 1.5em;
+	}
+}
+
+#header {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+#topbar {
+	margin-top: 0.25em;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+	#topbar {
+		margin-top: -0.25em;
+	}
+}
+
+#hero {
+	background: url("https://coloradosprings.gov/sites/default/files/pikes.peak_.original.png") no-repeat center bottom fixed;
+	background-size: cover;
+	height: 260px;
+	width: 100%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	color: $white;
+	text-shadow: 1px 1px 1px $text_black;
+	max-width: 100%;
+	overflow: hidden;
+
+	.hero-body {
+		position: relative;
+		top: 2em;
+		left: 0;
+		text-align: center;
+	}
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	#hero {
+		height: 480px;
+
+		.hero-body {
+			top: 7em;
+			left: 4em;
+			text-align: left;
+		}
+	}
+}
+
+#content, #collab-1, #collab-2, #collab-3, #lft-clmn, #rght-clmn, #footer-first-column, #footer-second-column, #footer-third-column, #footer-fourth-column, .jumbotron  {
+	padding: 3em;
+}
+
+.col-xs-12, .container-fluid {
+	padding-right:0;
+	padding-left:0;
+}
+
+.social-media-icons {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.social-media-icons > .smi {
+  margin: 3px;
+}
+
+.social-media-icons img {
+  float: left;
+  margin: 1%;
+}
+
+.social-media-icons > p.center {
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.social-media-icons > #google_translate_element {
+  padding: 0 3%;
+}
+
+.smi-svg {
+  transition: fill 1s ease;
+  height: 32px;
+  fill: #0076bc;
+}
+
+.smi-svg:hover {
+  height: 32px;
+  fill: #fab030;
+}
+
+#final-footer {
+
+	h1, h2, h3, h4, h5, h6, p {
+		text-align: center;
+	}
+}

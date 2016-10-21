@@ -1,0 +1,22 @@
+#search {
+  width: 100%;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  #search {
+    width: 25%;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  #search {
+    width: 35%;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  
+}

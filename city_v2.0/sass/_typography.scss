@@ -1,0 +1,52 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: helvetica, arial, sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.8em;
+}
+
+h3 {
+  font-size: 2.5em;
+}
+
+h4 {
+  font-size: 2.3em;
+}
+
+h5 {
+  font-size: 2.15em;
+}
+
+h6 {
+  font-size: 2.05em;
+}
+
+p {
+  font-family: Arial,Tahoma,Verdana;
+}
+
+h3.block-title {
+  font-family: helvetica, sans-serif;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $oc_dk_blue;
+}
+
+#hero h2 {
+  font-size: 2em;
+  font-family: sansationlight, serif;
+}
+
+.large-font {
+  font-size: 200% !important;
+}
+
+.regular-font {
+  font-size: 150% !important;
+}

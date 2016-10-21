@@ -1,0 +1,123 @@
+.btn-primary {
+  background: $oc_blue;
+  color: $white;
+}
+
+a {
+  &.blue_oc_button {
+    transition: background 0.25s ease;
+    background: transparent;
+    border: 2px solid $oc_blue;
+    color: $black;
+    display: inline-block;
+    padding: 0.75em 1em;
+    margin: 0.5%;
+    border-radius: 3px;
+
+    &:hover {
+      background: $oc_blue;
+      color: $white !important;
+    }
+  }
+  &.green_oc_button {
+    transition: background 0.25s ease;
+    background: transparent;
+    border: 2px solid $oc_green;
+    color: $black;
+    display: inline-block;
+    padding: 0.75em 1em;
+    margin: 0.5%;
+    border-radius: 3px;
+
+    &:hover {
+      background: $oc_green;
+      color: $white !important;
+    }
+  }
+  &.red_oc_button {
+    transition: background 0.25s ease;
+    background: transparent;
+    border: 2px solid $oc_red;
+    color: $black;
+    display: inline-block;
+    padding: 0.75em 1em;
+    margin: 0.5%;
+    border-radius: 3px;
+
+    &:hover {
+      background: $oc_red;
+      color: $white !important;
+    }
+  }
+  &.gold_oc_button {
+    transition: background 0.25s ease;
+    background: transparent;
+    border: 2px solid $oc_gold;
+    color: $black;
+    display: inline-block;
+    padding: 0.75em 1em;
+    margin: 0.5%;
+    border-radius: 3px;
+
+    &:hover {
+      background: $oc_gold;
+      color: $white !important;
+    }
+  }
+  &.gray_oc_button {
+    transition: background 0.25s ease;
+    background: transparent;
+    border: 2px solid $oc_gray;
+    color: $black;
+    display: inline-block;
+    display: inline-block;
+    padding: 0.75em 1em;
+    margin: 0.5%;
+    border-radius: 3px;
+
+    &:hover {
+      background: $oc_gray;
+      color: $black !important;
+    }
+  }
+}
+
+#block-menu-menu-top-links ul.menu li a {
+  border-radius: 0px;
+  background: $oc_blue;
+  color: $white;
+}
+
+#block-menu-menu-top-links ul.menu li a:nth-child(2) {
+  border: 1px solid red;
+}
+
+#block-menu-menu-top-links ul.menu li.first {
+  background: linear-gradient(90deg, transparent, $oc_blue 50%);
+  padding-left: 5em;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  #block-menu-menu-top-links ul.menu li.first {
+    background: linear-gradient(90deg, transparent, $oc_blue 50%);
+    padding-left: 12em;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  #block-menu-menu-top-links ul.menu li.first {
+    background: linear-gradient(90deg, transparent, $oc_blue 25%);
+    padding-left: 4em;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+  #block-menu-menu-top-links ul.menu li.first {
+    background: linear-gradient(90deg, transparent, $oc_blue 50%);
+    padding-left: 15em;
+  }
+}

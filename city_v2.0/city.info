@@ -1,0 +1,62 @@
+name = City theme
+description = Bootstrap-based theme for City
+core = 7.x
+base theme = bootstrap
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; CSS
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = css/main.css
+
+;;;;;;;;;;;;;;;;;;;;;
+;; JS
+;;;;;;;;;;;;;;;;;;;;;
+
+scripts[] = js/main.js
+scripts[] = ../../../libraries/backstretch/jquery.backstretch.min.js
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Regions
+;;;;;;;;;;;;;;;;;;;;;
+
+regions[topbar]               = 'Top Bar'
+regions[search]               = 'Search'
+regions[navigation]           = 'Navigation'
+regions[hero]                 = 'Hero Area'
+regions[help]                 = 'Help'
+
+regions[featured]             = 'Featured'
+regions[featured_sidebar]     = 'Featured Sidebar'
+
+regions[carousel]             = 'Carousel'
+regions[carousel_sidebar]     = 'Carousel Sidebar'
+regions[carousel_pager]       = 'Carousel Pager'
+
+regions[calendar]             = 'Calendar'
+regions[calendar_sidebar]     = 'Calendar Sidebar'
+regions[press_releases]       = 'Press Releases'
+
+;regions[left_content_sidebar] = 'Left Content Sidebar'
+regions[jumbotron]            = 'Jumbotron'
+regions[content]              = 'Body (Content)'
+;regions[right_content_sidebar]= 'Right Content Sidebar'
+
+regions[left_column]          = 'Left Column'
+regions[right_column]         = 'Right Column'
+
+regions[first_column]         = 'First Column'
+regions[middle_column]        = 'Second Column'
+regions[last_column]          = 'Last Column'
+
+regions[footer_first_column]  = 'Footer first column'
+regions[footer_second_column] = 'Footer second column'
+regions[footer_third_column]  = 'Footer third column'
+regions[footer_fourth_column] = 'Footer fourth column'
+
+regions[footer]               = 'Footer'
+regions[departments]          = 'Departments'
+
+regions[page_top]       = 'Page top'
+regions[page_bottom]    = 'Page bottom'

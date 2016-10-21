@@ -1,0 +1,9 @@
+.content a {
+  transition: color 2s ease;
+  text-decoration: underline;
+  color: $oc_blue;
+
+  &:hover {
+    color: $oc_lt_blue;
+  }
+}
