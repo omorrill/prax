@@ -1,0 +1,683 @@
+/* line 23, ../sass/ppc.scss */
+a {
+  color: #4C3F99;
+}
+
+/* line 27, ../sass/ppc.scss */
+a:hover {
+  color: #4C3F99;
+}
+
+/* line 31, ../sass/ppc.scss */
+.bottom-spacer {
+  margin-bottom: 20px;
+}
+
+/* line 35, ../sass/ppc.scss */
+.btn-primary {
+  background-color: #4C3F99 !important;
+  border-color: #4C3F99 !important;
+  color: #F5F5F4 !important;
+  transition: 0.5s;
+}
+/* line 41, ../sass/ppc.scss */
+.btn-primary:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 47, ../sass/ppc.scss */
+.btn-secondary {
+  background-color: #014C4C !important;
+  border-color: #014C4C !important;
+  color: #F5F5F4 !important;
+  transition: 0.5s;
+}
+/* line 53, ../sass/ppc.scss */
+.btn-secondary:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 59, ../sass/ppc.scss */
+.btn-success {
+  background-color: #77B797 !important;
+  border-color: #77B797 !important;
+  color: #F5F5F4 !important;
+  transition: 0.5s;
+}
+/* line 65, ../sass/ppc.scss */
+.btn-success:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 71, ../sass/ppc.scss */
+.btn-info {
+  background-color: #BAD8EA !important;
+  border-color: #BAD8EA !important;
+  color: #014C4C !important;
+  transition: 0.5s;
+}
+/* line 77, ../sass/ppc.scss */
+.btn-info:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 83, ../sass/ppc.scss */
+.btn-warning {
+  background-color: #EDA900 !important;
+  border-color: #EDA900 !important;
+  color: #F5F5F4 !important;
+  transition: 0.5s;
+}
+/* line 89, ../sass/ppc.scss */
+.btn-warning:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 95, ../sass/ppc.scss */
+.btn-danger {
+  background-color: red !important;
+  border-color: red !important;
+  color: #F5F5F4 !important;
+  transition: 0.5s;
+}
+/* line 101, ../sass/ppc.scss */
+.btn-danger:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 107, ../sass/ppc.scss */
+.btn-link {
+  background-color: #F5F5F4 !important;
+  border-color: #F5F5F4 !important;
+  color: #4C3F99 !important;
+  transition: 0.5s;
+}
+/* line 113, ../sass/ppc.scss */
+.btn-link:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 .1em, 0 0 .1em;
+}
+
+/* line 119, ../sass/ppc.scss */
+.center {
+  text-align: center;
+}
+
+/* line 123, ../sass/ppc.scss */
+.glyphicon {
+  color: #F5F5F4;
+}
+
+/* line 127, ../sass/ppc.scss */
+.jumbotron {
+  padding: 30px;
+}
+
+/* line 131, ../sass/ppc.scss */
+.top-spacer {
+  margin-top: 20px;
+}
+
+/* line 135, ../sass/ppc.scss */
+.u-bring-to-front {
+  z-index: 9999 !important;
+}
+
+/* line 139, ../sass/ppc.scss */
+.u-float-left {
+  float: left !important;
+}
+
+/* line 143, ../sass/ppc.scss */
+.u-reset-padding-and-margin {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+/* line 148, ../sass/ppc.scss */
+#edit-search-block-form--2 {
+  border: 1px solid #4C3F99;
+}
+
+/* line 153, ../sass/ppc.scss */
+.dropdown-menu {
+  padding: 0px;
+}
+
+/* line 156, ../sass/ppc.scss */
+ul.dropdown-menu li a {
+  text-transform: capitalize;
+  font-size: 1.25em;
+}
+
+/* line 161, ../sass/ppc.scss */
+.navbar-brand {
+  font-size: 17px;
+}
+
+/* line 165, ../sass/ppc.scss */
+.navbar-default .navbar-nav > li > a {
+  color: #014C4C;
+}
+
+/* line 169, ../sass/ppc.scss */
+.navbar-default .navbar-nav > .open > a:not(#logo) {
+  background-color: #4C3F99 !important;
+  color: #F5F5F4 !important;
+}
+
+/* line 174, ../sass/ppc.scss */
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  background-color: #F5F5F4;
+  color: #014C4C;
+}
+
+/* line 179, ../sass/ppc.scss */
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  background-color: #4C3F99;
+  color: #F5F5F4;
+}
+
+/* line 185, ../sass/ppc.scss */
+h1, .name {
+  font-family: Giza five five, Champion, serif;
+  text-transform: capitalize;
+}
+
+/* line 189, ../sass/ppc.scss */
+h1 {
+  color: #4C3F99;
+}
+
+/* line 192, ../sass/ppc.scss */
+h2 {
+  font-family: Giza One Five, Champion, serif;
+  color: #014C4C;
+  font-weight: 800;
+}
+
+/* line 197, ../sass/ppc.scss */
+h3, h4, h5, h6 {
+  font-family: Champion, Neue Haas Grotesk Text, serif;
+  color: #08825F;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+/* line 203, ../sass/ppc.scss */
+p {
+  font-family: Neue Haas Grotesk Text, serif;
+  font-size: 1.25em;
+  color: #2B191C;
+}
+
+/* line 209, ../sass/ppc.scss */
+.navbar {
+  margin-bottom: 0px;
+}
+
+/* line 213, ../sass/ppc.scss */
+.navbar-nav {
+  color: #4C3F99;
+}
+/* line 216, ../sass/ppc.scss */
+.navbar-nav .active :not(#logo) {
+  background: #F5F5F4;
+  color: #4C3F99;
+  /*
+      & > a {
+        color: $silver;
+      }*/
+}
+/* line 226, ../sass/ppc.scss */
+.navbar-nav li a {
+  font-family: Giza, Champion, serif;
+  color: #014C4C;
+}
+
+/* line 232, ../sass/ppc.scss */
+#moblogo {
+  width: 100%;
+  text-align: center;
+}
+
+/* line 237, ../sass/ppc.scss */
+#logo {
+  background: url("../images/ppc-logo.png") center center no-repeat;
+  margin: 6px;
+  padding: 60px;
+  color: transparent;
+}
+
+/* line 245, ../sass/ppc.scss */
+.hero-overlay {
+  border-radius: 15px;
+  margin-top: 35%;
+  margin-bottom: 25%;
+  padding: 3px;
+}
+/* line 251, ../sass/ppc.scss */
+.hero-overlay h2 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+/* line 259, ../sass/ppc.scss */
+.hero-overlay h3 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+/* line 267, ../sass/ppc.scss */
+.hero-overlay h4 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+/* line 275, ../sass/ppc.scss */
+.hero-overlay p {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+/* line 282, ../sass/ppc.scss */
+.hero-overlay-page {
+  border-radius: 15px;
+  margin-top: 10%;
+  margin-bottom: 25%;
+  padding: 3px;
+}
+/* line 288, ../sass/ppc.scss */
+.hero-overlay-page h2 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-transform: capitalize;
+}
+/* line 295, ../sass/ppc.scss */
+.hero-overlay-page h3 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+/* line 303, ../sass/ppc.scss */
+.hero-overlay-page h4 {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+/* line 311, ../sass/ppc.scss */
+.hero-overlay-page p {
+  color: #fff;
+  text-align: center;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+/* line 318, ../sass/ppc.scss */
+#block-search-form {
+  margin-top: 2%;
+}
+
+/* line 322, ../sass/ppc.scss */
+.search {
+  position: absolute;
+}
+
+/* line 326, ../sass/ppc.scss */
+.hero-image-page-0 {
+  background: url("../images/1.jpg") center top no-repeat;
+  background-size: cover;
+  height: 200px;
+  width: 100%;
+}
+
+/* line 332, ../sass/ppc.scss */
+.hero-image-page-1 {
+  background: url("../images/2.jpg") center bottom no-repeat;
+  background-size: cover;
+  height: 200px;
+  width: 100%;
+}
+
+/* line 338, ../sass/ppc.scss */
+.hero-image-page-2 {
+  background: url("../images/3.jpg") center center no-repeat;
+  background-size: cover;
+  height: 200px;
+  width: 100%;
+}
+
+/* line 345, ../sass/ppc.scss */
+#highlighted-articles-region {
+  margin-top: -5.6%;
+  margin-bottom: 2%;
+  text-align: center;
+  overflow: hidden;
+}
+/* line 351, ../sass/ppc.scss */
+#highlighted-articles-region section a {
+  text-decoration: none !important;
+}
+/* line 355, ../sass/ppc.scss */
+#highlighted-articles-region span.glyphicon {
+  font-size: 2em;
+  padding-top: 5%;
+  color: #F5F5F4;
+}
+/* line 361, ../sass/ppc.scss */
+#highlighted-articles-region h3 {
+  color: #F5F5F4;
+  font-size: 1em;
+}
+/* line 366, ../sass/ppc.scss */
+#highlighted-articles-region p {
+  color: #F5F5F4;
+  font-size: 0.8em;
+}
+/* line 371, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-1 {
+  background: url("../images/1.jpg") center center no-repeat;
+  height: 220px;
+  width: 33%;
+  overflow: hidden;
+  transition: .5s;
+  -webkit-filter: none;
+  filter: none;
+}
+/* line 381, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-2 {
+  background: url("../images/2.jpg") center center no-repeat;
+  height: 220px;
+  width: 33%;
+  overflow: hidden;
+  transition: .5s;
+  -webkit-filter: none;
+  filter: none;
+}
+/* line 391, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-3 {
+  background: url("../images/3.jpg") center center no-repeat;
+  height: 220px;
+  width: 33%;
+  overflow: hidden;
+  transition: .5s;
+  -webkit-filter: none;
+  filter: none;
+}
+/* line 401, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-title {
+  margin-top: 30%;
+}
+/* line 405, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-body {
+  display: none;
+}
+/* line 409, ../sass/ppc.scss */
+#highlighted-articles-region .highlighted-article-hover {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  /*
+      .highlighted-article-title {
+        transition: margin-top 0.5s ease;
+        margin-top: 12px;
+        text-shadow: 3px 3px 3px $black;
+      }
+      .highlighted-article-body {
+        display: inline-block;
+        text-shadow: 3px 3px 3px $black;
+      }
+      */
+}
+
+/* line 426, ../sass/ppc.scss */
+.jumbotron {
+  background: #F5F5F4;
+  border: 1px solid #F5F5F4;
+}
+
+/* line 431, ../sass/ppc.scss */
+.well, .jumbotron {
+  background: #014C4C;
+  border: 1px solid #014C4C;
+}
+/* line 435, ../sass/ppc.scss */
+.well h1, .well h2, .well h3, .well h4, .well h5, .well h6, .well p, .jumbotron h1, .jumbotron h2, .jumbotron h3, .jumbotron h4, .jumbotron h5, .jumbotron h6, .jumbotron p {
+  color: #F5F5F4;
+}
+/* line 438, ../sass/ppc.scss */
+.well h1 a, .well h2 a, .well h3 a, .well h4 a, .well h5 a, .well h6 a, .well p a, .jumbotron h1 a, .jumbotron h2 a, .jumbotron h3 a, .jumbotron h4 a, .jumbotron h5 a, .jumbotron h6 a, .jumbotron p a {
+  color: #77B797;
+}
+/* line 441, ../sass/ppc.scss */
+.well h1 a:hover, .well h2 a:hover, .well h3 a:hover, .well h4 a:hover, .well h5 a:hover, .well h6 a:hover, .well p a:hover, .jumbotron h1 a:hover, .jumbotron h2 a:hover, .jumbotron h3 a:hover, .jumbotron h4 a:hover, .jumbotron h5 a:hover, .jumbotron h6 a:hover, .jumbotron p a:hover {
+  color: #57a47e;
+}
+
+/* line 448, ../sass/ppc.scss */
+footer.footer {
+  background: #014C4C;
+}
+/* line 451, ../sass/ppc.scss */
+footer.footer a {
+  color: #77B797;
+}
+/* line 454, ../sass/ppc.scss */
+footer.footer a:hover {
+  text-decoration: underline;
+}
+/* line 458, ../sass/ppc.scss */
+footer.footer a:focus {
+  text-decoration: underline;
+}
+/* line 463, ../sass/ppc.scss */
+footer.footer.well-lg {
+  border-radius: 0px;
+}
+/* line 467, ../sass/ppc.scss */
+footer.footer h1, footer.footer h2, footer.footer h3, footer.footer h4, footer.footer h5, footer.footer h6, footer.footer p {
+  color: #F5F5F4;
+  text-align: center;
+}
+
+/* line 473, ../sass/ppc.scss */
+.social-media {
+  text-align: center;
+}
+/* line 476, ../sass/ppc.scss */
+.social-media img {
+  border: 2px solid #F5F5F4;
+  border-radius: 50%;
+}
+/* line 480, ../sass/ppc.scss */
+.social-media img:hover {
+  border-color: #77B797;
+  -webkit-transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease;
+}
+
+/* line 488, ../sass/ppc.scss */
+.search-form {
+  float: right;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* line 494, ../sass/ppc.scss */
+  #logo {
+    padding: 50px;
+    background-size: contain;
+  }
+
+  /* line 499, ../sass/ppc.scss */
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* line 503, ../sass/ppc.scss */
+  .navbar-nav > li {
+    float: none;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  /* line 508, ../sass/ppc.scss */
+  .navbar-nav > li a {
+    font-size: 0.83em;
+  }
+
+  /* line 516, ../sass/ppc.scss */
+  #highlighted-articles-region h3 {
+    color: #F5F5F4;
+  }
+  /* line 520, ../sass/ppc.scss */
+  #highlighted-articles-region p {
+    color: #F5F5F4;
+    font-size: small;
+  }
+  /* line 525, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-1 {
+    background: url("../images/1.jpg") center center no-repeat;
+    height: 300px;
+    width: 33%;
+    border-radius: 15px 0 0 15px;
+    -webkit-box-shadow: inset 1px -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+    -moz-box-shadow: inset 1px -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+    box-shadow: inset 1px -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+  }
+  /* line 544, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-2 {
+    background: url("../images/2.jpg") center center no-repeat;
+    height: 300px;
+    width: 33%;
+    -webkit-box-shadow: inset 0 -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+    -moz-box-shadow: inset 0 -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+    box-shadow: inset 0 -1px 0 #2B191C, inset 0 0 0 #2B191C, inset 0 1px 0 #2B191C;
+  }
+  /* line 562, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-3 {
+    background: url("../images/3.jpg") center center no-repeat;
+    height: 300px;
+    width: 33%;
+    border-radius: 0 15px 15px 0;
+    -webkit-box-shadow: inset -1px 0 0 #2B191C, inset 0 -1px 0 #2B191C, inset 0 1px 0 #2B191C;
+    -moz-box-shadow: inset -1px 0 0 #2B191C, inset 0 -1px 0 #2B191C, inset 0 1px 0 #2B191C;
+    box-shadow: inset -1px 0 0 #2B191C, inset 0 -1px 0 #2B191C, inset 0 1px 0 #2B191C;
+  }
+  /* line 581, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-hover {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+  }
+  /* line 585, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-hover .highlighted-article-title {
+    transition: margin-top 0.5s ease;
+    margin-top: 5em;
+    text-shadow: 3px 3px 3px #2B191C;
+  }
+  /* line 590, ../sass/ppc.scss */
+  #highlighted-articles-region .highlighted-article-hover .highlighted-article-body {
+    display: inline-block;
+    text-shadow: 3px 3px 3px #2B191C;
+  }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  /* line 601, ../sass/ppc.scss */
+  h1, .name {
+    font-weight: 900;
+  }
+
+  /* line 605, ../sass/ppc.scss */
+  #logo {
+    padding: 50px;
+    background-size: contain;
+  }
+
+  /* line 610, ../sass/ppc.scss */
+  .navbar-nav > li > a {
+    font-size: 1.23em;
+  }
+
+  /* line 614, ../sass/ppc.scss */
+  .navbar #block-search-form {
+    float: right;
+    margin-top: 0px;
+  }
+
+  /* line 619, ../sass/ppc.scss */
+  .hero-image {
+    background: url("../images/1.jpg") center center no-repeat;
+    background-size: cover;
+    height: 720px;
+    width: 100%;
+  }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  /* line 630, ../sass/ppc.scss */
+  .navbar-nav > li.first {
+    margin-left: 1.4%;
+  }
+
+  /* line 634, ../sass/ppc.scss */
+  .navbar-nav > li > a {
+    font-size: 1.49em;
+  }
+
+  /* line 638, ../sass/ppc.scss */
+  #logo {
+    padding: 60px;
+    background-size: contain;
+  }
+
+  /* line 643, ../sass/ppc.scss */
+  #myCarousel {
+    max-height: 750px;
+    overflow: hidden;
+  }
+
+  /* line 650, ../sass/ppc.scss */
+  .hero-image-page-0 {
+    height: 320px;
+    width: 100%;
+  }
+
+  /* line 656, ../sass/ppc.scss */
+  .hero-image-page-1 {
+    height: 320px;
+    width: 100%;
+  }
+
+  /* line 662, ../sass/ppc.scss */
+  .hero-image-page-2 {
+    height: 320px;
+    width: 100%;
+  }
+
+  /* line 671, ../sass/ppc.scss */
+  #highlighted-articles-region h3 {
+    color: #F5F5F4;
+    font-size: 2em;
+  }
+  /* line 676, ../sass/ppc.scss */
+  #highlighted-articles-region p {
+    color: #F5F5F4;
+  }
+}

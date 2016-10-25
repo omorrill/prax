@@ -1,0 +1,9 @@
+name = COS JIS
+package = Custom
+description = SOAP Integration and Configuration for JIS API
+core = 7.x
+version = 7.x-0.2
+dependencies[] = object_log
+
+files[] = cos_jis.admin.inc
+files[] = cos_jis.inc

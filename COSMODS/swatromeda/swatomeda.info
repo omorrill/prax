@@ -1,0 +1,27 @@
+name = Swatromeda
+description = Custom theme based on Andromeda.
+core = 7.x
+base theme = andromeda
+
+; CSS
+stylesheets[all][] = css/navigation.css
+stylesheets[all][] = css/reset.css
+stylesheets[all][] = css/layout.css
+stylesheets[all][] = css/structure.css
+stylesheets[all][] = css/node.css
+stylesheets[all][] = css/menu.css
+stylesheets[all][] = css/comment.css
+stylesheets[all][] = css/form.css
+stylesheets[all][] = css/font.css
+stylesheets[all][] = css/panel.css
+stylesheets[all][] = css/view.css
+stylesheets[all][] = css/custom.css
+
+regions[header] = Header
+regions[navigation] = Navigation
+regions[slideshow] = Slideshow
+regions[highlight] = Highlight
+regions[content] = Content
+regions[sidebar] = Sidebar
+regions[footer-left] = Footer Left
+regions[footer-right] = Footer Right

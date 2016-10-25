@@ -1,0 +1,51 @@
+diff --git a/sites/all/modules/patched/domain/domain_conf/domain_conf.module b/sites/all/modules/patched/domain/domain_conf/domain_conf.module
+index 535d1fb..c2dbe01 100644
+--- a/sites/all/modules/patched/domain/domain_conf/domain_conf.module
++++ b/sites/all/modules/patched/domain/domain_conf/domain_conf.module
+@@ -167,12 +167,23 @@ function domain_conf_block_view($delta = '') {
+   if (empty($delta)) {
+     return;
+   }
++  $conf_variable = '';
++  $domain = domain_get_domain();
++  if (!empty($domain)) {
++    $conf_variable = domain_conf_variable_get($domain['domain_id'], 'menu_secondary_links_source', FALSE);
++  }
+   // Get the menu information.
+   $menus = menu_get_menus();
+-  $string = str_replace('domain-', '', $delta);
+-  $name = str_replace('-links', '-menu', $string);
+-  $source = 'menu_' . str_replace('-', '_', $string) . '_source';
+-  $data = variable_get($source, $string);
++  if ($conf_variable) {
++    // There is a domain-specific secondary menu set up for this domain.
++    $data = $conf_variable;
++  }
++  else {
++    $string = str_replace('domain-', '', $delta);
++    $name = str_replace('-links', '-menu', $string);
++    $source = 'menu_' . str_replace('-', '_', $string) . '_source';
++    $data = variable_get($source, $string);
++  }
+   // Some domains can disable primary and secondary links.
+   if (empty($data)) {
+     return;
+@@ -180,8 +191,8 @@ function domain_conf_block_view($delta = '') {
+   // In D7, secondary links may be children of main links.
+   if ($delta == 'domain-secondary-links' && variable_get('menu_secondary_links_source', 'user-menu') == variable_get('menu_main_links_source', 'main-menu')) {
+     // This does not work right now.
+-  }
+-  if (!isset($menus[$data])) {
++  }dsm($menus, 'menus');
++  if (!isset($menus[$data])) {dsm('returning in 185');
+     return;
+   }
+   // Output the block.
+@@ -191,6 +202,7 @@ function domain_conf_block_view($delta = '') {
+     'subject' => check_plain($menus[$data]),
+     'content' => $output,
+   );
++  dsm($block, 'block');
+   return $block;
+ }
+ 

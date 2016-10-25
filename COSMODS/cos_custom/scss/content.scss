@@ -1,0 +1,368 @@
+@import "_config.scss";
+
+.node .content, body.cke_editable {
+
+  h1, h2, h3, h4, h5, h6 {
+    @extend %disable_alignment;
+    margin-bottom: $default_margin;
+    margin-top: 1em;
+    clear: both;
+  }
+  h2 { text-transform: uppercase; }
+  h6 {
+    font-family: $main_font;
+    text-transform: uppercase;
+    line-height: 1.7em;
+    margin-bottom: 6px;
+  }
+
+  hr {
+    border: 1px solid $dk_gray;
+    margin: 10px 0;
+    display: block;
+  }
+
+  /* WYSIWYG image styles */
+  img {
+    display: block;
+    margin: 15px 15px 15px 0;
+    max-width: 100%;
+
+    &.img_left {
+      float: left;
+      margin: $default_margin 20px $default_margin 0;
+    }
+    &.img_right {
+      float: right;
+      margin: $default_margin 0 $default_margin 20px;
+    }
+  }
+  //** CKE Button Styles
+  a {
+    &.department_button { @include button($primary_color); }
+    &.blue_button       { @include button($lt_blue); }
+    &.orange_button     { @include button($orange); }
+    &.gray_button       { @include button; }
+
+    &.department_button,
+    &.blue_button,
+    &.orange_button,
+    &.gray_button { &:visited { color: $white !important; } }
+  }
+  .box_quote {
+    border: 3px solid $primary_color;
+    background-color: transparentize($primary_color, .9);
+    padding: 20px 20px 10px;
+    // Clearfix
+    &:after {
+      display: block;
+      clear: both;
+    }
+  }
+
+  .field-name-field-summary {
+    color: $dk_gray;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.4em;
+    margin-bottom: 10px;
+  }
+
+  strong { font-weight: 600; }
+
+  blockquote {
+    font-family: $serif;
+    font-style: italic;
+    font-size: 1.6em;
+    font-weight: 300;
+    line-height: 1.5em;
+    margin: 10px 0 20px;
+    padding: 10px 40px 10px 20px;
+    border-left: solid 5px $primary_color;
+
+    p {
+      @extend %disable_alignment;
+      margin: 0;
+    }
+  }
+  a:visited { color: $link_color_visited; }
+
+  .node & img {
+    margin: 15px 15px 15px 0;
+  }
+
+/* Table Styles */
+  table {
+    width: 99%;
+    max-width: 99%;
+    margin-bottom: 20px;
+    border: none;
+
+    /* Default Table Style */
+    &, &.default_table {
+      th {
+        background-color: $primary_color;
+        border-color: $primary_color;
+        padding: 15px 16px;
+        font-weight: 400;
+        line-height: 1.4em;
+        color: white;
+        p { margin-bottom: 0; }
+      }
+      tr.even,
+      tr.odd { background-color: white; }
+      td {
+        padding: 12px 16px;
+        line-height: 1.4em;
+        border: $table_border;
+
+        &.no_word_wrap { white-space: nowrap; }
+      }
+    }
+    /* Large/More Complex Table Style */
+    &.large_table {
+      font-size: 0.8em;
+      th {
+        padding: 10px 10px;
+
+        p { margin-bottom: 0; }
+      }
+      td {
+        padding: 5px 10px;
+        line-height: 1.4em;
+        border-color: $lt_table_border;
+      }
+    }
+    &.td_align_center {
+      vertical-align: middle;
+      text-align: center;
+    }
+    &.td_align_top   { vertical-align: top; }
+    &.td_half_width  { width: 50%; }
+    &.td_third_width { width: 33%; }
+  }
+
+  /* List styles. */
+
+  ul, ol, li {
+    @extend %disable_alignment;
+    list-style: outside;
+    margin-left: 0.8em;
+    margin-bottom: 0.6em;
+    line-height: 1.4em;
+  }
+  ul{
+    margin-bottom: 1.8em;
+    li {
+      margin-top: 0.6em;
+      list-style-type: disc;
+      & > ul {
+        margin-bottom: 0px;
+      }
+      li {
+        list-style-type: circle;
+        li {
+          list-style-type: square;
+          li {
+            list-style-type: circle;
+          }
+        }
+      }
+    }
+  }
+  ol {
+    margin-bottom: 1.8em;
+    li {
+      margin-top: 0.6em;
+      list-style-type: decimal;
+      & > ol {
+        margin-bottom: 0px;
+      }
+      li {
+        list-style-type: lower-alpha;
+        li {
+          list-style-type: decimal;
+        }
+      }
+    }
+  }
+
+  iframe.white_iframe { // Remove .gif in ckeditor for transparent iframes
+    background: $white;
+  }
+
+}
+
+// Iframes in nodes.
+.node,
+.node-header {
+  iframe {
+    width: 100% !important;
+  }
+}
+
+// Webform Form styles.
+form {
+  .form-item {
+    margin: 15px 0 0;
+    clear: left;
+
+    label {
+      display: above;
+      font-family: $main_font;
+      font-size: 14px;
+      line-height: 1.4em;
+      margin-bottom: 4px;
+    }
+    input.form-text, textarea {
+      @include box-shadow(none);
+      font-size: 16px;
+      border: 0;
+      outline: none;
+      padding: 5px;
+      background: $white;
+      border: solid 2px $mid_gray;
+
+      &:focus {
+        border-color: $primary_color;
+      }
+    }
+    input.form-text, textarea, select {
+      &.error { border-color: $primary_color; }
+    }
+    /* Placeholder text color */
+    textarea, input {
+      &::-webkit-input-placeholder { color: $mid_gray; }
+                &:-moz-placeholder { color: $mid_gray; }
+    }
+    label.element-invisible { color: $mid_gray; }
+  }
+
+  /* Fieldset Styling */
+  fieldset {
+    margin: 20px 0;
+    background: $offwhite;
+    border: none;
+    padding: $fieldset_padding;
+
+    legend {
+      font-family: $serif;
+      font-weight: 600;
+      font-size: 1.2em;
+      float: left;
+    }
+
+    /* Arrow on collapsable fieldsets */
+    &.collapsible {
+      span.fieldset-legend  { background: url(../images/icons/arrow_fieldset_collapsible.png) 1% 45% no-repeat !important; }
+      &.collapsed {
+        span.fieldset-legend { background: url(../images/icons/arrow_fieldset_collapsed.png)  3% 40% no-repeat !important; }
+      }
+    }
+
+    .fieldset-wrapper { clear: left; }
+    .fieldset-description {
+      font-size: 14px;
+      line-height: 1.4em;
+      margin-bottom: 20px;
+    }
+
+    .webform-component-markup { border: 1px solid darken($webform_description_blue,25%); }
+  }
+  .form-radios {
+    display: block;
+    float: left;
+    clear: left;
+    margin-bottom: 15px;
+
+    .form-type-radio { margin: 0; }
+  }
+
+  /* Address fieldset styling */
+  @include address_forms;
+
+  /* Description */
+  .webform-component-markup {
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 5px;
+    background: $webform_description_blue;
+    padding: 15px 15px 5px;
+    line-height: 1.4em;
+    p {
+      margin: 0 0 10px;
+    }
+  }
+
+  .form-actions.container { clear: both; }
+}
+
+/* Webform Calendar */
+.webform-datepicker {
+  .form-type-select { width: inherit; }
+  input.webform-calendar {
+    width: inherit;
+    border: none;
+  }
+  select { width: inherit; }
+}
+.form-submit {
+  @include button_reset;
+  @include button($primary_color);
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 13px 18px;
+}
+
+.form-item-pass-pass1,
+.form-item-pass-pass2 {
+  width: auto;
+
+  label { float: left; }
+  .password-strength,
+  .password-confirm {
+    margin-top: 0;
+    margin-right: 5px;
+  }
+  .password-confirm { width: auto; }
+}
+div.form-item div.password-suggestions {
+  margin-right: 5px;
+  padding-left: 5px;
+  width: auto;
+}
+
+.full-width { width: 100%; }
+
+// WYSIWYG resets
+body {
+  &.cke_editable, &.cke_ltr {
+    background: $white;
+    padding: 20px;
+    font-size: 12px;
+
+    h1 { padding: 0; }
+  }
+  .cke_panel_container &.cke_ltr {
+    font-size: 12px;
+
+    a,
+    a:link,
+    a:visited { text-decoration: none; }
+  }
+}
+
+// Styling of the the Views display of Pikes Peak Cameras.
+.view-pikes-peak-cameras {
+
+  .views-slideshow-controls-bottom .views-slideshow-pager-field-item { 
+    margin-right: 5px;
+    display: inline-block;
+    width: 23.7%;
+    cursor: pointer;
+  }
+
+ .views-slideshow-controls-bottom .views-slideshow-pager-field-item img { 
+    width: 100%;
+  }
+}

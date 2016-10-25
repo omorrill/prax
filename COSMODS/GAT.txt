@@ -1,0 +1,6 @@
+<div id="google_translate_element"></div>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.BOTTOM_RIGHT, gaTrack: true, gaId: 'UA-48381610-1'}, 'google_translate_element');
+  }
+  </script>

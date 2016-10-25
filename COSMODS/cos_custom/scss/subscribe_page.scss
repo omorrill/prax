@@ -1,0 +1,84 @@
+@import "_config.scss";
+
+.section-subscribe,
+.section-subscriptions {
+  .form-item-category-subs {
+    label[for='edit-category-subs'] {
+      font-size: fs(24px);
+      font-family: $serif;
+      color: $primary_color;
+      font-weight: normal;
+      border-bottom: 2px solid gray;
+    }
+    #edit-category-subs {
+      //** Main/Primary Category
+      .category-parent {
+        float: left;
+        width: 28%;
+        margin-right: 1%;
+        margin-bottom: 30px;
+        background-color: #FDFDFD;
+        padding: 0 3% 20px 1%;
+        border: 1px solid #DDD;
+
+        &:nth-child(3n+1) {
+          clear: left;
+        }
+      }
+      .patriarch {
+        .form-item { margin: 15px 0 0; }
+        label {
+          font-size: fs(20px);
+          font-weight: bold;
+          position: relative;
+          top: 2px;
+        }
+      }
+      .nested.nested-depth- {
+        &1, &2, &3 {
+          position: relative;
+          .form-item { margin: 0 0; }
+        }
+
+        //** Secondary Category
+        &1 {
+
+          label {
+            position: relative;
+            top: 1px;
+            font-size: fs(15px);
+            text-transform: uppercase;
+          }
+          .form-item { margin-top: 8px; }
+        }
+        //** Tertiary Category
+        &2 {
+          left: 18px;
+          label { font-size: fs(12.5px); }
+        }
+        //** Mini Sections (Fire Stations)
+        &3 {
+          left: 35px;
+          input.form-checkbox {
+            float: left;
+            width: 7%;
+          }
+          label {
+            @include inline-block;
+            line-height: 1.5em;
+            float: left;
+            width: 90%;
+            font-size: fs(12px);
+            font-style: italic;
+          }
+        }
+      }
+    }
+  // Space above the submit button at the bottom.
+  input.form-submit {
+    float: left;
+    clear: left;
+  }
+
+  }
+}

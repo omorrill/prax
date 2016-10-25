@@ -1,0 +1,28 @@
+diff --git a/docroot/sites/all/modules/patched/domain/domain.module b/docroot/sites/all/modules/patched/domain/domain.module
+index 33927c4..0999bff 100644
+--- a/docroot/sites/all/modules/patched/domain/domain.module
++++ b/docroot/sites/all/modules/patched/domain/domain.module
+@@ -360,6 +360,9 @@ function domain_permission() {
+     'view unpublished domain content' => array(
+       'title' => t('View unpublished content on assigned domains'),
+     ),
++    'view unpublished content on domains' => array(
++      'title' => t('View unpublished content on any domain'),
++    ),
+   );
+ 
+   // Generate standard node permissions for all applicable node types.
+@@ -2031,6 +2034,13 @@ function domain_node_grants($account, $op) {
+       }
+     }
+   }
++  // If the user has permission to view from any domain, add grants for all domains.
++  if (user_access('view all unpublished content', $account)) {
++    $domains = domain_domains();
++    foreach ($domains as $domain) {
++      $grants['domain_unpublished'][] = $domain['domain_id'];
++    }
++  }
+   return $grants;
+ }
+ 

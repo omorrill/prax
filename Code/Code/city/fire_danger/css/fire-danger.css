@@ -1,0 +1,88 @@
+#block-fire_danger-fire_danger {
+  width: 99%;
+  clear: both;
+  border-radius: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+#block-fire_danger-fire_danger   h3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.fire-danger-level .extreme {
+  color: #fff;
+  background-color: red;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.fire-danger-level .vhigh {
+  color: #fff;
+  background-color: #ff7518;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.fire-danger-level .high {
+  color: #fff;
+  background-color: #FFCC00;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.fire-danger-level .high h3 {
+  color: #fff;
+}
+
+.fire-danger-level .moderate {
+  color: #fff;
+  background-color: blue;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.fire-danger-level .moderate h3 {
+  color: #fff;
+}
+
+.fire-danger-level .low {
+  color: #fff;
+  background-color: #2c9c3a;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.fire-danger-level .low h3 {
+  color: #fff;
+}
+
+.fire-danger-block-image {
+    isplay: block;
+    margin: 0 auto;
+    width: 100px;
+}
+
+.small-text {
+  font-size: small;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.red-fire-ban {
+  border-bottom: 2px solid red;
+}
+
+.green-fire-ban {
+  border-bottom: 2px solid green;
+}

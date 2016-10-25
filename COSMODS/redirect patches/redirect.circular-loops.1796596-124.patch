@@ -1,0 +1,85 @@
+diff --git a/redirect.module b/redirect.module
+index c3c6329..df0fe17 100644
+--- a/redirect.module
++++ b/redirect.module
+@@ -394,6 +394,8 @@ function redirect_path_update(array $path) {
+   }
+ 
+   if (!empty($path['original']['pid']) && $path['original']['pid'] == $path['pid'] && $path['original']['alias'] != $path['alias']) {
++    // Delete all redirects having the same source as this alias.
++    redirect_delete_by_path($path['alias'], $path['language'], FALSE);
+     $redirect = new stdClass();
+     redirect_object_prepare($redirect);
+     $redirect->source = $path['original']['alias'];
+@@ -408,6 +410,16 @@ function redirect_path_update(array $path) {
+ }
+ 
+ /**
++ * Implements hook_path_insert().
++ */
++function redirect_path_insert(array $path) {
++  if (!empty($path['alias'])) {
++    // Delete all redirects having the same source as this alias.
++    redirect_delete_by_path($path['alias'], $path['language'], FALSE);
++  }
++}
++
++/**
+  * Implements hook_path_delete().
+  */
+ function redirect_path_delete($path) {
+@@ -849,15 +861,20 @@ function redirect_delete($rid) {
+  *
+  * @ingroup redirect_api
+  */
+-function redirect_delete_by_path($path) {
++function redirect_delete_by_path($path, $language = FALSE, $match_subpaths_and_redirect = TRUE) {
+   $query = db_select('redirect');
+   $query->addField('redirect', 'rid');
+   $query_or = db_or();
+   $query_or->condition('source', db_like($path), 'LIKE');
+-  $query_or->condition('source', db_like($path . '/') . '%', 'LIKE');
+-  $query_or->condition('redirect', db_like($path), 'LIKE');
+-  $query_or->condition('redirect', db_like($path . '/') . '%', 'LIKE');
++  if ($match_subpaths_and_redirect) {
++    $query_or->condition('source', db_like($path . '/') . '%', 'LIKE');
++    $query_or->condition('redirect', db_like($path), 'LIKE');
++    $query_or->condition('redirect', db_like($path . '/') . '%', 'LIKE');
++  }
+   $query->condition($query_or);
++  if ($language) {
++    $query->condition('language', $language);
++  }
+   $rids = $query->execute()->fetchCol();
+ 
+   if ($rids) {
+@@ -1020,6 +1037,10 @@ function redirect_redirect($redirect = NULL) {
+ 
+   // Continue if the redirect has not been disabled by hook_redirect_alter().
+   if (isset($redirect->redirect) && isset($redirect->callback) && $redirect->redirect !== FALSE && function_exists($redirect->callback)) {
++    // Prevent circular redirects.
++    if ($GLOBALS['base_root'] . request_uri() == url($redirect->redirect, array('absolute' => TRUE) + $redirect->redirect_options)) {
++      return FALSE;
++    }
+     // Perform the actual redirect.
+     $callback = $redirect->callback;
+     $callback($redirect);
+diff --git a/redirect.test b/redirect.test
+index 1c237f8..546a7d1 100644
+--- a/redirect.test
++++ b/redirect.test
+@@ -234,10 +234,14 @@ class RedirectFunctionalTest extends RedirectTestHelper {
+     //$this->assertRedirect($redirect);
+ 
+     $this->drupalPost("node/{$node->nid}/edit", array('path[alias]' => 'first-alias'), 'Save');
++    $this->assertResponse(200,"Changing node's alias back to 'first-alias' does not break page load with a circular redirect.");
++    $this->assertNoText('Infinite redirect loop prevented.');
+     //$redirect = redirect_load_by_source('second-alias');
+     //$this->assertRedirect($redirect);
+ 
+     $this->drupalPost("node/{$node->nid}/edit", array('path[alias]' => 'second-alias'), 'Save');
++    $this->assertResponse(200,"Changing node's alias back to 'second-alias' does not break page load with a circular redirect.");
++    $this->assertNoText('Infinite redirect loop prevented.');
+     //$redirect = redirect_load_by_source('first-alias');
+     //$this->assertRedirect($redirect);
+   }

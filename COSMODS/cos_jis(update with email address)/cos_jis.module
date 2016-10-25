@@ -1,0 +1,897 @@
+<?php
+
+/**
+ * @file cos_jis.module
+ */
+
+define('JIS_DEV_ENDPOINT', 'http://jisapdev:8080/jis-web/services/RemotePaymentService');
+define('JIS_PROD_ENDPOINT', 'http://jisapf:8080/jis-web/services/RemotePaymentService');
+
+/**
+ * Implements hook_menu().
+ */
+function cos_jis_menu() {
+	$items = array();
+	$items['admin/config/system/jis'] = array(
+		'title' => t('JIS Settings'),
+		'description' => t('Description'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('cos_jis_config'),
+		'file' => 'cos_jis.admin.inc',
+		'access callback' => 'user_access',
+		'access arguments' => array('set jis variables')
+	);
+	$items['cos_jis/autocomplete'] = array(
+    'title' => 'Lucilles List autocomplete',
+    'page callback' => 'cos_jis_autocomplete',
+    'access callback' => TRUE,
+/*     'access arguments' => array('view published content'), */
+    'type' => MENU_CALLBACK,
+  );
+	return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function cos_jis_permission() {
+	return array(
+		'set jis variables' => array(
+			'title' => t('Configure JIS Settings'),
+			'description' => t('Allow users to configure JIS variables and settings'),
+		),
+	);
+}
+
+/**
+ * Implements hook_init()/
+ */
+function cos_jis_init() {
+	// If a user has submitted a successful search (signified by having
+	// items in their cart) then prevent them from accessing the search page
+	// to submit subsequent searches.
+	global $user;
+	if (drupal_is_front_page() && $cart = commerce_cart_order_load($user->uid)) {
+		$active_cart_message = variable_get('cos_jis_active_cart_message', 'You are unable to perform a search with an active cart.  Complete checkout before submitting additional searches.');
+		drupal_set_message($active_cart_message);
+		drupal_goto('cart');
+	}
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function cos_jis_block_info() {
+	$blocks = array();
+	$blocks['cos_jis_search'] = array(
+		'info' => 'COS JIS Search Form Block',
+		'cache' => DRUPAL_NO_CACHE,
+	);
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cos_jis_block_view($delta = '') {
+	$block = array();
+	switch ($delta) {
+		case 'cos_jis_search':
+			$block['subject'] = t('Search JIS');
+			$form = drupal_get_form('cos_jis_search_block_form');
+      $block['content'] = drupal_render($form);
+			// $block['content'] = render(drupal_get_form('cos_jis_search_block_form'));
+			break;
+
+		default:
+			# code...
+			break;
+	}
+	return $block;
+}
+
+function cos_jis_search_block_form($form, &$form_state) {
+	// CourtCase, Summons, ParkingTicket, LicensePlate
+	$default = array('value' => '', 'format' => 'full_html');
+	$value = variable_get('cos_jis_intro', $default);
+	$form['intro'] = array(
+		'#type' => 'markup',
+		'#markup' => $value['value'],
+	);
+	$form['search_type'] = array(
+		// '#title' => t('Search Type'),
+		'#title' => t('Select how you want to search.'),
+		'#type' => 'radios',
+		'#options' => array(
+			'Summons' => t('Summons Number'),
+			'CourtCase' => t('Case Number'),
+			'ParkingTicket' => t('Ticket Number'),
+			'LicensePlate' => t('License Plate Number'),
+		),
+		'#default_value' => isset($form_state['values']['search_type']) ? $form_state['values']['search_type'] : 'Summons',
+		'#ajax' => array(
+			'callback' => 'cos_jis_search_type',
+			'wrapper' => 'jis-search-params',
+			'method' => 'replace',
+			'effect' => 'fade',
+		),
+	);
+	$form['search_type']['Summons'] = array(
+		'#prefix' => '<div class="summons"><h5>Court Summons</h5>',
+	);
+	$form['search_type']['CourtCase'] = array(
+		'#suffix' => '</div>',
+	);
+	$form['search_type']['ParkingTicket'] = array(
+		'#prefix' => '<div class="ticket"><h5>Parking Ticket</h5>',
+	);
+	$form['search_type']['LicensePlate'] = array(
+		'#suffix' => '</div>',
+	);
+	$form['search_params'] = array(
+		'#type' => 'container',
+		'#prefix' => '<div id="jis-search-params">',
+		'#suffix' => '</div>',
+	);
+
+	// The actual search string.
+	$config_array = _cos_jis_input_lengths();
+
+	$search_title = isset($form_state['values']['search_type']) ?
+		$config_array[$form_state['values']['search_type']]['title'] :
+		$config_array[$form['search_type']['#default_value']]['title'];
+
+	$search_description = isset($form_state['values']['search_type']) ?
+		$config_array[$form_state['values']['search_type']]['description'] :
+		$config_array[$form['search_type']['#default_value']]['description'];
+
+	$form['search_params']['search_value'] = array(
+		'#title' => $search_title,
+		'#description' => $search_description,
+		'#type' => 'textfield',
+		'#maxlength' => (isset($form_state['values']['search_type'])) ?
+			$config_array[$form_state['values']['search_type']]['length'] :
+			$config_array['Summons']['length'],
+		'#required' => TRUE,
+	);
+	// Show the DOB field for Summons and CourtCase selections.
+	$show_dob = ((isset($form_state['values']['search_type']) &&
+		($form_state['values']['search_type'] == 'Summons' || $form_state['values']['search_type'] == 'CourtCase'))
+		|| !isset($form_state['values']));
+	if ($show_dob) {
+		// if (FALSE) {
+		// Based on above selection:
+		$form['search_params']['dob'] = array(
+			'#title' => t('DOB'),
+			'#description' => t('Enter your Date of Birth in \'mm/dd/yyyy\' form'),
+			'#type' => 'textfield',
+			'#default_value' => '',
+			'#attributes' => array(
+				'placeholder' => 'mm/dd/yyyy',
+			),
+			'#required' => TRUE,
+		);
+	}
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('Search'),
+	);
+	$form['#submit'] = array('cos_jis_search_form_submit');
+	$form['#validate'] = array('cos_jis_search_form_validate');
+	return $form;
+}
+
+/**
+ * AJAX Callback.
+ */
+function cos_jis_search_type(&$form, &$form_state) {
+	return $form['search_params'];
+}
+
+/**
+ * Validation handler for COS JIS Search Form.
+ */
+function cos_jis_search_form_validate(&$form, &$form_state) {
+	// Ensure that this form cannot be submitted
+	// with an active cart (has items).
+	global $user;
+	if ($form_state['submitted'] && $cart = commerce_cart_order_load($user->uid)) {
+		$active_cart_message = variable_get('cos_jis_active_cart_message', 'You are unable to perform a serach with an active cart.  Complete checkout before submitting additional searches.');
+		drupal_set_message($active_cart_message);
+		drupal_goto('cart');
+	}
+	// Ensure that if a DOB was submitted we can parse it.
+	if (isset($form_state['values']['dob']) && !preg_match('/\d{2}\/\d{2}\/\d{4}/i', $form_state['values']['dob'])) {
+		form_set_error('search_params][dob', 'Please enter date of birth in dd/mm/yyyy format.');
+	}
+}
+
+/**
+ * Submit handler for COS JIS Search Form.
+ */
+function cos_jis_search_form_submit(&$form, &$form_state) {
+	// Construct and Submit the SOAP Request.
+	module_load_include('inc', 'cos_jis');
+	module_load_include('inc', 'cos_jis', 'cos_jis.admin');
+	try {
+		// We are only ever going to construct a queryMessage object.
+		$client = cos_jis_get_soap_client();
+		$params = array(
+			"recordNumber" => $form_state['values']['search_value'],
+			"recordType" => $form_state['values']['search_type'],
+		);
+		if (isset($form_state['values']['dob'])) {
+			$dob = explode('/', $form_state['values']['dob']);
+			list($month, $day, $year) = $dob;
+			$params['dob'] = $year . '-' . $month . '-' . $day . 'T12:00:00';
+		}
+		$response = $client->queryRecords(array('in0' => $params));
+		if (module_exists('object_log')) {
+			// object_log('query_response_' . $params['recordNumber'], $response);
+			cos_jis_object_log('query_response_' . $params['recordNumber'], $response);
+		}
+		$errors = cos_jis_parse_soap_response($response);
+		if ($errors) {
+			// Do something with the error messages.
+		}
+	}
+	catch (Exception $e) {
+		watchdog(
+      'cos_jis',
+      'See '  . __FUNCTION__ . '() <pre>' .  $e->getTraceAsString() . '</pre>',
+       NULL, WATCHDOG_ERROR
+    );
+    watchdog('cos_jis', 'Exception returned from SOAP Call: @exception', array('@exception' => print_r($e, TRUE)));
+		drupal_set_message('We encountered an error submitting your request.  If the problem persists, contact a site administrator.', 'error');
+	}
+	$form_state['rebuild'] = TRUE;
+	// Parse the Result.
+}
+
+/**
+ * Implements hook_commerce_checkout_pane_info_alter().
+ */
+function cos_jis_commerce_checkout_pane_info_alter(&$checkout_panes) {
+	// dsm($checkout_panes, 'checkout panes');
+	global $user;
+	if ($order = commerce_cart_order_load($user->uid)) {
+		if ($order->data['query_response']->recordType == 'LicensePlate' ||
+			$order->data['query_response']->recordType == 'ParkingTicket') {
+			// dsm($order, 'order');
+	    $checkout_panes['extra_pane__node__4']['page'] = 'disabled';
+		  $checkout_panes['extra_pane__node__4']['enabled'] = FALSE;
+		 }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cos_jis_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state) {
+  $form['actions']['cancel'] = array(
+    '#type' => 'submit',
+    '#value' => t('Cancel'),
+    '#submit' => array('cos_jis_cart_cancel'),
+  );
+  $form['actions']['submit']['#access'] = FALSE;
+}
+
+/**
+ * Cart cancel submit handler
+ */
+function cos_jis_cart_cancel(&$form, &$form_state) {
+  global $user;
+  $order = commerce_cart_order_load($user->uid);
+  if ($order) {
+    commerce_order_delete($order->order_id);
+    $form_state['redirect'] = '<front>';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * commerce_checkout_form_checkout
+ */
+function cos_jis_form_commerce_checkout_form_checkout_alter(&$form, &$form_state) {
+	if (isset($form['buttons']['cancel'])) {
+		$form['buttons']['cancel']['#submit'][] = 'cos_jis_checkout_cancel';
+	}
+}
+
+function cos_jis_checkout_cancel (&$form, &$form_state) {
+	global $user;
+	$order = commerce_cart_order_load($user->uid);
+	if ($order) {
+		commerce_cart_commerce_order_delete($order);
+		$form_state['redirect'] = '<front>';
+	}
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cos_jis_form_commerce_checkout_form_acceptance_of_guilt_alter(&$form, &$form_state) {
+	unset($form['extra_pane__node__4']);
+	$form['buttons']['continue']['#value'] = t('Agree and Plead Guilty');
+	$form['buttons']['cancel'] = array(
+		'#type' => 'submit',
+		'#value' => t('Cancel'),
+		'#submit' => array('cos_jis_guilty_cancel'),
+	);
+}
+
+function cos_jis_guilty_cancel(&$form, &$form_state) {
+	global $user;
+	try {
+		$order = commerce_cart_order_load();
+		watchdog('cos_jis', 'User cancelled order by choosing to not plead guilty: Order ID: @id', array('@id' => $order->order_id));
+		if ($order) {
+			commerce_cart_commerce_order_delete($order);
+		}
+		drupal_set_message('You have chosen to cancel paying online.');
+		$redirect_page = variable_get('cos_jis_cancel_redirect_page', '<front>');
+		$form_state['redirect'] = '<front>';
+		if ($redirect_page != '<front>') {
+			$nid = substr($redirect_page, strpos($redirect_page, '(') +1);
+		  $nid = str_replace(')', '', $nid);
+		  $nid = db_select('node', 'n')
+		    ->fields('n', array('nid'))
+		    ->condition('nid', $nid)
+		    ->condition('type', 'page')
+		    ->execute()->fetchAssoc();
+		  if ($nid) {
+		    $form_state['redirect'] = array('node/' . $nid['nid']);
+			}
+		}
+	}
+	catch (Exception $e) {
+		watchdog('cos_jis', 'Exception returned when not pleading guilty. Redirecting to configured redirect_page  See '
+			. __FUNCTION__ . '() <pre>' .  $e->getTraceAsString() . '</pre>',
+       NULL,
+       WATCHDOG_ERROR
+    );
+		// return false;
+	}
+}
+
+function cos_jis_parse_soap_response($response) {
+	if (!$response) {
+		drupal_set_message('We were unable to process your request.  Please see the court for additional information.');
+		return NULL;
+	}
+	// if (module_exists('object_log')) {
+	// 	object_log('soap_response', $response);
+	// }
+	$response_messages = cos_response_codes();
+	$message_type = 'status';
+	$message = '';
+	switch($response->queryRecordsReturn->responseCode) {
+		case 'Success':
+		case 'RecordPostDispo':
+			if ((int)$response->queryRecordsReturn->totalAmountDue  == 0) {
+				$message = variable_get('cos_jis_code_zero_balance', '');
+			}
+			else {
+				// This is where go to the trouble of creating the line items for their returned
+				// records and adding them to the user's cart.  This function calls
+				// drupal_goto so the rest of this won't process.
+				cos_jis_prepare_line_items($response->queryRecordsReturn);
+			}
+			break;
+		// These statuses are never payable.
+		case 'AuthorizationError':
+		case 'FailedIdentification':
+		case 'IllegalArgument':
+		case 'SystemError':
+			$message_type = 'error';
+			break;
+		case 'JuvenileRecord':
+			$message = variable_get('cos_jis_code_' . $response->queryRecordsReturn->responseCode,
+				$response_messages[$response->queryRecordsReturn->responseCode]);
+			if ($response->queryRecordsReturn->courtInfo) {
+				$message .= 'Please appear in court on [cos-jis:court_date] in Division [cos-jis:court_division] at the Municipal Court on 224 E Kiowa St.';
+			}
+			// Handle the court info stuff here.
+			break;
+		case 'MandatoryCourt':
+			$message = variable_get('cos_jis_code_' . $response->queryRecordsReturn->responseCode,
+				$response_messages[$response->queryRecordsReturn->responseCode]);
+			if ($response->queryRecordsReturn->courtInfo) {
+				$message .= 'Please appear in court on [cos-jis:court_date] in Division [cos-jis:court_division] at the Municipal Court on 224 E Kiowa St.';
+			}
+			break;
+		case 'RecordClosed':
+		case 'RecordNotPayable':
+		case 'UnderPayment':
+		case 'OverPayment':
+		case 'RecordDismissed':
+		case 'RecordNotFound':
+		case 'RecordPaid':
+		case 'RecordVoided':
+		case 'UnsupportedRecordType':
+		case 'WarrantIssued':
+		case 'WarrantOrdered':
+		default:
+			$message_type = 'warning';
+	}
+	// Default the message to the configured value if it hasn't been set above.
+	$message = ($message != '') ? $message : variable_get('cos_jis_code_' . $response->queryRecordsReturn->responseCode,
+		$response_messages[$response->queryRecordsReturn->responseCode]);
+	$message = token_replace($message, array('query-response' => $response->queryRecordsReturn));
+	drupal_set_message($message);
+}
+
+function cos_jis_prepare_line_items($query_response) {
+	// Prepare a line item for each response->records->item in the response.
+	if (is_array($query_response->records->item)) {
+		$items = $query_response->records->item;
+	}
+	else {
+		$items = array($query_response->records->item);
+	}
+	foreach ($items as $item) {
+		if (is_array($item->violations->item)) {
+			$violations = $item->violations->item;
+		}
+		else {
+			$violations = array($item->violations->item);
+		}
+		$line_item_comments = '';
+		foreach ($violations as $violation) {
+			$line_item_comments .= '<strong>' . $violation->code . '</strong>: ' . $violation->title . '
+';
+		}
+		global $user;
+    $uid = $user->uid;
+		$product = commerce_product_load_by_sku(strtoupper($item->recordType));
+		$price = ($item->amountDue) ?	$item->amountDue : $query_response->totalAmountDue;
+		$product->commerce_price[LANGUAGE_NONE][0]['amount'] =
+			commerce_currency_decimal_to_amount($price, 'USD');
+		$line_item = commerce_product_line_item_new($product, 1);
+    $line_item->field_notes['und'][0]['value'] = $line_item_comments;
+    $line_item->field_notes['und'][0]['format'] = 'full_html';
+    $line_item->field_line_item_price[LANGUAGE_NONE][0]['amount'] = commerce_currency_decimal_to_amount($price, 'USD');
+    $line_item->field_line_item_price[LANGUAGE_NONE][0]['currency_code'] = 'USD';
+    $line_item->line_item_label = $product->title;
+    $line_item->field_record_number[LANGUAGE_NONE][0]['value'] = $item->recordNumber;
+    $line_item = commerce_cart_product_add($uid, $line_item, FALSE);
+    // We need to save the response informaiton to the order so it is accessible
+    // after the transaction to notify JIS that payment was made.
+    $order = commerce_order_load($line_item->order_id);
+    $order->data['query_response'] = $query_response;
+    commerce_order_save($order);
+	}
+	drupal_goto('cart');
+}
+
+/**
+ * Function to send the payment notification to JIS server.
+ * 
+ * @param $order - a commerce_order entity which will be submitted to JIS
+ *
+ * @param $cron - Boolean value to if this is being run by cron.  Determines
+ * 									if we will show error messages to the user or not.
+ *
+ * @param $retries - Integer value of the number of times this message has been tried.
+ * 										Required per a spec change so that we don't indefinitely
+ * 										re-queue failed postPayment messages.	
+ */
+function cos_jis_notify_jis_payment($order, $cron = FALSE, $retries = 0) {
+	$owrapper = entity_metadata_wrapper('commerce_order', $order);
+  $response = cos_jis_send_payment_message($owrapper);
+
+
+  if (module_exists('object_log')) {
+  	$label = 'post_payment_response_' . $order->order_id;
+  	cos_jis_object_log($label, $response);
+  	// object_log('post_payment_response_' . $order->order_id, $response);
+  }
+  if ($response && 
+  	($response->postPaymentReturn->responseCode == 'Success' || $response->postPaymentReturn->receiptNumber)) {
+  	// Posting was successful if Success is returned or we have a receipt number.\
+  	// If the response from JIS is successful we'll have a receipt number.
+    // Add that receipt number to the Transaction's remote_status field
+    // Get the transaction for this order.  At this point there will only be one.
+    $query = new EntityFieldQuery;
+    $transaction = $query
+      ->entityCondition('entity_type', 'commerce_payment_transaction')
+      ->propertyCondition('order_id', $order->order_id)
+      ->propertyOrderBy('transaction_id', 'DESC')
+      ->execute();
+    foreach ($transaction['commerce_payment_transaction'] as $key => $value) {
+    	$trans = commerce_payment_transaction_load($key);
+    	$trans->remote_status = $response->postPaymentReturn->receiptNumber;
+    	commerce_payment_transaction_save($trans);
+    }
+	  if (!$cron) {
+	  	$message = t('Your payment was successfully submitted. Your receipt number is @receipt.  Please keep this number or print this page for your records.',
+	  		array('@receipt' => $response->postPaymentReturn->receiptNumber));
+	  	drupal_set_message($message, 'status');
+	  }
+	  // Send the email.
+	  $body = variable_get('cos_jis_email_body', '');
+	  $body = token_replace($body, array('query-response' => $response->postPaymentReturn));
+	  $body = token_replace($body, array('query-response' => $order->data['query_response'], 'commerce-order' => $order));
+	  $message = array();
+	  $message[] = $body;
+	  $subject = variable_get('cos_jis_email_subject', '');
+	  $subject = token_replace($subject, array('query-response' => $order->data['query_response'], 'commerce-order' => $order));
+	  return drupal_mail('cos_jis', 'cos_jis',$order->mail, LANGUAGE_NONE,
+	   array('message' => $message, 'subject' => $subject));
+  }
+	elseif (($response && $response->postPaymentReturn->responseCode != 'Success') || $retries >= 4) {
+		// We received a response from JIS but posting was not successful for
+		// any reason. If this is the case then we want to notify the user
+		// and the court and NOT re-queue this message.  
+		// OR a message has failed 5 or more times with no response.
+		$default = '<p>There was a problem processing your payment. Please note that payment <strong><em><u>has not</u></em></strong> been made to the court. You must contact the court to determine options for resolving your case.<br />
+<br />
+(719) 385-5928<br /><br />
+Colorado Springs Municipal Court<br />
+224 E . Kiowa Street<br />
+Room 108<br />
+Colorado Springs, CO 80903</p>
+';
+		if (!$cron) {
+			$error_message = variable_get('cos_jis_error_citizen_message', $default);
+			drupal_set_message($error_message['value'], 'error');
+		}
+		// Send an email to the Court.
+	  $body = variable_get('cos_jis_error_email_body', '');
+	  $body = token_replace($body, array('query-response' => $response->postPaymentReturn));
+	  $body = token_replace($body, array('query-response' => $order->data['query_response'], 'commerce-order' => $order));
+	  $message = array();
+	  $message[] = $body;
+	  $subject = variable_get('cos_jis_error_email_subject', 'JIS Payment Notification Failed');
+	  $subject = token_replace($subject, array('query-response' => $order->data['query_response'], 'commerce-order' => $order));
+	  $to = variable_get('cos_jis_error_email_address', 'webmaster@springsgov.com');
+		drupal_mail('cos_jis', 'cos_jis', $to, LANGUAGE_NONE, 
+			array('message' => $message, 'subject' => $subject));
+		watchdog('cos_jis', 'postPayment message unsuccessful and not re-queued.  Response: @response.  Retries: @retries',
+			array('@response' => print_r($response, TRUE), '@retries' => $retries));
+		// Return value is used for cron processing to know if we should re-queue this or not.
+		// Since this use-case is for not re-queueing, we want to not requeue.
+		return TRUE;
+	}
+	else {
+		// If we get here then we didn't get a response from JIS.
+		// Queue this post_payment message for re-submission.
+		// Only queue if this wasn't initiated by cron.  We handle re-queueing
+		// for cron initiated calls in the cron handler.
+		if (!$cron) {
+			drupal_set_message('Your payment has successfully processed but notification to the Municipal Court failed.  We will retry this notification up to 5 times and notify you via email if it is successful.');
+			cos_jis_queue_post_payment($owrapper, $retries);
+		}
+		watchdog('cos_jis', 'postPayment Message unsuccessful and re-queued: @exception', array('@exception' => print_r($response, TRUE)));
+		return FALSE;
+	}
+}
+
+/**
+ * Implements hook_commerce_elavon_transaction_alter().
+ */
+function cos_jis_commerce_elavon_transaction_alter(&$transaction, $payment_method, $info) {
+	// Save sanitized information we need about the transaction for the postPayment message.
+	$transaction->data['cc_info'] = str_repeat('X', strlen($info['ssl_card_number']) - 14) . substr($info['ssl_card_number'], -4);
+}
+
+/**
+ * Implements hook_mail().
+ */
+function cos_jis_mail($key, &$message, $params) {
+	$message['body'] = $params['message'];
+	$message['subject'] = $params['subject'];
+}
+
+/**
+ * Send postPayment message to JIS system for a provided order entity.
+ */
+function cos_jis_send_payment_message($order_wrapper) {
+	// Submit the postPayment message to JIS
+	module_load_include('inc', 'cos_jis');
+	module_load_include('inc', 'cos_jis', 'cos_jis.admin');
+	$data = $order_wrapper->value()->data;
+	$cc_info = '';
+	// The sanitized card data is stored on the transaction object.
+	// This system plans to only ever have a single transaction per order.
+	$query = new EntityFieldQuery;
+	$transaction = $query
+	  ->entityCondition('entity_type', 'commerce_payment_transaction')
+	  ->propertyCondition('order_id', $order_wrapper->order_id->value())
+	  ->propertyOrderBy('transaction_id', 'DESC')
+	  ->execute();
+  foreach ($transaction['commerce_payment_transaction'] as $key => $value) {
+		$trans = commerce_payment_transaction_load($key);
+		if ($trans->amount == $order_wrapper->commerce_order_total->amount->value()) {
+			$cc_info = $trans->data['cc_info'];
+			break;
+		}
+  }
+	try {
+		// Insantiate the SOAP Client.
+		$client = cos_jis_get_soap_client();
+		$total = $order_wrapper->commerce_order_total->value();
+		$amount = commerce_currency_amount_to_decimal($total['amount'], $total['currency_code']);
+		$params = array(
+			"amountPaid" => $amount,
+			"ccNumber" => $cc_info,
+			"clientID" => 'CRT',
+			"records" => $data['query_response']->records,
+		);
+		if (module_exists('object_log')) {
+			$label = 'post_payment_params_' . $order_wrapper->order_id->value();
+			cos_jis_object_log($label, $params);
+		}
+		$response = $client->postPayment(array('in0' => $params));
+	}
+	catch (Exception $e) {
+		watchdog(
+      'cos_jis',
+      'See '  . __FUNCTION__ . '() <pre>' .  $e->getTraceAsString() . '</pre>',
+       NULL, WATCHDOG_ERROR
+    );
+		watchdog('cos_jis', 'Exception returned from SOAP Call: @exception', array('@exception' => print_r($e, TRUE)));
+		drupal_set_message('We encountered an error submitting your request.  If the problem persists, contact a site administrator.', 'error');
+	}
+	return $response;
+}
+
+/**
+ * Utitlity function to queue the order for resubmission
+ */
+function cos_jis_queue_post_payment($order_wrapper, $tries) {
+	watchdog('cos_jis_queue', 'Queueing order @order with tries of @try',
+		array('@order' => $order_wrapper->order_id->value(), '@try' => $tries), WATCHDOG_WARNING);
+	$queue = DrupalQueue::get('cos_jis');
+  $queue->createQueue();
+  $tries++;
+  $queue->createItem(array(
+  	'order_id' => $order_wrapper->order_id->value(),
+  	'tries' => $tries,
+  ));
+}
+
+/**
+ * Implements hook_cron().
+ */
+function cos_jis_cron() {
+	$queue = DrupalQueue::get('cos_jis');
+  $queue->createQueue();
+  $requeues = array();
+  while ($item = $queue->claimItem()) {
+  	if ($item->data) {
+  		// If we're processing an item from the queue, this is at least the second time it's been processed.
+  		$tries = 1;
+  		if (is_array($item->data)) {
+  			$order = entity_load_single('commerce_order', $item->data['order_id']);
+  			$tries = $item->data['tries'];
+  			$tries = (int) $tries;
+  		}
+  		else {
+  			$order = entity_load('commerce_order', array($item->data));
+		    $order = array_shift($order);
+  		}
+	  	watchdog('cos_jis_cron', 'Processing order @oid for queued postPayment submission',
+	  		array('@oid' => $item->data), WATCHDOG_WARNING);
+	    $success = cos_jis_notify_jis_payment($order, TRUE, $tries);
+	    if (!$success) {
+	    	$requeues[] = array('order_id' => $item->data['order_id'], 'tries' => $tries);
+	    }
+	  }
+	  else {
+	  	watchdog('cos_jis_cron', 'Processing cron entry with null value', NULL, WATCHDOG_WARNING);
+	  }
+	  $queue->deleteItem($item);
+  }
+  foreach ($requeues as $requeue) {
+  	$owrapper = entity_metadata_wrapper('commerce_order', $requeue['order_id']);
+  	cos_jis_queue_post_payment($owrapper, $requeue['tries']);
+  }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function cos_jis_token_info() {
+	$type = array(
+    'name' => t('COS JIS'),
+    'description' => t('Tokens related to queryResponseRecords from the JIS Integration.'),
+    'needs-data' => 'query-response',
+	);
+	$info = array();
+	$info['type'] = array(
+    'name' => t('Record Type'),
+  	'description' => t('The RecordType for the returned object.'),
+  );
+  $info['code'] = array(
+  	'name' => t('Response Code'),
+  	'description' => t('The responseCode returned from the query'),
+  );
+  $info['receipt_number'] = array(
+  	'name' => t('JIS Receipt Number'),
+  	'description' => t('The receiptNumber returned from JIS postPayment message.')
+  );
+  $info['balance'] = array(
+  	'name' => t('Outstanding Balance'),
+  	'description' => t('The outstanding balance for a record'),
+  );
+  $info['court_date'] = array(
+  	'name' => t('Court Date'),
+  	'description' => t('Date for a court appearance if provided.'),
+  );
+  $info['court_division'] = array(
+  	'name' => t('Court Division'),
+  	'description' => t('Division for a court appearance if provided.'),
+  );
+  $info['record_number'] = array(
+  	'name' => t('Record Number'),
+  	'description' => t('The record number the user paid for.'),
+  );
+
+	return array(
+		'types' => array('cos-jis' => $type),
+    'tokens' => array('cos-jis' => $info),
+	);
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function cos_jis_tokens($type, $tokens, array $data = array(), array $options = array()) {
+	$replacements = array();
+	if ($type == 'cos-jis' && isset($data['query-response'])) {
+			$query_response = $data['query-response'];
+			foreach ($tokens as $name => $original) {
+	      switch ($name) {
+	       	case 'type':
+	        	if (!empty($query_response->records->item->recordType)) {
+		        	switch($query_response->records->item->recordType) {
+		        		case 'CourtCase':
+		        			$value = 'Court Case';
+		        			break;
+		        		case 'ParkingTicket':
+		        			$value = 'Parking Ticket';
+		        			break;
+		        		case 'LicensePlate':
+		        			$value = 'License Plate';
+		        			break;
+		        		default:
+		        			$value = $query_response->recordType;
+		        	}
+		          $replacements[$original] = $value;
+		        }
+	          break;
+	        case 'code':
+	         	switch ($query_response->responseCode) {
+	         		case 'JuvenileRecord':
+	         			$value = 'Juvenile Record';
+	         			break;
+	         		default:
+	         			$value = $query_response->responseCode;
+	         	}
+	         	$replacements[$original] = $value;
+	         	break;
+	        case 'balance':
+	         	$replacements[$original] = $query_response->totalAmountDue;
+	         	break;
+	        case 'court_date':
+	         	$dt = new DateTime($query_response->courtInfo->dateTime);
+						$dt->setTimezone(new DateTimeZone('America/Denver'));
+						$date = $dt->format('l, F nS');
+						$time = $dt->format('g:i A');
+						$replacements[$original] = $date . ' at ' . $time;
+	         	break;
+	        case 'court_division':
+	         	$replacements[$original] = $query_response->courtInfo->division;
+	         	break;
+	        case 'receipt_number':
+            if (!empty($query_response->receiptNumber)) {
+  	         	$replacement = $query_response->receiptNumber;
+            }
+            // Attempt a fallback to the information stored on the order.
+            elseif (isset($data['commerce-order'])) {
+              $order_wrapper = entity_metadata_wrapper('commerce_order', $data['commerce-order']);
+              $query = new EntityFieldQuery;
+              $transaction = $query
+                ->entityCondition('entity_type', 'commerce_payment_transaction')
+                ->propertyCondition('order_id', $order_wrapper->order_id->value())
+                ->propertyOrderBy('transaction_id', 'DESC')
+                ->execute();
+              foreach ($transaction['commerce_payment_transaction'] as $key => $value) {
+                $trans = commerce_payment_transaction_load($key);
+                if ($trans->amount == $order_wrapper->commerce_order_total->amount->value()) {
+                  $replacement = $trans->remote_status;
+                  break;
+                }
+              }
+            }
+            $replacements[$original] = $replacement;
+	         	break;
+	        case 'record_number':
+	        	$replacements[$original] = $query_response->records->item->recordNumber;
+	        	break;
+				}
+			}
+	}
+	return $replacements;
+}
+
+/**
+ * Autocomplete callback for know what you're looking for form.
+ */
+function cos_jis_autocomplete($string='') {
+  $matches = array();
+  $query = db_select('node','n')
+    ->fields('n', array('title', 'nid'))
+    ->condition('title', '%' . $string . '%', 'LIKE')
+    ->condition('type', 'page');
+  $result = $query->execute();
+  foreach ($result as $res) {
+    $key = $res->title . '(' . $res->nid . ')';
+    $matches[$key] = check_plain($res->title);
+  }
+  drupal_json_output($matches);
+}
+
+/**
+ * Utility function to set up some form values via config array.
+ */
+function _cos_jis_input_lengths() {
+	return array(
+		'CourtCase' => array(
+			'length' => 8,
+			'title' => t('Enter Case Number'),
+			'description' => t('Enter your Court Case Number – Example 14M00001'),
+		),
+		'Summons' => array(
+			'length' => 7,
+			'title' => t('Enter Summons Number (first 7 characters)'),
+			'description' => t('Enter the first 7 characters of your Summons.  Exclude any spaces ( ) or dashes (-).'),
+		),
+		'ParkingTicket' => array(
+			'length' => 9,
+			'title' => t('Enter Parking Ticket Number'),
+			'description' => t('Enter your parking ticket number.'),
+		),
+		'LicensePlate' => array(
+			'length' => 10,
+			'title' => t('Enter Plate Number'),
+			'description' => t('Enter your License Plate number without dashes.'),
+		),
+	);
+}
+
+/**
+ * Determine remote hostname based dev/prod endpoint setting.
+ */
+function cos_jis_get_jis_endpoint() {
+	// Default to dev environment.
+  if (variable_get('cos_jis_endpoint', 'jis_dev') == 'jis_dev') {
+  	// Dev hostname.
+    $host = 'jisapdev';
+	}
+	// Catch all of prod environmet.
+	else {
+		// Prod hostname.
+    $host = 'jisapf';
+	}
+
+	return $host;
+}
+
+function cos_jis_object_log($label, $params) {
+	$existing_log = object_log_retrieve($label);
+	$log = array();
+	if ($existing_log && is_object($existing_log->data)) {
+		$log[$existing_log->created] = $existing_log->data;
+	}
+	elseif ($existing_log && is_array($existing_log->data)) {
+		$log = $existing_log->data;
+		// $log[] = $params;
+	}
+	elseif (!$existing_log) {
+		// $log[] = $params
+	}
+	$log[REQUEST_TIME] = $params;
+	object_log($label, $log);
+}

@@ -1,0 +1,352 @@
+<?php
+/**
+ * @file
+ * All city-owned custom code.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function city_block_info() {
+  $blocks = array();
+
+    $blocks['departments'] = array(
+      'info' => t('City Departments'),
+      'cache'  => DRUPAL_NO_CACHE,
+    );
+
+    $blocks['departments_contact'] = array(
+      'info' => t('City Department Contact Info'),
+      'cache'  => DRUPAL_NO_CACHE,
+    );
+
+    $blocks['cos_general_route_planner'] = array(
+      'info' => 'COS General Transit Route Planner',
+    );
+
+    $blocks['featured_video'] = array(
+      'info' => 'Featured video: SpringsTV',
+    );
+
+    $blocks['social_media'] = array(
+      'info' => 'Social Media Icons',
+    );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function city_block_view($delta = '') {
+  $block = array();
+
+  switch($delta) {
+    case 'departments':
+      $block['subject'] = t('City Departments');
+      $block['content'] = array(
+        '#type' => 'markup',
+        '#markup' => _depts_list(),
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'city') . '/city.css',
+          ),
+          'js' => array(
+            drupal_get_path('module', 'city') . '/city.js',
+          ),
+        ),
+      );
+    break;
+    case 'departments_contact':
+      $block['subject'] = t('Contact information:');
+      $block['content'] = array(
+        '#type' => 'markup',
+        '#markup' => _depts_contact(),
+      );
+    break;
+    case 'cos_general_route_planner':
+      $form = city_route_planner_form();
+      $block['subject'] = t('Route Planner');
+      $block['content'] = drupal_render($form);
+    break;
+    case 'featured_video':
+      $videourl = variable_get('featured_video_url_entry');
+      $block['subject'] = t('SpringsTV');
+      $block['content'] = array(
+        '#type' => 'markup',
+        '#markup' => '<iframe src="https://player.vimeo.com/video/' . variable_get('featured_video_url_entry') . '" width="220" height="124" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="margin-left:-15px;"></iframe><br><a href="https://vimeo.com/coloradosprings/videos">View all videos</a>',
+      );
+    break;
+    case 'social_media':
+      $block['subject'] = t('');
+      $block['content'] = array(
+        '#type' => 'markup',
+        '#markup' => _social_media_output(),
+        '#attached' => array(
+          'js' => array(
+            drupal_get_path('module', 'city') . '/city.js',
+          ),
+        ),
+      );
+    break;
+  }
+
+  return $block;
+}
+
+function _social_media_output() {
+  drupal_add_js('//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit', 'external');
+  $text = variable_get('text_variable', '');
+
+  $output = '<div class="social-media-icons clearfix">';
+  $output .= '<a href="https://twitter.com/springsgov/" class="smi"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" class="smi-svg" viewBox="0 0 430.117 430.117" style="enable-background:new 0 0 430.117 430.117;" xml:space="preserve">';
+  $output .= '<g>';
+  $output .= '<path id="Twitter__x28_alt_x29_" d="M381.384,198.639c24.157-1.993,40.543-12.975,46.849-27.876 c-8.714,5.353-35.764,11.189-50.703,5.631c-0.732-3.51-1.55-6.844-2.353-9.854c-11.383-41.798-50.357-75.472-91.194-71.404 c3.304-1.334,6.655-2.576,9.996-3.691c4.495-1.61,30.868-5.901,26.715-15.21c-3.5-8.188-35.722,6.188-41.789,8.067 c8.009-3.012,21.254-8.193,22.673-17.396c-12.27,1.683-24.315,7.484-33.622,15.919c3.36-3.617,5.909-8.025,6.45-12.769 C241.68,90.963,222.563,133.113,207.092,174c-12.148-11.773-22.915-21.044-32.574-26.192 c-27.097-14.531-59.496-29.692-110.355-48.572c-1.561,16.827,8.322,39.201,36.8,54.08c-6.17-0.826-17.453,1.017-26.477,3.178 c3.675,19.277,15.677,35.159,48.169,42.839c-14.849,0.98-22.523,4.359-29.478,11.642c6.763,13.407,23.266,29.186,52.953,25.947 c-33.006,14.226-13.458,40.571,13.399,36.642C113.713,320.887,41.479,317.409,0,277.828 c108.299,147.572,343.716,87.274,378.799-54.866c26.285,0.224,41.737-9.105,51.318-19.39 C414.973,206.142,393.023,203.486,381.384,198.639z"/>';
+  $output .= '</g>';
+  $output .= '</svg></a>';
+  $output .= '<a href="https://www.facebook.com/springsgov/" class="smi"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" class="smi-svg" viewBox="0 0 430.113 430.114" style="enable-background:new 0 0 430.113 430.114;" xml:space="preserve">';
+  $output .= '<g>';
+  $output .= '<path id="Facebook" d="M158.081,83.3c0,10.839,0,59.218,0,59.218h-43.385v72.412h43.385v215.183h89.122V214.936h59.805 c0,0,5.601-34.721,8.316-72.685c-7.784,0-67.784,0-67.784,0s0-42.127,0-49.511c0-7.4,9.717-17.354,19.321-17.354 c9.586,0,29.818,0,48.557,0c0-9.859,0-43.924,0-75.385c-25.016,0-53.476,0-66.021,0C155.878-0.004,158.081,72.48,158.081,83.3z"/>';
+  $output .= '</g>';
+  $output .= '</svg></a>';
+  $output .= '<a href="https://www.instagram.com/CityofCOS/" class="smi"><svg xmlns="http://www.w3.org/2000/svg" class="smi-svg" width="36" height="36" viewBox="0 0 24 24">';
+  $output .= '<g>';
+  $output .= '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>';
+  $output .= '</g>';
+  $output .= '</svg></a>';
+  $output .= '<a href="https://vimeo.com/coloradosprings" class="smi"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" class="smi-svg" viewBox="0 0 430.118 430.118" style="enable-background:new 0 0 430.118 430.118;" xml:space="preserve">';
+  $output .= '<g>';
+  $output .= '<path id="Vimeo" d="M367.243,28.754c-59.795-1.951-100.259,31.591-121.447,100.664c10.912-4.494,21.516-6.762,31.858-6.762 		c21.804,0,31.455,12.237,28.879,36.776c-1.278,14.86-10.911,36.482-28.879,64.858c-18.039,28.423-31.513,42.61-40.464,42.61 		c-11.621,0-22.199-21.958-31.857-65.82c-3.239-12.918-9.031-45.812-17.324-98.765c-7.775-49.046-28.32-71.962-61.727-68.741 		C112.15,34.873,90.98,47.815,62.726,72.308C42.113,91.032,21.228,109.761,0,128.471l20.225,26.112 		c19.303-13.562,30.595-20.311,33.731-20.311c14.802,0,28.625,23.219,41.488,69.651c11.53,42.644,23.158,85.23,34.744,127.812 		c17.256,46.466,38.529,69.708,63.552,69.708c40.473,0,90.028-38.065,148.469-114.223c56.537-72.909,85.725-130.352,87.694-172.341 		C432.498,58.764,411.613,30.028,367.243,28.754z"/>';
+  $output .= '</g>';
+  $output .= '</svg></a>';
+  $output .= '<p><a href="/node/20116" style="font-size: 12px; letter-spacing: 0.01em;">View All City Social Media</a></p>';
+  $output .= '<p class="center">';
+  $output .= '<a href="http://itunes.apple.com/us/app/gocosprings/id628552969?mt=8"><img src="/sites/default/files/Communications/Images/download_on_the_app_store_badge_us-uk_135x40.png" style="height:30px; width:105px" /></a>';
+  $output .= '<a href="http://play.google.com/store/apps/details?id=com.govoutreach.gocosprings"><img src="/sites/default/files/Communications/Images/en_app_rgb_wo_45.png" style="height:30px; width:105px" /></a>';
+  $output .= '</p>';
+  $output .= '</div>';
+  $output .= '<div id="google_translate_element"></div>';
+
+  $output .= $text;
+
+  return $output;
+}
+
+function _depts_contact() {
+  $full_contact = '';
+  $tid = arg(1);
+
+  $full_contact .= '<div vocab="http://schema.org/" typeof="Organization">';
+
+  $contact_department_name = db_query('SELECT name as name FROM {`taxonomy_term_data`} WHERE vid = :vid AND tid = :tid', array(':vid' => 6, ':tid' => $tid));
+  if (isset($tid)) {
+    $ddn = '';
+    foreach ($contact_department_name as $info) {
+      $ddn .= '<h3><span property="department">' . $info->name . '</span></h3>';
+    }
+    $full_contact .= $ddn;
+  }
+
+  //Get phone number from taxo field as well.
+  $contact_hours_of_operation = db_query('SELECT field_hours_of_operation_value as hours FROM {`field_data_field_hours_of_operation`} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $dh = '';
+    foreach ($contact_hours_of_operation as $info) {
+      $dh .= '<p><strong>Hours of Operation</strong><br>' . $info->hours . '</p>';
+    }
+    $full_contact .= $dh;
+  }
+
+  //Get mailing address from taxo field.
+  $contact_mail = db_query('SELECT field_mailing_administrative_area as state, field_mailing_postal_code as zip_code, field_mailing_locality as city, field_mailing_thoroughfare as street FROM {field_data_field_mailing} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $ma = '';
+    foreach ($contact_mail as $info) {
+      $ma .= '<div property="address" typeof="PostalAddress"><p><strong>Mailing Address</strong><br />';
+      $ma .= '<span property="streetAddress">' . $info->street . '</span><br />';
+      $ma .= '<span property="addressLocality">' . $info->city . '</span>, ';
+      $ma .= '<span property="addressRegion">' . $info->state . '</span>. ';
+      $ma .= '<span property="postalCode">' . $info->zip_code . '</span></p></div>';
+    }
+    $full_contact .= $ma;
+  }
+
+  //Get physiacl address from taxo field.
+  $contact_address = db_query('SELECT field_physical_address_administrative_area as state, field_physical_address_postal_code as zip_code, field_physical_address_locality as city, field_physical_address_thoroughfare as street FROM {field_data_field_physical_address} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $dc = '';
+    foreach ($contact_address as $info) {
+      $dc .= '<p><strong>Physical Address</strong><br />';
+      $dc .= $info->street . '<br />';
+      $dc .= $info->city . ', ';
+      $dc .= $info->state . '. ';
+      $dc .= $info->zip_code . '</p>';
+    }
+    $full_contact .= $dc;
+  }
+
+  //Get phone number from taxo field as well.
+  $contact_phone = db_query('SELECT field_phone_number_value as phone FROM {field_data_field_phone_number} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $dp = '';
+    foreach ($contact_phone as $info) {
+      $dp .= '<p><strong>Contact: </strong><br>Phone: <span property="telephone"><a href="tel:1-' . $info->phone . '">' . $info->phone . '</a></span><br>';
+    }
+    $full_contact .= $dp;
+  }
+
+  //Get fax number from taxo field as well.
+  $contact_fax = db_query('SELECT field_fax_number_value as fax FROM {field_data_field_fax_number} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $df = '';
+    foreach ($contact_fax as $info) {
+      $df .= 'FAX: <span property="faxNumber">' . $info->fax . '</span><br>';
+    }
+    $full_contact .= $df;
+  }
+
+  //Get email address from taxo field as well.
+  $contact_email = db_query('SELECT field_email_address_value as email FROM {field_data_field_email_address} WHERE entity_id = :eid', array(':eid' => $tid));
+  if (isset($tid)) {
+    $de = '';
+    foreach ($contact_email as $info) {
+      $de .= 'Email: <span property="email"><a href="mailto:' . $info->email . '">' . $info->email . '</a></span><p>';
+    }
+    $full_contact .= $de;
+  }
+
+  $full_contact .= '</div>';
+
+  return $full_contact;
+}
+
+function _depts_check() {
+  //Is it a taxo? Is that taxo "Departments"?
+   if (arg(0) == 'department') {
+    $tid = arg(1);
+    $parents = taxonomy_get_parents_all($tid);
+    $parent_tid = max(array_keys($parents));
+
+    $parent_term_vid = $parents[$parent_tid]->vid;
+
+    if($parent_term_vid == 6) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+}
+//Find all terms under "Department" taxo in current DB that VID is 6.
+function _depts_list() {
+  $tax_name_sql = db_query('SELECT tid as tid, vid as vid, name as name FROM `taxonomy_term_data` WHERE vid = :vid', array(':vid' => 6));
+  if (!empty($tax_name_sql)) {
+    $depts = '';
+    foreach ($tax_name_sql as $term) {
+      //$items[] = ("<li><a href='taxonomy/term/" . $term->tid . "'>" . $term->name . "</a></li>");
+      $depts .= ('<option value="/department/' . $term->tid . '">' . $term->name . '</option>');
+      //<option value="/pages/support">Support</option>
+    }
+  }
+  return ('<select><option value="#" selected disabled>Contact a Department:</option>') . $depts . ('</select>');
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function city_page_alter(&$page) {
+  //Only show department contact info on "Department" taxo pages.
+  if (_depts_check()) {
+    //Carry on because the block is already here.
+  } else {
+    //Destroy the block so that it doesn't show up.
+    $page['sidebar_first']['city_departments_contact'] = '';
+  }
+}
+
+
+function city_route_planner_form() {
+  $form['starting_location'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Starting location'),
+    '#size' => 25,
+    '#attributes' => array(
+      'placeholder' => '123 Address St.',
+      'class' => array('from-location'),
+    ),
+  );
+  $form['ending_location'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Destination'),
+    '#size' => 25,
+    '#attributes' => array(
+      'placeholder' => '123 Address St.',
+      'class' => array('to-location'),
+    ),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Get Directions',
+    '#attributes' => array(
+      'class' => array(
+        'get-directions-submit',
+      ),
+    ),
+  );
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'city') . '/city.js',
+  );
+  return $form;
+}
+
+function city_block_configure($delta = '') {
+  $form = array();
+  $smi_descript = t('@a', array('@a' => '<div id="google_translate_element"></div><script type="text/javascript">function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: "en", layout: google.translate.TranslateElement.FloatPosition.BOTTOM_RIGHT, gaTrack: true, gaId: "UA-48381610-1"}, "google_translate_element");}</script>'));
+
+  switch($delta) {
+    case 'social_media' :
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t('Copy/paste the code from our GA translator widget'),
+        '#description' => t($smi_descript),
+        '#default_value' => variable_get('text_variable', ''),
+      );
+      break;
+    case 'featured_video' :
+      // This example comes from node.module.
+      $form = array();
+      if ($delta == 'featured_video') {
+        $form['featured_video_url_entry'] = array(
+          '#type' => 'textfield',
+          '#title' => t('Vimeo video identification number'),
+          '#description' => t('Enter the Vimeo video number located at the end of the video URL you\'d like displayed on the front page. VIMEO LINKS ONLY!<br><br>For example if your link is: https://vimeo.com/158405145 then you\'ll enter only "158405145"'),
+          '#default_value' => variable_get('featured_video_url_entry'),
+        );
+      }
+      break;
+    }
+  return $form;
+}
+
+function city_block_save($delta = '', $edit = array()) {
+  switch($delta) {
+    case 'social_media' :
+      variable_set('text_variable', $edit['text_body']['value']);
+      break;
+    case 'featured_video' :
+      variable_set('featured_video_url_entry', $edit['featured_video_url_entry']);
+    break;
+  }
+}
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter().
+ */
+function city_wysiwyg_editor_settings_alter(&$settings, $context) {
+  if ($context['profile']->editor == 'ckeditor') {
+    $settings['extraAllowedContent'] = array(
+      'img[title,alt,src,data-cke-saved-src](wysiwyg-break,drupal-content);video[width,height,controls,src](*);source[src,type];audio[controls,src](*);img[*](media-element,file-default)',
+      'a[type,length,href]',
+    );
+  }
+}

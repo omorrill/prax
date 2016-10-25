@@ -1,0 +1,7 @@
+name = COS JIS
+description = SOAP Integration and Configuration for JIS API
+core = 7.x
+version = 7.x-0.1
+
+files[] = cos_jis.admin.inc
+files[] = cos_jis.inc

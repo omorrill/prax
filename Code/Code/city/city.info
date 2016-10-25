@@ -1,0 +1,6 @@
+name = City Modules
+description = Modules developed by the City for the City.
+core = 7.x
+package = City
+
+scripts[] = city.js

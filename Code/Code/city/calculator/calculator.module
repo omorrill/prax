@@ -1,0 +1,404 @@
+<?php
+
+/**
+  * @file
+  * Allows visitors to calculate price difference of trip.
+  */
+
+/**
+ * Implements hook_menu().
+ */
+function calculator_menu() {
+  $items = array();
+
+  $items['trip-cost-calculator'] = array(
+    'title' => 'COS vs. DEN Trip Cost Calculator',
+    'description' => 'Configure calculation information for trip calculator.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('calculator_simplest'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Basic AJAX callback example.
+ *
+ * Simple form whose ajax-enabled 'changethis' member causes a text change
+ * in the description of the 'replace_textfield' member.
+ *
+ * See @link http://drupal.org/node/262422 Form API Tutorial @endlink
+ */
+function calculator_simplest($form, &$form_state) {
+  $form = array();
+
+  drupal_add_css(drupal_get_path('module', 'calculator') . '/css/tcc-style.css', array('group' => CSS_DEFAULT, 'every_page' => FALSE));
+
+  $form['mainwrap'] = array(
+    '#prefix' => '<div class="tccm">',
+    '#suffix' => '</div>',
+  );
+
+  $node = node_load(81);
+  $body_content = $node->body[$node->language][0]['value'];
+  // print $body_content;
+
+
+  $form['mainwrap']['geninfo'] = array(
+    '#type' => 'item',
+    '#markup' => $body_content,
+  );
+
+  // FIELDS FOR BOTH COS AND DEN
+  $form['mainwrap']['dual'] = array(
+    '#title' => t('Basic Trip Information'),
+    '#type' => 'fieldset',
+    '#prefix' => '<div class="tccd">',
+    '#suffix' => '</div>',
+  );
+
+  $form['mainwrap']['dual']['calculator_days_travel'] = array(
+    '#title' => t('Days of travel'),
+    '#description' => t('If you park at the airport'),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 4,
+  );
+
+  $form['mainwrap']['dual']['calculator_mileage_charge'] = array(
+    '#title' => t('Mileage charge (/mile)'),
+    '#description' => t('Per IRS standard'),
+    '#type' => 'textfield',
+    '#default_value' => t('0.54'),
+	'#size' => 4,
+    //'#weight' => 5,
+	'#disabled' => TRUE,
+  );
+
+  $form['mainwrap']['dual']['calculator_hourly_rate'] = array(
+    '#title' => t('Hourly rate'),
+    '#description' => t('Your yearly salary / 2080'),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 9,
+  );
+  // END OF FIELDS FOR BOTH COS AND DEN
+
+  // FIELDS FOR COS ONLY
+  $form['mainwrap']['cos'] = array(
+    '#title' => t('Colorado Springs'),
+    '#type' => 'fieldset',
+    '#prefix' => '<div class="tcc">',
+    '#suffix' => '</div>',
+  );
+
+  $form['mainwrap']['cos']['calculator_cos_flight_cost'] = array(
+    '#title' => t('Flight Cost'),
+    '#description' => t('The amount you pay for your ticket to fly from COS'),
+    '#type' => 'textfield',
+    '#maxlength' => 11,
+	'#size' => 4,
+    '#default_value' => null,
+    //'#weight' => 1,
+  );
+  /*
+  $form['mainwrap']['cos']['calculator_cos_days_travel'] = array(
+    '#title' => t('Days of travel'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 4,
+  );
+
+  $form['mainwrap']['cos']['calculator_cos_mileage_charge'] = array(
+    '#title' => t('Mileage charge'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => t('0.54'),
+	'#size' => 4,
+    //'#weight' => 5,
+	'#disabled' => TRUE,
+  );
+  */
+  $form['mainwrap']['cos']['calculator_cos_distance_miles'] = array(
+    '#title' => t('Distance to COS (miles)'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 6,
+  );
+
+  $form['mainwrap']['cos']['calculator_cos_cab_fare'] = array(
+    '#title' => t('Cab or shuttle fare'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 8,
+  );
+  /*
+  $form['mainwrap']['cos']['calculator_cos_hourly_rate'] = array(
+    '#title' => t('Hourly rate'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 9,
+  );
+  */
+  $form['mainwrap']['cos']['calculator_cos_driving_time'] = array(
+    '#title' => t('Driving time (minutes)'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 10,
+  );
+
+  $form['mainwrap']['cos']['calculator_cos_parking_rate'] = array(
+    '#title' => t('Parking Rate (per day)'),
+    '#description' => t('The amount you pay to leave your car at COS'),
+    '#type' => 'select',
+	'#options' => array(
+/*
+	    '0' => t('Free Holiday Parking!'),
+	  */
+      '6' => t('Long Term $6'),
+      '8' => t('Short Term $8'),
+      '14' => t('Valet $14')
+    ),
+    '#validated' => TRUE,
+    //'#weight' => 2,
+  );
+/*
+  $form['mainwrap']['cos']['calculator_cos_free_parking'] = array(
+    '#title' => t('Free Parking Coupons'),
+    '#description' => t(''),
+    '#type' => 'select',
+	'#options' => array(
+      '0' => t('No Coupons'),
+      '1' => t('One Coupon'),
+      '2' => t('Two Coupons')
+    ),
+    '#validated' => TRUE,
+    //'#weight' => 2,
+  );
+*/
+  // END COS FIELDS
+  // BEGIN DEN FIELDS
+
+  $form['mainwrap']['den'] = array(
+    '#title' => t('Denver'),
+    '#type' => 'fieldset',
+    '#prefix' => '<div class="tcb">',
+    '#suffix' => '</div>',
+  );
+
+  $form['mainwrap']['den']['calculator_den_flight_cost'] = array(
+    '#title' => t('Flight Cost'),
+    '#description' => t('The amount you pay for your ticket to fly from DEN'),
+    '#type' => 'textfield',
+    '#maxlength' => 11,
+	'#size' => 4,
+    '#default_value' => null,
+    //'#weight' => 1,
+  );
+  /*
+  $form['mainwrap']['den']['calculator_den_days_travel'] = array(
+    '#title' => t('Days of travel'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 4,
+  );
+
+  $form['mainwrap']['den']['calculator_den_mileage_charge'] = array(
+    '#title' => t('Mileage charge'),
+    '#description' => t('/mile'),
+    '#type' => 'textfield',
+    '#default_value' => t('0.54'),
+	'#size' => 4,
+    //'#weight' => 5,
+	'#disabled' => TRUE,
+  );
+  */
+  $form['mainwrap']['den']['calculator_den_distance_miles'] = array(
+    '#title' => t('Distance to DEN (miles)'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 6,
+  );
+
+  $form['mainwrap']['den']['calculator_den_cab_fare'] = array(
+    '#title' => t('Cab or shuttle fare'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 8,
+  );
+  /*
+  $form['mainwrap']['den']['calculator_den_hourly_rate'] = array(
+    '#title' => t('Hourly rate'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 9,
+  );
+  */
+  $form['mainwrap']['den']['calculator_den_driving_time'] = array(
+    '#title' => t('Driving time (minutes)'),
+    '#description' => t(''),
+    '#type' => 'textfield',
+    '#default_value' => null,
+	'#size' => 4,
+    //'#weight' => 10,
+  );
+
+  $form['mainwrap']['den']['calculator_den_parking_rate'] = array(
+    '#title' => t('Parking Rate (per day)'),
+    '#description' => t('The amount you pay to leave your car at DEN'),
+    '#type' => 'select',
+	'#options' => array(
+	  '8' => t('Shuttle Lot $8'),
+	  '12' => t('Economy $12'),
+	  '23' => t('Garage $23'),
+	  '32' => t('Valet $32'),
+	  '96' => t('Short Term $96')
+    ),
+    '#validated' => TRUE,
+    //'#weight' => 2,
+  );
+
+  $form['mainwrap']['den']['calculator_den_toll'] = array(
+    '#title' => t('Toll: (Check if you take the toll road (E-470) to DEN)'),
+    '#description' => t(''),
+    '#type' => 'checkbox',
+    '#default_value' => FALSE,
+    //'#weight' => 7,
+	//'#disabled' => TRUE,
+  );
+
+  // END OF ALL THE FIELDS!!!
+
+  // This entire form element will be replaced whenever 'changethis' is updated.
+  $form['logic'] = array(
+	'#title' => t('Totals'),
+	'#type' => 'fieldset',
+	'#collapsible' => FALSE,
+	'#collapsed' => FALSE,
+	'#weight' => 100,
+  );
+
+  $form['logic']['replace_textfield'] = array(
+    '#title' => t('Flight Cost'),
+    '#markup' => 'Your total will be shown here.',
+    // The prefix/suffix provide the div that we're replacing, named by
+    // #ajax['wrapper'] above.
+    '#prefix' => '<div id="replace_textfield_div"><h2>',
+    '#suffix' => '</h2></div>',
+  );
+
+  $form['logic']['changethis'] = array(
+    '#type' => 'button',
+	'#value' => t('Calculate'),
+    '#ajax' => array(
+      // #ajax has two required keys: callback and wrapper.
+      // 'callback' is a function that will be called when this element changes.
+      'callback' => 'calculator_simplest_callback',
+      // 'wrapper' is the HTML id of the page element that will be replaced.
+      'wrapper' => 'replace_textfield_div',
+      // There are also several optional keys - see calculator_autocheckboxes
+      // below for details on 'method', 'effect' and 'speed' and
+      // calculator_dependent_dropdown for 'event'.
+    ),
+  );
+
+  $form['logic']['reset'] = array(
+    '#name' => 'clear',
+    '#type' => 'button',
+    '#value' => t('Reset'),
+    '#attributes' => array(
+	  'onclick' => 'this.form.reset(); return false;'
+	),
+  );
+
+    // An AJAX request calls the form builder function for every change.
+  // We can change how we build the form based on $form_state.
+  if (!empty($form_state['values']['changethis'])) {
+
+	  // START COS TOTAL
+	  $c1 = $form_state['values']['calculator_cos_flight_cost'];
+	  $c2 = $form_state['values']['calculator_cos_parking_rate'];
+	  $c2a = $form_state['values']['calculator_cos_free_parking'];
+	  $c3 = $form_state['values']['calculator_days_travel'];
+		if ($c3) {
+			$c3 = ($c3 - $c2a);
+		}
+	  $c4 = $form_state['values']['calculator_mileage_charge']; // assuming going there and coming back? hence ($c4*2)
+	  $c5 = $form_state['values']['calculator_cos_distance_miles'];
+	  $c6 = $form_state['values']['calculator_cos_toll']; // add $18.90
+		if ($c6) {
+			$c6 = 18.90;
+		}
+	  $c7 = $form_state['values']['calculator_cos_cab_fare'];
+	  $c8 = $form_state['values']['calculator_hourly_rate'];
+	  $c9 = $form_state['values']['calculator_cos_driving_time'];
+	  $c10 = ($c8 * ($c9 / 60)) * 2;
+	  // TOTAL FOR COS
+	  $total = $c1 + (($c2 * $c3) + (($c4*2) * $c5)) + $c6 + ($c7 * 2) + $c10;
+
+
+	  // START DEN TOTAL
+	  $d1 = $form_state['values']['calculator_den_flight_cost'];
+	  $d2 = $form_state['values']['calculator_den_parking_rate'];
+	  $d2a = $form_state['values']['calculator_free_parking'];
+	  $d3 = $form_state['values']['calculator_days_travel'];
+	  $d4 = $form_state['values']['calculator_mileage_charge']; // assuming going there and coming back? hence ($c4*2)
+	  $d5 = $form_state['values']['calculator_den_distance_miles'];
+	  $d6 = $form_state['values']['calculator_den_toll']; // add $18.90
+		if ($d6) {
+			$d6 = 18.90;
+		}
+	  $d7 = $form_state['values']['calculator_den_cab_fare'];
+	  $d8 = $form_state['values']['calculator_hourly_rate'];
+	  $d9 = $form_state['values']['calculator_den_driving_time'];
+	  $d10 = ($c8 * ($c9 / 60)) * 2;
+	  // TOTAL FOR DEN
+	  $dtotal = $d1 + (($d2 * $d3) + (($d4*2) * $d5)) + $d6 + ($d7 * 2) + $d10;
+
+	  // Less expensive and difference
+	  $expense = min($total, $dtotal);
+	  $difference = abs($total - $dtotal);
+	  /* , '@expense' => $expense, '@difference' => $difference)*/
+
+    $form['logic']['replace_textfield']['#markup'] = t("Your total for COS is: $@value<br /> Your total for DEN is: $@dvalue.", array('@value' => number_format((float)$total, 2, '.', ''), '@dvalue' => number_format((float)$dtotal, 2, '.', '')));
+  }
+  return $form;
+}
+
+/**
+ * Callback for calculator_simplest.
+ *
+ * On an ajax submit, the form builder function is called again, then the $form
+ * and $form_state are passed to this callback function so it can select which
+ * portion of the form to send on to the client.
+ *
+ * @return array
+ *   Renderable array (the textfield element)
+ */
+function calculator_simplest_callback($form, $form_state) {
+  // The form has already been submitted and updated. We can return the replaced
+  // item as it is.
+  return $form['logic']['replace_textfield'];
+}

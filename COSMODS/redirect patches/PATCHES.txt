@@ -1,0 +1,5 @@
+redirect.circular-loops.1796596-124.patch
+	1/29/14 - Brandon Cone
+	Prevent auto-generation of redirects, when alias changes, which result
+	in infinite redirect loops.
+	See more: https://drupal.org/node/1796596#comment-8220853

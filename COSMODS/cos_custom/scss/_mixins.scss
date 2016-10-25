@@ -1,0 +1,338 @@
+@mixin dimensions($width, $height: false) {
+  @if ($height) {
+    width: $width;
+    height: $height;
+  }
+  // If only $width is given, make this a square.
+  @else {
+    width: $width;
+    height: $width;
+  }
+}
+
+@mixin hide-text {
+  text-decoration: none;
+  font-size: 0px;
+  text-indent: -5000px;
+}
+
+/* Prevent people from aligning things that have no business being
+   anything but left aligned. */
+%disable_alignment {
+  &.rtecenter,
+  &.rteright {
+    text-align: left;
+  }
+}
+
+// Yes I'm that lazy...
+@mixin nospace {
+  margin: 0;
+  padding: 0;
+}
+
+// rgba-background-inline function that works with emimgage.
+@mixin rgba_emimage($color) {
+  background-image: png_base64($color);
+  background: $color !important;
+}
+
+// Make it easier to add the same transition to multiple properties.
+@mixin easy_transition($properties: all, $duration: 100ms, $func: ease-in) {
+  $transitions: ();
+  @for $i from 1 through length($properties) {
+    $property: nth($properties, $i);
+    $transitions: append($transitions, $property $duration $func);
+  }
+  @include transition($transitions);
+}
+
+@mixin button_reset {
+  border: 0;
+  font-size: fs(16px);
+  line-height: 1em;
+  outline: none;
+  cursor: pointer;
+  // Because iDevices do their own thing.
+  -webkit-appearance: none;
+}
+
+@mixin button($color: $mid_gray, $hover_color: false, $active_color: false) {
+  @include easy_transition;
+  @include inline-block;
+  @include button_reset;
+  @include border-radius(3px);
+  background: $color;
+  padding: 12px 25px;
+
+  &, &:visited, &:link {
+    color: $white;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    @if ($hover_color) {
+      background: $hover_color;
+    }
+    @else {
+      background: lighten($color, 8%);
+    }
+  }
+  &:active {
+    @include easy_transition(all, 0, 0);
+    text-decoration: none;
+
+    @if ($active_color) {
+      background: $active_color;
+    }
+    @else {
+      background: darken($color, 8%);
+    }
+  }
+  &[disabled] {
+    &, &:hover, &:active {
+      background: $dk_gray;
+    }
+  }
+}
+
+@mixin trans_button($bg_opacity: 0.2) {
+  @include button(rgba(255,255,255,$bg_opacity), rgba(255,255,255,0.7), rgba(255,255,255,0.6));
+  @include box-shadow(1px 1px 3px rgba(0,0,0,0.5));
+  text-transform: uppercase;
+  border: 2px solid $white;
+  font-size: fs(18px);
+
+  &:hover, &:active {
+    @include text-shadow(none);
+    color: $black;
+  }
+}
+
+@mixin textfield {
+  @include easy_transition;
+  @include border-radius($default_radius);
+  border: $main_border;
+  padding: 8px 10px;
+  width: 400px;
+  outline: none;
+
+  &:hover {
+    @include box-shadow(0 0 6px $glowing_blue);
+  }
+  &:focus {
+    border-color: $black;
+  }
+  &.required.error {
+    border-width: 1px;
+    border-color: $lt_red;
+  }
+}
+
+@mixin portal_menu($color) {
+  @include easy_transition;
+  display: block;
+  float: left;
+  font-size: fs(16px);
+  padding: 0 15px;
+  height: $header_under_height;
+  line-height: $header_under_height;
+  background-color: $color;
+  color: $white;
+
+  &:hover, &:active, &.active {
+    background-color: $white;
+    color: $color;
+    text-decoration: none;
+  }
+}
+
+@mixin list_view($hide_last: false) {
+  .views-field-title {
+    font-family: $serif;
+    font-size: fs(22px);
+  }
+  .views-field-sitename {
+    text-decoration: underline;
+    float: left;
+
+    a {
+      color: $mid_gray;
+
+      &:hover, &:active {
+        color: $mid_gray;
+        text-decoration: none;
+      }
+    }
+  }
+  .views-field-sitename,
+  .views-field-created {
+    font-size: fs(12px);
+    color: $mid_gray;
+    font-style: italic;
+  }
+  .views-field-created {
+    &:before {
+      content: ' - ';
+      margin-left: 5px;
+    }
+  }
+  .views-field-field-image {
+    float: left;
+    margin: 0 15px 5px 0;
+
+    img {
+      display: block;
+    }
+  }
+  .views-row {
+    @include clearfix;
+    border-bottom: 1px solid $black;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  @if ($hide_last) {
+    .views-row-last {
+      border-bottom: 0;
+    }
+  }
+}
+
+@mixin search_form($search_width: 500px, $search_height: 35px, $border: 3px, $vpadding: 4px, $color: $mid_gray) {
+  .form-type-textfield input {
+    @include dimensions($search_width, $search_height - 2*$vpadding);
+    line-height: $search_height - 2*$vpadding;
+    border: $border solid $color;
+    background-color: $offwhite;
+    font-family: $main_font;
+    outline: none;
+    padding: $vpadding 6px;
+    float: left;
+  }
+  input[type="submit"] {
+    @include button_reset;
+    @include border-radius(0);
+    background: $color;
+    color: $white;
+    height: $search_height + 2*$border;
+    line-height: $search_height + 2*$border;
+    padding: 0 18px;
+    font-size: fs(18px);
+    text-transform: uppercase;
+  }
+}
+
+@mixin drupal_messages_base {
+  padding: 15px;
+  margin: 0 0 10px;
+  color: $text_black;
+  border: 1px solid;
+
+  li {
+    list-style: none;
+    margin-bottom: 6px;
+    margin-left: 0;
+  }
+}
+
+@mixin return_icon {
+  // content: url(../images/icons/arrow-remove_active_facet.png)top;
+  content: 'x';
+  font-size: 70%;
+  font-weight: 300;
+  vertical-align: top;
+  padding-right: 3px;
+}
+
+@mixin drupal_messages($background: $status_bg, $border_color: $status_border) {
+  background: $background;
+  border-color: $border_color;
+}
+
+// Think in pixels, output in ems.
+@function fs($size) {
+  @return #{$size / $font_size}em;
+}
+
+// Address Field form items in webforms.
+$max_addresses: 3;
+@mixin address_forms {
+  @for $i from 2 through $max_addresses {
+    #addressfield-wrapper,
+    #addressfield-wrapper--#{$i} {
+      padding-bottom: 20px;
+      label {
+        font-size: 1.1em;
+        text-decoration: underline;
+      }
+      .form-item {
+        margin: 3px 0 0;
+        & > .form-item > label,
+        & > .street-block > .form-item > label,
+        & > .locality-block > .form-item > label {
+          font-size: .9em;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+// Cross browser acceptable display none mixin.
+@mixin display-none {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+
+// Function to reverse arrays
+@function reverse($list, $recursive: false) {
+   $result: ();
+
+   @for $i from length($list)*-1 through -1 {
+      @if type-of(nth($list, abs($i))) == list and $recursive {
+        $result: append($result, reverse(nth($list, abs($i)), $recursive));
+      }
+      @else {
+        $result: append($result, nth($list, abs($i)));
+      }
+   }
+   @return $result;
+}
+
+// The Mixin
+@mixin arrow($direction, $size, $color) {
+  $sides: top left right bottom;
+  $other-sides: reverse($sides);
+
+  &:after {
+    content: "";
+    position: absolute;
+    border: $size $color solid;
+
+    @each $side in $sides {
+      $i: index($sides, $side);
+
+      @if nth($other-sides, $i) == $direction {
+        border-#{$side}-color: $color;
+      }
+      @else if $side == $direction {
+        #{$side}: -2*$size;
+      }
+      @else {
+        border-#{$side}-color: transparent;
+        #{$side}: 50%;
+        margin-#{$side}: -$size;
+      }
+    }
+    border-#{$direction}-color: transparent;
+  }
+}

@@ -1,0 +1,769 @@
+@import "_config.scss";
+// Only desktop styles.
+
+#header-top {
+   @include rgba_emimage(rgba(0,0,0,0.7));
+}
+
+#header-top-inner {
+  ul.menu {
+    li {
+      list-style: none;
+      margin: 0 5px;
+      padding: 0;
+
+      &, a {
+        display: block;
+        float: left;
+      }
+      a {
+        color: $white;
+        line-height: $header_top_height;
+        padding: 0 5px;
+        font-size: fs(13px);
+      }
+      &.home a {
+        background: url(../images/icons/home.png) 0 5px no-repeat;
+        padding-left: 15px;
+      }
+    }
+  }
+  .block-odd {
+    float: left;
+  }
+  .block-even {
+    float: right;
+  }
+}
+
+#block-textsize-form {
+  ul.textsize_list li {
+    float: right;
+    margin-bottom: 0;
+
+    &.ts_decrease {
+      float: left;
+    }
+    a {
+      @include dimensions(20px);
+      margin: 1px 2px;
+      background-position: center center;
+
+      $actions: decrease, normal, increase;
+      @each $action in $actions {
+         &.ts_#{$action} {
+          background-image: url('../images/icons/icon_text_#{$action}.png') !important;
+
+          &:hover {
+            background-image: url('../images/icons/icon_text_#{$action}_h.png') !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+#header-right-region {
+  .block {
+    float: right;
+  }
+  #block-search-form {
+    margin-top: 20px;
+
+    form {
+      @include opacity(1);
+      @include easy_transition;
+      @include search_form;
+
+      &.search-active {
+        @include opacity(1);
+      }
+    }
+  }
+}
+
+// Header region styling.
+#header-bottom-inner {
+  .block {
+    float: left;
+  }
+}
+
+ul.nice-menu, ul.nice-menu ul {
+  border-top: none;
+}
+
+// Main menu.
+#navigation > ul.main-menu,
+#nice-menu-1,
+#header-bottom-inner #block-superfish-1 ul.menu,
+.menu-block-2.menu-name-main-menu > ul.menu {
+  $menu_item_margin: 10px;
+  $submenu_toggle_area: 35px;
+  $submenu_toggle_offset: 9px;
+
+  font-size: 12.5px;
+  width: 100%;
+
+  li ul {
+    left: 0;
+    position: absolute;
+    top: 70px;
+
+    li a {
+      background-color: #fff;
+      display: block;
+      font-size: 1em;
+      font-weight: bold;
+      color: $black;
+      padding: 25px 50px 25px 16px;
+
+      &:hover {
+        background-color: $nav_color;
+        color: $white;
+        text-decoration: none;
+      }
+    }
+  }
+
+  li ul ul {
+    position: absolute;
+    top: -1px;
+    left: 152px;
+  }
+
+  & > li {
+    @include nospace;
+    border: none;
+    display: inline-block;
+    float: left;
+    position: relative;
+
+    &.mid-9741 {
+      width: 165px;
+    }
+
+    &.mid-9779 {
+      width: 145px;
+    }
+
+    &.mid-9914 {
+      width: 110px;
+
+      ul {
+        left: -68% !important;
+
+        ul {
+          left: -265px !important;
+        }
+      }
+    }
+
+    &.mid-9885 ul {
+      left: -50% !important;
+
+      ul {
+        left: 230px !important;
+      }
+    }
+
+    & > a {
+      @include easy_transition;
+      display: block;
+      height: $header_bottom_height;
+      line-height: $header_bottom_height;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 0 $submenu_toggle_area 0 8px;
+      background-color: $white;
+      //margin-right: $menu_item_margin;
+
+      &:hover, &:active {
+        text-decoration: none;
+        background-color: $nav_color;
+        color: $white;
+      }
+      span.link-wrapper {
+        @include inline-block;
+        line-height: 18px;
+        vertical-align: middle;
+        padding: 0 0 0px;
+        text-align: center;
+      }
+      // Force wrapping on some menu links.
+      &.culture-recreation-wrap {
+        width: 110px;
+      }
+      &.resident-services-wrap {
+        width: 90px;
+      }
+      &.public-safety-wrap {
+        width: 70px;
+      }
+    }
+    span.submenu-toggle {
+      $size: 14px;
+      $border: 1px;
+
+      @include dimensions($size);
+      @include easy_transition;
+
+      display: block;
+      position: absolute;
+      right: 35px;
+      top: 30px;
+      cursor: pointer;
+      background: $white url(../images/icons/dd_arrow-global.png) center center no-repeat;
+      background-color: $white;
+      border: 1px solid $nav_color;
+
+      &:hover, &:active, &.toggle-active {
+        background: $nav_color url(../images/icons/dd_arrow-hover.png) center center no-repeat;
+      }
+    }
+    &.last  {
+      a {
+        margin-right: 0;
+      }
+    }
+
+    & > ul.menu,
+    ul.sf-hidden {
+      display: none;
+      width: 230px;
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      z-index: 1;
+
+      background-color: $white;
+      @include box-shadow(0 0 15px rgba(0,0,0,0.7));
+
+      span.submenu-toggle {
+        background: url('/misc/menu-collapsed.png') no-repeat center center $white;
+      }
+
+      li {
+        @include nospace;
+        display: block;
+        position: relative;
+
+        a {
+          font-size: fs(16px);
+          font-weight: bold;
+          color: $black;
+          padding: 25px 50px 25px 16px;
+          display: block;
+
+          &:hover, &:active {
+            background-color: $nav_color;
+            color: $white;
+            text-decoration: none;
+          }
+        }
+
+        ul li a {
+          padding: 25px 16px;
+        }
+      }
+
+      ul {
+        display: none;
+        left: 235px;
+        position: absolute;
+        top: 0;
+
+        @include box-shadow(0 0 15px rgba(0, 0, 0, 0.7));
+
+        a {
+          background-color: $white;
+          width: 230px;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Sidebar menu.
+ */
+#nice-menu-2 {
+  font-size: 100%;
+
+  li {
+    border: none;
+    width: 100%;
+
+    &.menuparent {
+      background: none;
+    }
+
+    &.depth-1 > a {
+      background-color: $ltr_gray;
+      border-bottom: 1px solid $mid_gray;
+      font-family: "Merriweather",Georgia,Times,serif;
+      font-size: 1.125em;
+      line-height: 1em;
+    }
+
+    &.over > a > span {
+      background: url("../images/icons/arrow-active_trail-expanded.png") no-repeat 5px center transparent;
+    }
+  }
+
+  ul {
+    background-color: #fff;
+    display: none;
+    left: 0;
+    position: relative;
+    top: 0;
+  }
+
+  ul li {
+    background-color: #fff !important;
+
+    &.depth-2 a {
+      border-bottom: none;
+    }
+
+    a:hover {
+      background-color: $offwhite;
+    }
+  }
+
+  ul ul {
+    left: 0;
+    position: relative;
+
+    li a {
+      padding-left: 20px;
+
+      &:hover {
+        background-color: $orange;
+        background-image: none !important;
+        border-left: none;
+        color: #fff;
+      }
+
+      span.link-wrapper:hover {
+        border-right: none;
+      }
+    }
+  }
+
+  a {
+    color: $dk_gray;
+    display: block;
+    padding: 0;
+    width: 100%;
+
+    &:hover {
+      background-image: url("../images/icons/nav_open_hover.png");
+      background-position: 94% center;
+      background-repeat: no-repeat;
+      text-decoration: none;
+    }
+  }
+
+  span.link-wrapper {
+    display: block;
+    margin-right: 40px;
+    padding: 12px 20px 8px;
+    width: calc(100% - 80px);
+
+    &:hover {
+      background-position: 4% 50%;
+      background-repeat: no-repeat;
+      border-right: 1px solid $mid_gray;
+    }
+  }
+
+  li.menuparent > a > span.link-wrapper:hover {
+    background-image: url("../images/icons/arrow-active_trail-collapsed.png");
+  }
+
+  .submenu-toggle {
+    background-color: transparent;
+    display: block;
+    float: right;
+    height: 34px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 39px;
+
+    &:hover {
+      background-image: url("../images/icons/nav_open_hover.png");
+      background-position: center center;
+      background-repeat: no-repeat;
+      border-left: 1px solid $mid_gray;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    &.submenu-toggle-2:hover {
+      border-left: 1px solid $offwhite;
+    }
+  }
+}
+
+/**
+ * Overriding default theme colors for the "Red" selection.
+ */
+.red {
+  #nice-menu-2 ul ul li a:hover {
+    background-color: $fire_red;
+  }
+
+  #nice-menu-1 > li > a {
+    color: $fire_red;
+  }
+
+  #nice-menu-1 > li span.submenu-toggle {
+    &:hover,
+    &:active,
+    &.toggle-active {
+      background-color: $fire_red;
+    }
+  }
+
+  #nice-menu-1 > li span.submenu-toggle {
+    background-image: url("../images/icons/dd_arrow-fire.png");
+    border-color: $fire_red;
+  }
+
+  #nice-menu-1 > li > a:hover,
+  #nice-menu-1 > li > a:active {
+    background-color: $fire_red;
+    color: #fff;
+  }
+
+  #nice-menu-1 > li > ul > li a:hover {
+    background-color: $fire_red;
+  }
+
+  #nice-menu-1 li ul li a {
+    color: $fire_red;
+  }
+
+  #page #block-menu-menu-id-like-to h2,
+  #page #block-menu-menu-cos-id-like-to h2,
+  #page #block-cos_general-cos_general_route_planner h2 {
+    background-color: $fire_red;
+  }
+
+  .view-id-slider .views-slideshow-pager-fields .views-slideshow-pager-field-item {
+    &.active {
+      background-color: rgba($fire_red, 0.8);
+
+      &::after {
+        border-color: transparent rgba($fire_red, 0.8) transparent transparent;
+      }
+
+      &:hover::after {
+        border-color: transparent $fire_red transparent transparent;
+      }
+    }
+
+    &:hover {
+      background-color: $fire_red;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    .views-field-title {
+      border-color: $fire_red;
+    }
+  }
+
+  h1 {
+    color: $fire_red;
+  }
+
+  &.front {
+    #content-inner .block h2,
+    #sidebar-first-inner .block h2,
+    #content-inner .block h2,
+    #sidebar-first-inner .block h2 {
+      color: $fire_red;
+    }
+  }
+
+  .sidebar.first .block h2 {
+    background-color: $fire_red;
+  }
+
+  #content-inner {
+    border-top-color: $fire_red;
+  }
+}
+
+/**
+ * Overriding default theme colors for the "Blue" selection.
+ */
+.blue {
+  #nice-menu-2 ul ul li a:hover {
+    background-color: $cspd_blue;
+  }
+
+  #nice-menu-1 > li > a {
+    color: $cspd_blue;
+  }
+
+  #nice-menu-1 > li span.submenu-toggle {
+    &:hover,
+    &:active,
+    &.toggle-active {
+      background-color: $cspd_blue;
+    }
+  }
+
+  #nice-menu-1 > li span.submenu-toggle {
+    background-image: url("../images/icons/dd_arrow-police.png");
+    border-color: $cspd_blue;
+  }
+
+  #nice-menu-1 > li > a:hover,
+  #nice-menu-1 > li > a:active {
+    background-color: $cspd_blue;
+    color: #fff;
+  }
+
+  #nice-menu-1 > li > ul > li a:hover {
+    background-color: $cspd_blue;
+    color: #fff;
+  }
+
+  #nice-menu-1 li ul li a {
+    color: $cspd_blue;
+  }
+
+  #page #block-menu-menu-id-like-to h2,
+  #page #block-menu-menu-cos-id-like-to h2,
+  #page #block-cos_general-cos_general_route_planner h2 {
+    background-color: $cspd_blue;
+  }
+
+  .view-id-slider .views-slideshow-pager-fields .views-slideshow-pager-field-item {
+    &.active {
+      background-color: rgba($cspd_blue, 0.8);
+
+      &::after {
+        border-color: transparent rgba($cspd_blue, 0.8) transparent transparent;
+      }
+
+      &:hover::after {
+        border-color: transparent $cspd_blue transparent transparent;
+      }
+    }
+
+    &:hover {
+      background-color: $cspd_blue;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    .views-field-title {
+      border-color: $cspd_blue;
+    }
+  }
+
+  h1 {
+    color: $cspd_blue;
+  }
+
+  &.front {
+    #content-inner .block h2,
+    #sidebar-first-inner .block h2,
+    #content-inner .block h2,
+    #sidebar-first-inner .block h2 {
+      color: $cspd_blue;
+    }
+  }
+
+  .sidebar.first .block h2 {
+    background-color: $cspd_blue;
+  }
+
+  #content-inner {
+    border-top-color: $cspd_blue;
+  }
+}
+
+body.front #header-under {
+  background: $primary_color;
+}
+
+#header-under {
+  height: $header_under_height;
+
+  #block-delta_blocks-site-name {
+    float: left;
+
+    .site-name {
+      @include nospace;
+      font-size: fs(14px);
+      font-family: $main_font;
+
+      a {
+        @include portal_menu($primary_color);
+      }
+    }
+  }
+  .block {
+    float: left;
+
+    ul.menu {
+      li {
+        @include nospace;
+        display: block;
+        float: left;
+        list-style: none;
+
+        a {
+          @include portal_menu($primary_color);
+        }
+        // Because date.module is ridiculous.
+        &.calendar {
+          width: auto;
+        }
+      }
+    }
+  }
+}
+#highlighted-full {
+  #block-views-master_term_nav-block_2,
+  #block-views-master_term_nav-block_3 {
+    .views-row {
+      width: 25%;
+      margin-right: 8%;
+      float: left;
+    }
+  }
+}
+
+.region-content-bottom {
+  clear: both;
+}
+
+.sidebar.first {
+  // Sidebar background.
+  background-color: #fff;
+
+  body.front & {
+    background-color: $white;
+  }
+
+  .block {
+    margin-bottom: 30px;
+
+    .content {
+      padding: $sidebar_content_padding;
+    }
+    h2 {
+      background: $primary_color;
+      color: $white;
+      padding: 12px 20px 10px;
+      margin-bottom: 0;
+      font-size: fs(20px);
+      font-weight: 300;
+      font-family: $serif;
+      margin-bottom: 0;
+    }
+  }
+}
+
+#main-inner-wrapper {
+  // Content area background.
+  background-color: $white;
+  @include box-shadow($main_box_shadow);
+  // border-left: 1px solid $mid_gray;
+  // border-right: 1px solid $mid_gray;
+  margin-top: 20px;
+}
+
+#page.with-highlighted {
+  #main-inner-wrapper  {
+    margin-top: 0;
+  }
+  #content-inner {
+    border-top: 0;
+  }
+}
+
+#content-inner {
+  border-top: 7px solid $primary_color;
+}
+
+body.front {
+  #main-inner {
+    @include box-shadow($main_box_shadow);
+  }
+  #sidebar-first-inner {
+    padding: 20px 10px 20px 20px;
+  }
+  #content-inner {
+    padding: 15px 20px;
+  }
+
+  #content-inner,
+  #sidebar-first-inner {
+    .block {
+      margin-bottom: 20px;
+
+      h2 {
+        background: none;
+        color: $primary_color;
+        border-bottom: 3px solid $dk_gray;
+        padding: 0;
+        font-size: fs(26px);
+      }
+    }
+  }
+  #content-inner {
+    h2 {
+      background: none;
+      color: $primary_color;
+      border-bottom: 4px solid $dk_gray;
+      padding: 0;
+      font-size: fs(28px);
+      font-family: $serif;
+      margin-bottom: 15px;
+    }
+  }
+  #main-inner-wrapper {
+    @include box-shadow(none);
+    border: 0;
+    margin-left: 0;
+  }
+}
+
+body.page-search {
+  h1 {
+    font-style: italic;
+    border-bottom: 3px solid $dk_gray;
+    padding-bottom: 0;
+  }
+  form.search-form {
+    @include search_form(480px);
+    width: auto;
+  }
+}
+
+body.domain-police {
+  a#logo img {
+    margin-top: 15px;
+  }
+}
+body.domain-fire {
+  a#logo img {
+    margin-top: 5px;
+  }
+}
+
+@import "_colors_desktop.scss";

@@ -1,0 +1,44 @@
+name = Pikes Peak Colorado
+description = The best theme ever.
+core = 7.x
+base theme = bootstrap
+logo = logo.png
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Stylesheets
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = stylesheets/ppc.css
+stylesheets[all][] = stylesheets/jquery.smartmenus.bootstrap.css
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Regions
+;;;;;;;;;;;;;;;;;;;;;
+
+regions[navigation]     = 'Navigation'
+regions[search]         = 'Search'
+regions[header]         = 'Top Bar'
+regions[highlighted]    = 'Highlighted'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+regions[page_top]       = 'Page top'
+regions[page_bottom]    = 'Page bottom'
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Javascript
+;;;;;;;;;;;;;;;;;;;;;
+
+scripts[] = 'js/ppc.js'
+scripts[] = 'js/jquery.smartmenus.js'
+scripts[] = 'js/jquery.smartmenus.bootstrap.js'
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Settings
+;;;;;;;;;;;;;;;;;;;;;
+
+settings[highlighted_article_1] = 3
+settings[highlighted_article_2] = 4
+settings[highlighted_article_3] = 5

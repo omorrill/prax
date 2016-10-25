@@ -1,0 +1,322 @@
+@import "_config.scss";
+
+//
+// Readiness Guide Styles
+// ==================================================
+
+
+//== Typographic Changes
+//
+//##
+
+//** Headings
+h2 { font-family: $main_font !important; }
+h3,
+h4,
+h5 {
+  font-family: $main_font !important;
+  text-transform: uppercase; 
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+}
+h6 {
+  font-family: $main_font !important;
+  font-size: 1.3em;
+  margin-bottom: 0.2em;
+}
+
+//** Section Separators (horizontal row)
+hr {
+  border-top: 2px dotted $dk_gray;
+  border-bottom: none;
+  margin: 10px;
+}
+
+//** All List styles
+ul, ol {
+  li {
+    margin-left: 1.5em;
+    margin-bottom: 7px;
+    list-style-position: outside;
+
+    ol, ul { margin-top: 7px; }
+    li { margin-bottom: 7px; }
+  }
+}
+// Unordered Lists
+ul li {
+  list-style-type: square;
+  li { list-style-type: circle; }
+}
+
+//** Images to not overflow
+img {
+  max-width: 100%;
+  &.img_left {  // For CKE
+    float: left;
+    margin: $default_margin 20px $default_margin 0;
+  }
+  &.img_right {  // For CKE
+    float: right;
+    margin: $default_margin 0 $default_margin 20px;
+  }
+}
+
+//** Table Styles
+#content-area-inner{ 
+  .views-field-body,
+  .view-empty {
+    table {
+      margin-top:    30px;
+      margin-bottom: 30px;
+
+      tbody { border-top: none; }
+      th { 
+        padding: 8px;
+        p {
+          line-height: 1.3em;
+          margin-bottom: 0;
+        }
+      }
+      td {
+        font-size: 0.95em;
+        line-height: 1.3em;
+        text-align: top;
+        border: $table_border;
+        background-color: $ltr_gray;
+        padding: 5px 8px;
+
+        ul, ol { padding-left: 0; }
+        
+        //** From `content.scss`
+        &.td_align_center {
+          vertical-align: middle;
+          text-align: center;
+        }
+        &.no_word_wrap { white-space: nowrap; }
+        &.td_align_top { vertical-align: top; }
+        &.td_half_width { width: 50%; }
+        &.td_third_width { width: 33%; }
+      }
+      //** From `content.scss`
+      &.large_table {
+        font-size: 0.8em;
+        th {
+          padding: 10px 10px;
+
+          p { margin-bottom: 0; }
+        }
+        td {
+          padding: 5px 10px;
+          line-height: 1.4em;
+          border-color: $lt_table_border;
+        }
+      }
+    }
+  }
+}
+
+
+//== From `content.scss`
+//
+//##
+
+.blue_button       { @include button($lt_blue); }
+.orange_button     { @include button($orange); }
+.gray_button       { @include button; }
+
+.department_button,
+.blue_button,
+.orange_button,
+.gray_button { 
+  &:visited,
+  &:link { color: $white !important; }
+}
+
+.box_quote {  // For CKE
+  border: 3px solid $oem_primary_color;
+  padding: 10px 20px;
+  margin-top:    30px;
+  margin-bottom: 30px;
+  // Clearfix 
+  &:after {
+    display: block;
+    clear: both;
+  }
+}
+
+//== Header Styles
+//
+//## These are set in the `cos_custom.scss` in the readiness guide section.
+
+
+//== Sidebar and page title
+//
+//##
+
+//** Make sidebar White
+#main-inner-wrapper {
+  #main-inner-inner-wrapper {
+    background-color: white;
+
+    h2.block-title {
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 19px;
+      font-family: $main_font;
+      background-color: $oem_primary_color;
+    }
+  }
+}
+#block-delta_blocks-site-name {
+  margin-bottom: 0;
+  position: absolute;
+  z-index: 1;
+
+  .content {
+    padding: 0;
+
+    h2.site-name {
+      background-color: none;
+      padding: 0;
+
+      a {
+        @include easy-transition;
+        @include text-shadow(0 1px 1px $text_black);
+        font-size: 18px;
+        text-decoration: none;
+        color: $white;
+        background-color: lighten($oem_primary_color, 10%);
+        padding: 5px 10px;
+
+        &:hover {
+          @include text-shadow(none);
+          color: $oem_primary_color;
+          background-color: $white !important;
+        }
+        &:active {
+          background-color: darken($white, 15%) !important;
+        }
+      }
+
+    }
+  }
+}
+#content-inner {
+  border-top: none !important;
+
+  .title-wrapper {
+    padding: 9px 0 8px !important;
+    background-color: $oem_primary_color;
+
+    h1#page-title { 
+      color: $white;
+      font-family: $main_font;
+      font-size: 23px;
+      line-height: 1.3em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+  }
+}
+//== Chapter Select
+//
+//## The styling for the chapter select can be found in
+//## `cos_custom.scss` under the Readiness Guide section
+
+
+//== Content
+//
+//##
+#content-area { padding: 20px 20px 20px 0 !important; }
+
+#content-area-inner {
+  line-height: 1.5em;
+
+  .view-readiness-guide {
+    //** Table of Contents
+    .view-header .view-display-id-block_1 .view-content {
+      margin-bottom: 20px;
+      padding: 20px 0 10px 2%;
+      // Buttons
+      span.field-content a {
+        @include easy-transition;
+        @include border-radius(3px);
+        @include box-shadow(0 1px 1px rgba(0,0,0,.0), inset 0 1px rgba(255,255,255,.25));
+        padding: 7px 15px;
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        width: 2000px;
+        font-size: 16px;
+
+        &:hover {
+          @include box-shadow(0 1px 1px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.25));
+          text-decoration: none;
+        }
+        &:active { @include box-shadow(none); }
+        &.active {
+          @include box-shadow(inset 0 2px 2px rgba(0,0,0,.75), 0 1px rgba(255,255,255,.9));
+        }
+      }
+      td {
+        line-height: 1.3em;
+        padding-bottom: 10px;
+        // vertical-align: top;
+
+        &.col-1,
+        &.col-2 {
+          width: 52%;
+          padding-right: 2%;
+        }
+      }
+    }
+
+
+    //== Body Content
+    //
+    //##
+    .views-field-body,
+    .section-title,
+    .view-empty {
+      background-color: $ltr_gray;
+    }
+
+    //** Padding and color of nodes.
+    .views-field-body {
+      padding: 0 20px 20px 20px;
+      .field-content {
+        border-top: 2px solid $text_black;
+        padding-top: 20px;
+
+        h2 {
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+      }
+    }
+    
+    //** `/chapter-name` page padding
+    .view-empty {
+      padding: 20px;
+      // Children of `.view-empty` should not have padding.
+      .view-empty {
+        padding: 0;
+      }
+    }
+    
+    //** Secton node titles.
+    .section-title { 
+      padding: 20px 20px 5px;
+      font-weight: 600;
+      font-size: 2.4em;
+      line-height: 1.1em;
+    }
+  }
+}
+
+//
+// Override things with the RG chapter colors
+// ==================================================
+
+@import "_readiness_guide_colors.scss";

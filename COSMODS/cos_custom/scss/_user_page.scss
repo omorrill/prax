@@ -1,0 +1,83 @@
+%floatit {
+  float: left;
+  clear: left;
+}
+body.page-user {
+  #content-inner {
+    .node-header .title-wrapper {
+      padding: 10px 20px;
+      background-color: $primary_color;
+
+      h1 {
+        color: white;
+      }
+    }
+    #content-header {
+      background-color: $primary_color;
+
+      .tabs {
+        height: 26px; // 16px font size + <a> padding*2
+        margin: 0;
+        background-color: $primary_color;
+        padding-top: 7px;
+
+        ul {
+          line-height: normal;
+          border-bottom-color: $primary_color;
+
+          li {
+            a {
+              @include text-shadow(1px 1px 1px $text_black);
+              @include box-shadow(0 -4px 14px -8px #000 inset);
+              @include border-top-left-radius;
+              @include border-top-right-radius;
+              color: $white;
+              padding: 5px 15px;
+              background-color: lighten($primary_color, 10%);
+              border-color: darken($primary_color, 7%);
+
+              &:hover  { background-color: lighten($primary_color, 18%); }
+              &:active { @include box-shadow(none); }
+            }
+            &.active {
+              a {
+                @include text-shadow(none);
+                @include box-shadow(none);
+                color: $text_black;
+                background-color: $white !important;
+                border-color: $white !important;
+                cursor: default;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+body.page-user-reset,
+body.page-user-edit {
+  // #content-header .tabs { height: 34px !important; } // Account for no tabs being present.
+
+  .form-type-password-confirm {
+    .password-strength {
+      @extend %floatit;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    label,
+    input {
+      @extend %floatit;
+    }
+    input { width: 250px; }
+    .description {
+      clear: left;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+  }
+}
+// Remove tabs area when they don't exist.
+body.page-user.page-user-reset #content-inner #content-header .tabs {
+  height: 0;
+}

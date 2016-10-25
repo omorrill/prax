@@ -1,0 +1,80 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 15, 2015, 11:28:01 AM
+    Author     : omorrill
+*/
+
+nav {
+  height: 26px;
+  margin-top: -3px;
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
+}
+
+nav ul.menu {
+  display: block;
+  margin: 3px auto;
+  padding-top: 3px;
+  list-style-type: none;
+}
+
+nav ul.menu li {
+  display: block;
+  font-size: 1.5em;
+  text-transform: uppercase;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  float: left;
+}
+
+nav ul.menu li a:visited {
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+nav ul.menu li a:link {
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+nav ul.menu li a:hover {
+  color: #808080;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px rgba(0, 0, 255, 0.5);
+}
+
+nav a.active {
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/*
+nav {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+ 
+nav ul {
+  display: table-row;
+  margin: 0;
+  padding: 0;
+}
+ 
+nav ul li {
+  list-style: none;
+  display: table-cell;
+  text-align: center;
+}
+ 
+nav ul li a {
+  display: block;
+}
+*/

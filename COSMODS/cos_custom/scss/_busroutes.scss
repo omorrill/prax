@@ -1,0 +1,88 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 9, 2015, 8:26:17 AM
+    Author     : omorrill
+*/
+
+// Bus Routes view styling
+
+.route-map {
+  float: left;
+  width: 49%;
+  
+  img {
+    width: 99.99%;
+  }
+}
+
+.pdf-schedule {
+  float: left;
+  width: 49%;
+  
+}
+
+.route-schedule {
+  float: left;
+  width: 49%;
+  padding: 2% 0.5%;
+}
+
+.route-video {
+  display: block;
+  margin: 0 auto;
+  clear: both;
+  width: 99%;
+  
+  iframe {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width:520px) {
+
+  .route-map {
+    clear: both;
+    width: 99%;
+
+    img {
+      width: 99.99%;
+    }
+  }
+
+  .pdf-schedule {
+    clear: both;
+    width: 99%;
+
+  }
+
+  .route-schedule {
+    clear: both;
+    width: 99%;
+    padding: 2% 0.5%;
+  }
+
+  .route-video {
+    display: block;
+    margin: 0 auto;
+    clear: both;
+    width: 99%;
+
+    iframe {
+      display: block;
+      margin: 0 auto;
+      width: 99%;
+      height: 260px;
+    }
+  }
+  
+  .feed-icon {
+    display: block;
+    padding: 2%;
+  }
+}
+

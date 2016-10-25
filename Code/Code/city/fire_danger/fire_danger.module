@@ -1,0 +1,225 @@
+<?php
+/**
+ * @file
+ * Fire Danger custom block creation.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function fire_danger_menu() {
+  $items = array();
+
+  $items['admin/content/fire-danger'] = array(
+    'title' => t('Fire Danger Selector'),
+    'page callback' => 'fire_danger_page',
+    'access arguments' => array('select fire danger'),
+  );
+
+  $items['node/1061'] = array(
+    'title' => 'Fire Danger',
+    'description' => 'Page output of Fire Danger Selector form.',
+    'page callback' => 'fire_danger_external_page',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+function fire_danger_external_page() {
+  $hml = variable_get('fire_danger_level', 'null');
+
+  $output = fire_danger_page_content($hml);
+
+  return $output;
+}
+
+/*
+ * Implements hook_permissions().
+ */
+function fire_danger_permission() {
+  return array(
+    'select fire danger' => array(
+      'title' => t('Select Fire Danger Level'),
+      'description' => t('Select fire danger level to be displayed on the landing page of CSFD.'),
+    ),
+  );
+}
+
+/*
+ * Implements hook_page();
+ */
+function fire_danger_page() {
+  $form = drupal_get_form('fire_danger_form');
+  $output = drupal_render($form);
+
+  return $output;
+}
+
+/*
+ * Implements hook_form();
+ */
+function fire_danger_form($form, &$form_state) {
+  $form['fire_danger_level'] = array(
+    '#title' => t('Fire Danger Level'),
+    '#type' => 'select',
+  	'#options' => array(
+  	  'extreme' => t('Extreme'),
+  	  'vhigh' => t('Very High'),
+  	  'high' => t('High'),
+  	  'moderate' => t('Moderate'),
+      'low' => t('Low'),
+  	),
+  	'#default_value' => variable_get('fire_danger_level', 'low'),
+  	'#description' => t('Set the level to be displayed on the CSFD landing page.'),
+    '#required' => TRUE,
+  );
+
+  $form['fire_ban'] = array(
+    '#title' => t('Fire Ban in Effect?'),
+    '#type' => 'select',
+  	'#options' => array(
+  	  'yes' => t('Yes'),
+  	  'no' => t('No'),
+  	),
+  	'#default_value' => variable_get('fire_ban', 'no'),
+    '#description' => t('Is there a fire ban in effect? Write your line here.'),
+  );
+
+  $form['send'] = array(
+    '#type' => 'submit',
+    '#value' => t('Set Fire Danger Level'),
+  );
+
+  return $form;
+}
+
+/*
+ * Process Fire Danger level and set variable for block.
+ * Implements hook_form_submit().
+ */
+function fire_danger_form_submit($form, &$form_state) {
+  // Rebuild the form.
+  $form_state['rebuild'] = true;
+
+  // Save Fire Danger Level variable.
+  variable_set('fire_danger_level', $form_state['values']['fire_danger_level']);
+  variable_set('fire_ban', $form_state['values']['fire_ban']);
+
+  $hml = $form_state['values']['fire_danger_level'];
+  $fb = $form_state['values']['fire_ban'];
+
+  // Front page keeps holding onto the cached version--reset caches for both instances.
+  $url1 = url('<front>',  array('absolute' => TRUE));
+  $url2 = url('node/1061',  array('absolute' => TRUE));
+  cache_clear_all($url1, 'cache_page');
+  cache_clear_all($url2, 'cache_page');
+
+  // Notify user.
+  drupal_set_message(t('Fire Danger Level saved: %t.<br>Cache cleared for front page and node/1061.', array('%t' => $hml)));
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function fire_danger_block_info() {
+  $blocks = array();
+
+  $blocks['fire_danger'] = array(
+    'info' => t('Fire Danger Level and Burn Ban'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function fire_danger_block_view($delta = '') {
+  $block = array();
+
+  $hml = variable_get('fire_danger_level', 'low');
+  $fb = variable_get('fire_ban', 'no');
+
+  $fire_danger_block_output = fire_danger_content($hml) . fire_ban($fb);
+
+  switch($delta) {
+    case 'fire_danger':
+      $block['subject'] = fire_danger_title($hml);
+      $block['content'] = $fire_danger_block_output;
+      break;
+  }
+
+  return $block;
+}
+
+function fire_danger_title($severity) {
+    return t('Fire Danger:');
+}
+
+function fire_ban($select) {
+  if ($select == 'yes') {
+    return t('<p class="small-text red-fire-ban">The City of Colorado Springs has a burn ban/restriction in effect.</p>');
+  } else if ($select == 'no')  {
+    return t('<p class="small-text green-fire-ban">No burn ban or burn restriction currently in place.</p>');
+  } else {
+    return t('');
+  }
+}
+
+function fire_danger_content($severity) {
+  if ($severity == 'extreme') {
+      $level = '<a href="fire-danger"><img class="fire-danger-block-image" src="/sites/default/files/fire/images/fdanger_extreme.png" /></a>';
+    return $level;
+  } else if ($severity == 'vhigh') {
+      $level = '<a href="fire-danger"><img class="fire-danger-block-image" src="/sites/default/files/fire/images/fdanger_veryhigh.png" /></a>';
+    return $level;
+  } else if ($severity == 'high') {
+      $level = '<a href="fire-danger"><img class="fire-danger-block-image" src="/sites/default/files/fire/images/fdanger_high.png" /></a>';
+    return $level;
+  } else if ($severity == 'moderate') {
+      $level = '<a href="fire-danger"><img class="fire-danger-block-image" src="/sites/default/files/fire/images/fdanger_moderate.png" /></a>';
+    return $level;
+  } else if ($severity == 'low') {
+      $level = '<a href="fire-danger"><img class="fire-danger-block-image" src="/sites/default/files/fire/images/fdanger_low.png" /></a>';
+    return $level;
+  } else {
+    return t('');
+  }
+}
+
+function fire_danger_page_content($severity) {
+  if ($severity == 'extreme') {
+      $level = '<div class="extreme"><h3>';
+      $level .= strtoupper(t('Fire Danger for today is Extreme'));
+      $level .= '</h3></div>';
+      $level .= '<br /><img src="/sites/default/files/fire/images/fdanger_extreme.png" />';
+    return $level;
+  } else if ($severity == 'vhigh') {
+      $level = '<div class="vhigh"><h3>';
+      $level .= strtoupper(t('Fire Danger for today is Very High'));
+      $level .= '</h3></div>';
+      $level .= '<br /><img src="/sites/default/files/fire/images/fdanger_veryhigh.png" />';
+    return $level;
+  } else if ($severity == 'high') {
+      $level = '<div class="high"><h3>';
+      $level .= strtoupper(t('Fire Danger for today is High'));
+      $level .= '</h3></div>';
+      $level .= '<br /><img src="/sites/default/files/fire/images/fdanger_high.png" />';
+    return $level;
+  } else if ($severity == 'moderate') {
+      $level = '<div class="moderate"><h3>';
+      $level .= strtoupper(t('Fire Danger for today is Moderate'));
+      $level .= '</h3></div>';
+      $level .= '<br /><img src="/sites/default/files/fire/images/fdanger_moderate.png" />';
+    return $level;
+  } else if ($severity == 'low') {
+      $level = '<div class="low"><h3>';
+      $level .= strtoupper(t('Fire Danger for today is Low'));
+      $level .= '</h3></div>';
+      $level .= '<br /><img src="/sites/default/files/fire/images/fdanger_low.png" />';
+    return $level;
+  } else {
+    return t('');
+  }
+}

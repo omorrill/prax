@@ -1,0 +1,217 @@
+//
+// Readiness Guide Chapter Colors
+// ==================================================
+// Sets a new color for each chapter in the guide.
+
+//== Chapters
+//
+//## Set an array for each chapter to receive it's own color.
+$rg_chapters: emergency-management,
+              emergency-communications,
+              before-an-emergency,
+              during-an-emergency,
+              after-an-emergency,
+              natural-hazards,
+              other-hazards,
+              public-health-hazards,
+              terrorism,
+              personal-safety-and-awareness,
+              outdoor-recreation,
+              living-with-wildlife,
+              transmittable-animal-diseases,
+              first-aid,
+              resources;
+
+//== Chapter Colors
+//
+//## Sets a color for each chapter
+$emergency-management:           rgb(65,85,61);
+$emergency-communications:       rgb(44,40,93);
+$before-an-emergency:            rgb(39,140,191);
+$during-an-emergency:            rgb(57,159,73);
+$after-an-emergency:             rgb(126,59,89);
+$natural-hazards:                rgb(166,91,47);
+$other-hazards:                  rgb(153,178,63);
+$public-health-hazards:          rgb(104,88,144);
+$terrorism:                      rgb(235,111,36);
+$personal-safety-and-awareness:  rgb(222,170,14);
+$outdoor-recreation:             rgb(15,95,55);
+$living-with-wildlife:           rgb(112,78,75);
+$transmittable-animal-diseases:  rgb(0,133,154);
+$first-aid:                      rgb(252,82,65);
+$resources:                      rgb(101,0,73);
+
+$anchor_color: #00a8cb;
+
+//== Set Text Color
+//
+//## Sets the text color based on the bg color.
+
+@function set_text_color($bg_color) {
+  //** Personal Safety was yellow and returning white.
+  @if ($bg_color == (mix($personal-safety-and-awareness, $anchor_color, 95%))) {
+    @return black;
+  }
+  @elseif (lightness($bg_color) > 47.5) {
+    @return $black; // Lighter backgorund, return dark color
+  }
+  @else {
+    @return $white; // Darker background, return light color
+  }
+}
+@function set_shadow_color($bg_color) {
+  @if (lightness($bg_color) > 47.5) {
+    @return transparent; // Lighter backgorund, return dark color
+  }
+  @else {
+    @return $black; // Darker background, return light color
+  }
+}
+
+// //** Two shadow variables
+// $rg_dark_shadow: text-shadow(0 1px 1px $dk_gray);
+// $rg_light_shadow: text-shadow(0 1px 2px #ffffff);
+
+// //** Set Text Shadow
+// @function set_text_shadow($bg_color) {
+//   @if (lightness($bg_color) > 50) {
+//     @return $rg_dark_shadow; // Lighter backgorund, return white shadow
+//   }
+//   @else {
+//     @return $rg_light_shadow; // Darker background, return dark shadow
+//   }
+// }
+
+//
+// Define Chapter Colors
+// ==================================================
+// This defines the colors that change for each 
+// chapter in the readiness guide.
+
+@function chapter_color_lookup($chapter) {
+  $colors: false;
+  
+  // Kinda like a switch...
+  @if      ($chapter == 'emergency-management')          { $colors: $emergency-management,          lighten($emergency-management,          9%); }
+  @else if ($chapter == 'emergency-communications')      { $colors: $emergency-communications,      lighten($emergency-communications,     12%); }
+  @else if ($chapter == 'before-an-emergency')           { $colors: $before-an-emergency,           lighten($before-an-emergency,           10%); }
+  @else if ($chapter == 'during-an-emergency')           { $colors: $during-an-emergency,           lighten($during-an-emergency,           7%); }
+  @else if ($chapter == 'after-an-emergency')            { $colors: $after-an-emergency,            lighten($after-an-emergency,            7%); }
+  @else if ($chapter == 'natural-hazards')               { $colors: $natural-hazards,               lighten($natural-hazards,               7%); }
+  @else if ($chapter == 'other-hazards')                 { $colors: $other-hazards,                 lighten($other-hazards,                 7%); }
+  @else if ($chapter == 'public-health-hazards')         { $colors: $public-health-hazards,         lighten($public-health-hazards,        16%); }
+  @else if ($chapter == 'terrorism')                     { $colors: $terrorism,                     lighten($terrorism,                     7%); }
+  @else if ($chapter == 'personal-safety-and-awareness') { $colors: $personal-safety-and-awareness, lighten($personal-safety-and-awareness, 7%); }
+  @else if ($chapter == 'outdoor-recreation')            { $colors: $outdoor-recreation,            lighten($outdoor-recreation,            7%); }
+  @else if ($chapter == 'living-with-wildlife')          { $colors: $living-with-wildlife,          lighten($living-with-wildlife,          7%); }
+  @else if ($chapter == 'transmittable-animal-diseases') { $colors: $transmittable-animal-diseases, lighten($transmittable-animal-diseases, 7%); }
+  @else if ($chapter == 'first-aid')                     { $colors: $first-aid,                     lighten(adjust-hue($first-aid,5%),      7%); }
+  @else if ($chapter == 'resources')                     { $colors: $resources,                     lighten($resources,                     7%); }
+  
+  @return $colors;
+}
+
+
+//
+// Set Chapter Colors
+// ==================================================
+// This sets the colors that change for each chapter
+// in the readiness guide.
+
+//== Color change for each chapter in the guide
+// ---------------------------------------------- //
+@each $chapter in $rg_chapters {
+  //** Lookup the chapter colors
+  $chapter_colors: chapter_color_lookup($chapter);
+
+  //** Set a variable for each respective color
+  $chapter_color_pre: nth($chapter_colors, 1);
+  $chapter_color_light: nth($chapter_colors, 2);
+
+  $chapter_color: mix($chapter_color_pre, $anchor_color, 95%);
+  // -------------------------------------------- //
+
+  //== Styles for the guide go below.
+  //
+  //## Set each color based on the chapter found as a <body> class.
+  body.#{$chapter} {
+    #block-delta_blocks-site-name {
+      .content {
+        h2.site-name {
+          a {
+            background-color: $chapter_color_light;
+          }
+        }
+      }
+    }
+    // Sidebar Title
+    #main-inner-wrapper,
+    #nav-pane {
+      h2.block-title {
+        color: set_text_color($chapter_color);
+        background-color: $chapter_color !important;
+      }
+      #block-views-readiness_guide_terms-block {
+        .item-list ul li a {
+          &.active {
+            background-color: $chapter_color;
+            color: set_text_color($chapter_color);
+
+            &:hover { background-color: $chapter_color_light; }
+          }
+        }
+      }
+    }
+
+    // Page Title
+    #content-inner {
+      .title-wrapper {
+        background-color: $chapter_color;
+
+        h1#page-title {
+          color: set_text_color($chapter_color);
+        }
+      }
+    }
+
+    //** Main content
+    #content-area-inner {
+      .view-readiness-guide .view-header {
+        // .attachment {
+          background-color: $chapter_color;
+          span.field-content a {
+            @include text-shadow(0 1px 2px 1px (set_shadow_color($chapter_color_light)));
+            color: set_text_color($chapter_color_light);
+            background-color: $chapter_color_light;
+            &:hover { background-color: lighten($chapter_color_light, 10%); }
+            &:active { background-color: $chapter_color_light; }
+
+            &.active {
+              //** Lighten the active section within the chapter.
+              $active_guide_button_color: lighten($chapter_color, 45%);
+
+              @include text-shadow(0 1px 2px 1px (set_shadow_color($active_guide_button_color)));
+              color: set_text_color($active_guide_button_color);
+              background-color: $active_guide_button_color;
+
+              &:hover { background-color: lighten($active_guide_button_color, 10%); }
+            }
+          }
+        // }
+      }
+      .section-title { color: $chapter_color; }
+      // .views-field-body .field-content { border-color: $chapter_color; }
+      h2, h3 { color: $chapter_color; }
+      table th {
+        background-color: $chapter_color;
+        border: 1px solid $chapter_color_light;
+        color: set_text_color($chapter_color);
+      }
+    }
+    a.department_button { @include button($chapter_color); }
+    .box_quote {
+      border-color: $chapter_color;
+      background-color: transparentize($chapter_color, .9);
+    }
+  }
+}

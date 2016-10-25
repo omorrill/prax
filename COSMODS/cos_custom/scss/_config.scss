@@ -1,0 +1,13 @@
+// Config
+
+// Compass cross browser compatiblity tools.
+@import "compass/css3";
+@import "compass/css3/user-interface";
+@import "rgbapng";
+
+// Better than Drupal's clearfix.
+@import "compass/utilities/general/clearfix";
+
+// Import local files
+@import "_variables.scss";
+@import "_mixins.scss";

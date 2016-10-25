@@ -1,0 +1,12 @@
+diff -u b/redirect.module b/redirect.module
+--- b/redirect.module
++++ b/redirect.module
+@@ -394,7 +394,7 @@
+   }
+ 
+   if (!empty($path['original']['pid']) && $path['original']['pid'] == $path['pid'] && $path['original']['alias'] != $path['alias']) {
+-    // Delete all redirects that would redirect the alias.
++    // Delete all redirects having the same source as this alias.
+     redirect_delete_by_path($path['alias'], $path['language'], FALSE);
+     $redirect = new stdClass();
+     redirect_object_prepare($redirect);

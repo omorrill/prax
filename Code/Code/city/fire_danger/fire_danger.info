@@ -1,0 +1,10 @@
+name = Fire Danger block
+description = A custom block for displaying fire danger levels.
+core = 7.x
+package = City
+version = 7.x-1.0
+configure = admin/config/services/fire-danger
+
+
+; CSS
+stylesheets[all][] = css/fire-danger.css

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:RPS" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="urn:RPS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:RPS">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:simpleType name="RecordType">
+        <s:restriction base="s:string">
+          <s:enumeration value="CourtCase" />
+          <s:enumeration value="Summons" />
+          <s:enumeration value="ParkingTicket" />
+          <s:enumeration value="LicensePlate" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Violation">
+        <s:sequence>
+          <s:element name="code" nillable="true" type="s:string" />
+          <s:element name="title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfViolation">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:Violation[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Record">
+        <s:sequence>
+          <s:element name="amountDue" nillable="true" type="s:decimal" />
+          <s:element name="firstName" nillable="true" type="s:string" />
+          <s:element name="issueDate" nillable="true" type="s:dateTime" />
+          <s:element name="lastName" nillable="true" type="s:string" />
+          <s:element name="middleName" nillable="true" type="s:string" />
+          <s:element name="licencePlate" nillable="true" type="s:string" />
+          <s:element name="recordNumber" nillable="true" type="s:string" />
+          <s:element name="recordType" nillable="true" type="tns:RecordType" />
+          <s:element name="suffix" nillable="true" type="s:string" />
+          <s:element name="violations" nillable="true" type="tns:ArrayOfViolation" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ResponseCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="AuthorizationError" />
+          <s:enumeration value="FailedIdentification" />
+          <s:enumeration value="IllegalArgument" />
+          <s:enumeration value="JuvenileRecord" />
+          <s:enumeration value="MandatoryCourt" />
+          <s:enumeration value="OverPayment" />
+          <s:enumeration value="RecordClosed" />
+          <s:enumeration value="RecordDismissed" />
+          <s:enumeration value="RecordNotFound" />
+          <s:enumeration value="RecordNotPayable" />
+          <s:enumeration value="RecordPaid" />
+          <s:enumeration value="RecordPostDispo" />
+          <s:enumeration value="RecordVoided" />
+          <s:enumeration value="Success" />
+          <s:enumeration value="SystemError" />
+          <s:enumeration value="UnderPayment" />
+          <s:enumeration value="UnsupportedRecordType" />
+          <s:enumeration value="WarrantIssued" />
+          <s:enumeration value="WarrantOrdered" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PaymentResponse">
+        <s:sequence>
+          <s:element name="receiptNumber" nillable="true" type="s:string" />
+          <s:element name="responseCode" nillable="true" type="tns:ResponseCode" />
+          <s:element name="verisignRESPMSG" nillable="true" type="s:string" />
+          <s:element name="verisignPNREF" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QueryParkingTicketLocationResponse">
+        <s:sequence>
+          <s:element name="responseCode" nillable="true" type="tns:ResponseCode" />
+          <s:element name="location" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QueryMessage">
+        <s:sequence>
+          <s:element name="clientID" nillable="true" type="s:string" />
+          <s:element name="recordNumber" nillable="true" type="s:string" />
+          <s:element name="recordType" nillable="true" type="tns:RecordType" />
+          <s:element name="dob" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CourtInfo">
+        <s:sequence>
+          <s:element name="dateTime" nillable="true" type="s:dateTime" />
+          <s:element name="division" nillable="true" type="s:string" />
+          <s:element name="proceedingType" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCourtInfo">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:CourtInfo[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="QueryCourtEventsResponse">
+        <s:sequence>
+          <s:element name="responseCode" nillable="true" type="tns:ResponseCode" />
+          <s:element name="courtEvents" nillable="true" type="tns:ArrayOfCourtInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PaymentType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Total" />
+          <s:enumeration value="PaymentPlan" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfRecord">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:Record[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="QueryResponse">
+        <s:sequence>
+          <s:element name="courtInfo" nillable="true" type="tns:CourtInfo" />
+          <s:element name="paymentType" nillable="true" type="tns:PaymentType" />
+          <s:element name="recordNumber" nillable="true" type="s:string" />
+          <s:element name="recordType" nillable="true" type="tns:RecordType" />
+          <s:element name="records" nillable="true" type="tns:ArrayOfRecord" />
+          <s:element name="responseCode" nillable="true" type="tns:ResponseCode" />
+          <s:element name="totalAmountDue" nillable="true" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QueryParkingTicketLocationMessage">
+        <s:sequence>
+          <s:element name="parkingTicketNumber" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QueryCourtEventsMessage">
+        <s:sequence>
+          <s:element name="recordNumber" nillable="true" type="s:string" />
+          <s:element name="recordType" nillable="true" type="tns:RecordType" />
+          <s:element name="dob" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PaymentMessage">
+        <s:sequence>
+          <s:element name="amountPaid" nillable="true" type="s:decimal" />
+          <s:element name="ccExpirationDate" nillable="true" type="s:string" />
+          <s:element name="ccNumber" nillable="true" type="s:string" />
+          <s:element name="clientID" nillable="true" type="s:string" />
+          <s:element name="creditCardType" nillable="true" type="s:string" />
+          <s:element name="emailAddress" nillable="true" type="s:string" />
+          <s:element name="zipCode" nillable="true" type="s:string" />
+          <s:element name="records" nillable="true" type="tns:ArrayOfRecord" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="queryParkingTicketLocationRequest">
+    <wsdl:part name="in0" type="tns:QueryParkingTicketLocationMessage" />
+  </wsdl:message>
+  <wsdl:message name="postPaymentResponse">
+    <wsdl:part name="postPaymentReturn" type="tns:PaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryRecordsResponse">
+    <wsdl:part name="queryRecordsReturn" type="tns:QueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryRecordsRequest">
+    <wsdl:part name="in0" type="tns:QueryMessage" />
+  </wsdl:message>
+  <wsdl:message name="queryCourtEventsResponse">
+    <wsdl:part name="queryCourtEventsReturn" type="tns:QueryCourtEventsResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryCourtEventsRequest">
+    <wsdl:part name="in0" type="tns:QueryCourtEventsMessage" />
+  </wsdl:message>
+  <wsdl:message name="queryParkingTicketLocationResponse">
+    <wsdl:part name="queryParkingTicketLocationReturn" type="tns:QueryParkingTicketLocationResponse" />
+  </wsdl:message>
+  <wsdl:message name="postPaymentRequest">
+    <wsdl:part name="in0" type="tns:PaymentMessage" />
+  </wsdl:message>
+  <wsdl:portType name="RemotePaymentService">
+    <wsdl:operation name="queryRecords" parameterOrder="in0">
+      <wsdl:input name="queryRecordsRequest" message="tns:queryRecordsRequest" />
+      <wsdl:output name="queryRecordsResponse" message="tns:queryRecordsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="postPayment" parameterOrder="in0">
+      <wsdl:input name="postPaymentRequest" message="tns:postPaymentRequest" />
+      <wsdl:output name="postPaymentResponse" message="tns:postPaymentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryCourtEvents" parameterOrder="in0">
+      <wsdl:input name="queryCourtEventsRequest" message="tns:queryCourtEventsRequest" />
+      <wsdl:output name="queryCourtEventsResponse" message="tns:queryCourtEventsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryParkingTicketLocation" parameterOrder="in0">
+      <wsdl:input name="queryParkingTicketLocationRequest" message="tns:queryParkingTicketLocationRequest" />
+      <wsdl:output name="queryParkingTicketLocationResponse" message="tns:queryParkingTicketLocationResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RemotePaymentServiceSoapBinding" type="tns:RemotePaymentService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="queryRecords">
+      <soap:operation soapAction="" />
+      <wsdl:input name="queryRecordsRequest">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="queryRecordsResponse">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="postPayment">
+      <soap:operation soapAction="" />
+      <wsdl:input name="postPaymentRequest">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="postPaymentResponse">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryCourtEvents">
+      <soap:operation soapAction="" />
+      <wsdl:input name="queryCourtEventsRequest">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="queryCourtEventsResponse">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryParkingTicketLocation">
+      <soap:operation soapAction="" />
+      <wsdl:input name="queryParkingTicketLocationRequest">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="queryParkingTicketLocationResponse">
+        <soap:body use="encoded" namespace="urn:RPS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RemotePaymentServiceService">
+    <wsdl:port name="RemotePaymentService" binding="tns:RemotePaymentServiceSoapBinding">
+      <soap:address location="http://jisapf:8080/jis-web/services/RemotePaymentService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

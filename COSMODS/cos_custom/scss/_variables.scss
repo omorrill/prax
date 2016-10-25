@@ -1,0 +1,240 @@
+/**
+ * @file
+ * Sets color and media query variables. Declares mixins.
+ */
+
+@import "compass";
+
+// Media query variables.
+$desktop_medium: "only screen and (max-width: 1550px)";
+$retina_desktop_small: "only screen and (-webkit-min-device-pixel-ratio: 1.3) and (max-width: 1300px), only screen and (min-resolution: 124.8dpi) and (max-width: 1300px), only screen and (min-resolution: 1.3dppx) and (max-width: 1300px)";
+$desktop_small: "only screen and (max-width: 1300px)";
+$retina_region_map_small: "only screen and (max-width: 1150px) and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min-resolution: 124.8dpi) and (max-wdith: 1150px), only screen and (min-resolution: 1.3dppx) and (max-width: 1150px)";
+$region_map_small: "only screen and (max-width: 1150px)";
+$retina_tablet: "only screen and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min-resolution: 124.8dpi) and (max-width: 1024px), only screen and (min-resolution: 1.3dppx) and (max-width: 1024px)";
+$tablet: "only screen and (max-width: 1024px)";
+$retina_tablet_small: "only screen and (max-width: 620px) and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min-resolution: 124.8dpi) and (max-width: 620px), only screen and (min-resolution: 1.3dppx) and (max-width: 620px)";
+$tablet_small: "only screen and (max-width: 800px)";
+$retina_mobile: "only screen and (max-width: 520px) and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min-resolution: 124.8dpi) and (max-width: 520px), only screen and (min-resolution: 1.3dppx) and (max-width: 520px)";
+$mobile: "only screen and (max-width: 620px)";
+
+// Color variables
+$black:            #262626;
+$text_black:       #41302c;
+
+$dk_gray:          #5f5e5c;
+$mid_gray:         #808083;
+$lt_gray:          #cecece;
+$ltr_gray:         #eeeeee;
+$offwhite:         #f5f5f5;
+
+$white:            #fff;
+
+//## Department Colors
+//
+//==
+$orange:           #d96642; // Global
+$lt_orange:        #f7e0d9; // Global
+$lt_blue:          #00809a; // Global
+$dk_blue:          #105b63; // Human Resources
+$lt_dk_blue:       #cfdee0; // Human Resources
+$wheat:            #91651a; // Human Resources
+$purple:           #33297f; // Transit
+$lt_purple:        #d6d4e5; // Transit
+$yellow:           #ffda31; // Transit
+$green:            #265909; // Parks & Recreation
+$lt_green:         #d4dece; // Parks & Recreation
+$brown:            #773120; // Parks & Recreation
+$beige:            #d9d9b6; // Background Color
+$red_alert:        #cd3e3e; // Global Alerts
+$red_alert_border: #760f0f; // Global Alerts
+$cool_green:       #3f8351; // Paygate
+$blue_spruce:      #158089; // Paygate
+$seafoam:          #4c6e73; // OEM
+$rust:             #c54f27; // OEM
+$cspd_blue:        #0965a2; // Police Department
+$cspd_lt_blue:     #0090c6; // Police Department
+$fire_red:         #bd372a; // Fire Department
+
+$gold: #ffd100;
+
+$slider_bg: rgba(0,0,0,0.6);
+$primary_color: $orange;
+$primary_light_color: $lt_orange;
+$secondary_color: $lt_blue;
+$nav_color: $secondary_color;
+$slider_border_color: $primary_color;
+$category_filter_color: $secondary_color;
+
+// Links and Anchors
+$link_color: $lt_blue;
+$link_color_visited: #800080;
+
+$blockquote_line: #323232;
+$webform_description_blue: #e6f6fa;
+
+// Message Colors
+$status_bg: #f5f7ce;
+$status_border: #d6e03d;
+$info_bg: #e0f4f8;
+$info_border: #00a8cb;
+$error_bg: #fcd6c8;
+$error_border: #f45d22;
+$warning_bg: #fff6cb;
+$warning_border: #ffda31;
+
+$sans_serif: 'Open Sans', Helvetica, Arial, sans-serif;
+$serif: 'Merriweather', Georgia, Times, serif;
+$main_font: $sans_serif;
+$font_size: 16px;
+
+$main_box_shadow: 0 0 7px rgba(0,0,0,0.5);
+
+// Area dimension variables
+$page_width: 960px;
+$page_wide_width: 1080px;
+$page_hborder_width: 1px;
+
+$header_top_height: 22px;
+$header_height: 80px;
+$header_bottom_height: 70px;
+$header_under_height: 30px;
+$header_under_lower_margin: 20px;
+
+$sidebar_width: 250px;
+$sidebar_content_padding: 15px;
+
+$content_padding: 20px;
+
+$table_border: 1px solid $mid_gray;
+$lt_table_border: $lt_gray;
+
+$pager_width: 250px;
+
+$default_margin: 10px;
+$right_left_margin: $default_margin;
+
+$footer_left_width: 250px;
+$footer_right_width: $page_width - $footer_left_width - $default_margin;
+
+// Webform variables
+$webform_width: 380px;
+$fieldset_padding: 15px;
+$webform_border_width: 2px;
+$webform_text_field_padding: 5px;
+
+
+// Departments!
+$departments: parks, hr, transit, oem;
+
+// Parks and Recreation
+$parks_primary_color: $green;
+$parks_primary_light_color: $lt_green;
+$parks_secondary_color: $brown;
+$parks_nav_color: $parks_secondary_color;
+$parks_slider_border_color: $parks_secondary_color;
+$parks_category_filter_color: $parks_primary_color;
+
+// Human Resources
+$hr_primary_color: $dk_blue;
+$hr_primary_light_color: $lt_dk_blue;
+$hr_secondary_color: $wheat;
+$hr_nav_color: $hr_secondary_color;
+$hr_slider_border_color: $hr_secondary_color;
+$hr_category_filter_color: $hr_primary_color;
+
+// Transit
+$transit_primary_color: $purple;
+$transit_primary_light_color: $lt_purple;
+$transit_secondary_color: $yellow;
+$transit_nav_color: $transit_primary_color;
+$transit_slider_border_color: $transit_secondary_color;
+$transit_category_filter_color: $transit_primary_color;
+
+// OEM
+$oem_primary_color: $seafoam;
+$oem_primary_light_color: lighten($oem_primary_color, 10%);
+$oem_secondary_color: $rust;
+$oem_nav_color: $oem_secondary_color;
+$oem_slider_border_color: $oem_secondary_color;
+$oem_category_filter_color: $oem_primary_color;
+
+// Paygate
+$secure_primary_color: $blue_spruce;
+$secure_primary_light_color: lighten($secure_primary_color, 10%);
+$secure_secondary_color: $cool_green;
+$secure_nav_color: $secure_primary_color;
+$secure_slider_border_color: $secure_secondary_color;
+$secure_category_filter_color: $secure_primary_color;
+
+// CSPD (Police)
+$police_primary_color: $cspd_blue;
+$police_primary_light_color: $cspd_lt_blue;
+$police_secondary_color: $cspd_lt_blue;
+$police_nav_color: $police_primary_color;
+$police_slider_border_color: $police_secondary_color;
+$police_category_filter_color: $police_primary_color;
+
+// CSFD (Fire)
+$fire_primary_color: $fire_red;
+$fire_primary_light_color: lighten($fire_red, 10%);
+$fire_secondary_color: $fire_red;
+$fire_nav_color: $fire_secondary_color;
+$fire_slider_border_color: $fire_secondary_color;
+$fire_category_filter_color: $fire_primary_color;
+
+// Department color lookup. Order goes:
+// Primary, Primary light, Secondary, Nav, Slider Border, Category Filter.
+@function dept_color_lookup($dept) {
+  $colors: false;
+
+  // Kinda like a switch...
+  @if ($dept == 'transit') {
+    $colors: $transit_primary_color, $transit_primary_light_color, $transit_secondary_color, $transit_nav_color, $transit_slider_border_color, $transit_category_filter_color;
+  }
+  @else if ($dept == 'parks') {
+    $colors: $parks_primary_color, $parks_primary_light_color, $parks_secondary_color, $parks_nav_color, $parks_slider_border_color, $parks_category_filter_color;
+  }
+  @else if ($dept == 'hr') {
+    $colors: $hr_primary_color, $hr_primary_light_color, $hr_secondary_color, $hr_nav_color, $hr_slider_border_color, $hr_category_filter_color;
+  }
+  @else if ($dept == 'oem') {
+    $colors: $oem_primary_color, $oem_primary_light_color, $oem_secondary_color, $oem_nav_color, $oem_slider_border_color, $oem_category_filter_color;
+  }
+  @else if ($dept == 'secure') {
+    $colors: $secure_primary_color, $secure_primary_light_color, $secure_secondary_color, $secure_nav_color, $secure_slider_border_color, $secure_category_filter_color;
+  }
+  @else if ($dept == 'police') {
+    $colors: $police_primary_color, $police_primary_light_color, $police_secondary_color, $police_nav_color, $police_slider_border_color, $police_category_filter_color;
+  }
+  @else if ($dept == 'fire') {
+    $colors: $fire_primary_color, $fire_primary_light_color, $fire_secondary_color, $fire_nav_color, $fire_slider_border_color, $fire_category_filter_color;
+  }
+
+  @return $colors;
+}
+
+/**
+ * Icons.
+ */
+@mixin icon($code) {
+  &:before{
+    content: $code;
+    display: inline-block;
+    font: {
+      family: "fontello";
+      style: normal;
+      transform: none;
+      varient: normal;
+      weight: normal;
+    }
+    margin-right: 0.2em;
+    speak: none;
+    text: {
+      align: center;
+      decoration: inherit;
+      shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+    }
+    width: 1em;
+  }
+}

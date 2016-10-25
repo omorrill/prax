@@ -1,0 +1,57 @@
+name = Colorado Springs Main Theme
+description = Global/base theme for COS site.
+screenshot = images/screenshot.png
+version = 7.x-1.0
+core = 7.x
+project = cos_custom
+engine = phptemplate
+
+regions[page_top] = Page top
+regions[alert_top] = Alert top
+regions[header_top] = Header top
+regions[header_right] = Header right
+regions[header_bottom] = Header bottom
+regions[highlighted_full] = Highlighted full width
+regions[header_under] = Header under
+regions[highlighted] = Highlighted
+regions[content_top] = Content top
+regions[content] = Content
+regions[content_bottom] = Content bottom
+regions[sidebar_first] = First sidebar
+regions[footer_left] = Footer left
+regions[footer_right] = Footer right
+regions[footer_bottom] = Footer bottom
+regions[alert_bottom] = Alert bottom
+;regions[page_bottom] = Page bottom
+
+features[] = logo
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = favicon
+features[] = main_menu
+
+; Stylesheets
+stylesheets[all][] = css/default.css
+stylesheets[all][] = css/layout.css
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/normalize.css
+stylesheets[all][] = css/cos_custom.css
+stylesheets[all][] = css/desktop.css
+stylesheets[all][] = css/content.css
+stylesheets[all][] = css/import.css
+stylesheets[all][] = css/subscribe_page.css
+stylesheets[all][] = css/tablet.css
+stylesheets[all][] = css/mobile.css
+stylesheets[print][] = css/print.css
+
+; Scripts
+scripts[] = js/modernizr.js
+scripts[] = js/navigation.js
+scripts[] = js/slideshow.js
+scripts[] = js/cos_custom.js
+
+settings[cos_custom_ie_enabled] = 0
+settings[cos_custom_ie_enabled_versions][ie8] = 0
+settings[cos_custom_ie_enabled_versions][ie9] = 0
+settings[cos_custom_ie_enabled_versions][ie10] = 0
+; Scripts

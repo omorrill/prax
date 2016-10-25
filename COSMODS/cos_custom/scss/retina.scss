@@ -1,0 +1,262 @@
+@import "_config.scss";
+
+html.backgroundsize body.html {
+
+  // For the few dept color images, make sure they're retina as well.
+  @each $dept in $departments {
+    &.domain-#{$dept}, &.domain-m-#{$dept} {
+      #header-bottom-inner .menu-name-main-menu > ul.menu > li span.submenu-toggle {
+        background-size: 8px auto;
+        background-image: url(../images/icons/dd_arrow-#{$dept}@2x.png);
+      }
+    }
+  }
+
+  // Swap logo with retina version.
+
+  // Logos are different sizes and not all have them.
+  &.domain-metro {
+    a#logo {
+      background-image: url(../images/logos/logo-metro@2x.png);
+      background-size: 162px 68px;
+    }
+  }
+  &.domain-police {
+    a#logo {
+      background-image: url(../images/logos/logo-police@2x.png);
+      background-size: 245px 50px;
+    }
+  }
+  &.domain-fire {
+    a#logo {
+      background-image: url(../images/logos/logo-fire@2x.png);
+      background-size: 337px 70px;
+    }
+  }
+  &.domain-airport {
+    a#logo {
+      background-image: url(../images/logos/logo-airport@2x.png);
+      background-size: 376px 90px;
+    }
+  }
+
+  // From: cos_custom.scss:
+
+  #page {
+    background-size: 276px auto;
+    background-image: url(../images/bg/bg_paper_texture@2x.png);
+  }
+
+  #page.with-highlighted-full {
+    #main {
+      background-size: 276px auto;
+      background-image: url(../images/bg/bg_paper_texture@2x.png);
+    }
+  }
+
+  #content-inner {
+    .node-header {
+      &.has-image {
+        .title-wrapper {
+          background-size: 1px 430px;
+          background-image: url(../images/bg/slider_bg@2x.png);
+        }
+      }
+    }
+  }
+
+  #block-menu_block-1 ul.menu {
+    li {
+      &.depth-1,
+      &.depth-2 {
+        & > a  {
+          &:hover {
+            background-size: 11px auto;
+            background-image: url(../images/icons/nav_open_hover@2x.png);
+
+            &.link-wrapper-hover {
+              background-size: 11px auto;
+              background-image: url(../images/icons/nav_open@2x.png);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // // Front slider.
+  // .view-id-department_views.view-display-id-department_slideshow,
+  // .view-id-global_views.view-display-id-global_slideshow,
+  // .view-id-global_views.view-display-id-block_2,
+  // .view-id-department_views.view-display-id-block_2 {
+  //   .views_slideshow_cycle_main {
+  //     .views-row {
+  //       .views-field-body {
+  //         background-size: 1px 430px;
+  //         background-image: url(../images/bg/slider_bg@2x.png);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // Upcoming event block.
+  .view-id-department_calendar.view-display-id-block_2,
+  .view-id-calendar.view-display-id-block_2 {
+    .calendar-background-dates {
+      background-size: 45px auto;
+      background-image: url(../images/icons/icon-calendar@2x.png);
+    }
+  }
+
+  .view-global-calendar,
+  .view-department-calendar {
+    .date-nav-wrapper {
+      ul.pager {
+        .date-prev {
+          a {
+            background-size: 8px auto;
+            background-image: url(../images/icons/calendar_arrow_left@2x.png);
+          }
+        }
+        .date-next {
+          a {
+            background-size: 8px auto;
+            background-image: url(../images/icons/calendar_arrow_right@2x.png);
+          }
+        }
+      }
+    }
+  }
+
+  // Pager styles.
+  .item-list ul.pager {
+    li {
+      &.pager-first a {
+        background-size: 6px auto;
+        background-image: url(../images/icons/first@2x.png);
+
+        &:hover, &:active {
+          background-size: 6px auto;
+          background-image: url(../images/icons/first_hover@2x.png);
+        }
+      }
+      &.pager-previous a {
+        background-size: 6px auto;
+        background-image: url(../images/icons/prev@2x.png);
+
+        &:hover, &:active {
+          background-size: 6px auto;
+          background-image: url(../images/icons/prev_hover@2x.png);
+        }
+      }
+      &.pager-next a {
+        background-size: 6px auto;
+        background-image: url(../images/icons/next@2x.png);
+
+        &:hover, &:active {
+          background-size: 6px auto;
+          background-image: url(../images/icons/next_hover@2x.png);
+        }
+      }
+      &.pager-last {
+        background-size: 6px auto;
+        background-image: url(../images/icons/last@2x.png);
+
+        &:hover, &:active {
+          background-size: 6px auto;
+          background-image: url(../images/icons/last_hover@2x.png);
+        }
+      }
+    }
+  }
+
+  // From: desktop.scss:
+  #header-top-inner {
+    ul.menu {
+      li.home a {
+        background-image: url(../images/icons/home.png);
+        background-size: 12px 11px;
+      }
+    }
+  }
+
+  // Header region styling.
+  #header-bottom-inner {
+    .menu-name-main-menu > ul.menu {
+      & > li {
+        span.submenu-toggle {
+          background-size: 8px auto;
+          background-image: url(../images/icons/dd_arrow-global@2x.png);
+
+          &:hover, &:active, &.toggle-active {
+            background-size: 8px auto;
+            background-image: url(../images/icons/dd_arrow-hover@2x.png);
+          }
+        }
+      }
+    }
+  }
+
+  // From: style.scss:
+  iframe {
+    background-size: 220px 20px;
+    background-image: url(../images/ajax_loader_large_white@2x.gif);
+  }
+
+  .ajax-progress {
+    .throbber {
+      background-size: 16px 16px;
+      background-image: url(../images/ajax_loader_small_white@2x.gif);
+    }
+  }
+
+  a.views-throbbing,
+  span.views-throbbing,
+  input.throbbing {
+    background-size: 16px 16px;
+    background-image: url(../images/ajax_loader_small_white@2x.gif);
+  }
+  input[name='search_block_form'].throbbing {
+    background-image: url(../images/ajax_loader_small_gray@2x.gif);
+  }
+
+  // OEM Readiness Guide
+  #boxes-box-oem_cta {
+    .boxes-box-content {
+      p {
+        a {
+          background-size: 18px 24px;
+          background-image: url(../images/icons/icon-readiness_guide@2x.png);
+        }
+      }
+    }
+  }
+
+  &.page-cat {
+    .views-field-feature {
+      a.unfeatured {
+        .feature-icon {
+          background-size: 20px 20px;
+          background-image: url('../images/icons/feature@2x.png');
+
+          &:hover {
+            background-size: 20px 21px;
+            background-image: url('../images/icons/featured@2x.png');
+          }
+        }
+      }
+      a.featured {
+        .feature-icon {
+          background-size: 20px 20px;
+          background-image: url('../images/icons/featured@2x.png');
+
+          &:hover {
+            background-size: 20px 21px;
+            background-image: url('../images/icons/unfeature@2x.png');
+          }
+        }
+      }
+    }
+  }
+
+}

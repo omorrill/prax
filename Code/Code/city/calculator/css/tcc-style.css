@@ -1,0 +1,65 @@
+.tccm {
+  width:100%;
+  background-color: #fff;
+}
+.tcc {
+  width:100%;
+  float:left;
+  background-color: #417378;
+}
+.tcb {
+  width: 100%;
+  float: left;
+  background-color: #164986;
+}
+.tccd {
+  width: 100%;
+  float: left;
+  background-color: #808080;
+}
+.tccm fieldset#edit-logic {
+  clear: both;
+}
+.tccm .form-item label {
+  display:inline;
+}
+.tccm .description {
+  display: inline;
+  margin-left: 3px;
+  font-style: italic;
+  overflow: hidden;
+}
+#edit-reset {
+  margin-left: 6px;
+}
+form .form-item input.form-text, form .tccm  .form-item textarea {
+  display: inline;
+  float: right;
+}
+form .form-item input.form-text, form .tccm  .form-item select {
+  display: inline;
+  float: right;
+}
+.tccm .form-item.form-type-checkbox {
+  width: 100%;
+}
+.tccm .form-item.form-type-checkbox.form-item-calculator-den-toll label.option {
+  display: block;
+  float: left;
+  font-weight: bold;
+}
+.tccm input#edit-calculator-den-toll {
+  float: right;
+}
+.tccm .form-item.form-type-checkbox.form-item-calculator-den-toll {
+  display: block;
+  float: right;
+  clear: both;
+}
+
+.tccm .form-item-calculator-cos-parking-rate label { 
+  float: left; 
+}
+.tccm .form-item-calculator-den-parking-rate label { 
+  float: left; 
+}

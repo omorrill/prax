@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the COS Gallery feature.
+ */
+
+include_once 'cos_gallery.features.inc';

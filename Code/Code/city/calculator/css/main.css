@@ -1,0 +1,50 @@
+.tccm {
+  width:100%;
+  background-color: black;
+}
+.tcc {
+  width:99%;
+  float:left;
+  background-color: #417378;
+}
+.tcb {
+  width: 99%;
+  float: left;
+  background-color: #164986;
+}
+.tccm fieldset#edit-logic {
+  clear: both;
+}
+.tccm .form-item label {
+  display:inline;
+}
+.tccm .description {
+  height: 0px;
+  overflow: hidden;
+}
+form .form-item input.form-text, form .tccm  .form-item textarea {
+  display: block;
+  float: right;
+  clear: both;
+}
+.tccm form .form-item input.form-text, form .tccm  .form-item select {
+  display: block;
+  float: right;
+  clear: both;
+}
+.tccm .form-item.form-type-checkbox {
+  width: 100%;
+}
+.tccm .form-item.form-type-checkbox.form-item-calculator-den-toll label.option {
+  display: block;
+  float: left;
+  font-weight: bold;
+}
+.tccm input#edit-calculator-den-toll {
+  float: right;
+}
+.tccm .form-item.form-type-checkbox.form-item-calculator-den-toll {
+  display: block;
+  float: right;
+  clear: both;
+}

@@ -1,0 +1,19 @@
+domain_taxonomy.module requires the module be "patched" so it can rewrite URLs.
+From the README in domain_taxonomy:
+
+    - "Term link patterns"
+    This like Node link patterns. Uses for term links when SEO is activated for domain taxonomy
+    link output.
+    IMPORTANT: For rewrite urls for terms like for nodes you must patch Domain
+           Access 'settings_custom_url.inc' file. In this file at begin of
+           function 'custom_url_rewrite_outbound' insert code below:
+           --------------
+           if (module_exists('domain_taxonomy')) {
+            domain_taxonomy_url_rewrite_outbound($path, $options, $original_path);
+           }
+           --------------
+
+daomin_view_unpublished_all_domains.patch
+  8/14/2014 - Brandon Cone
+  Add a permission to hook_permisisons for viewing content from any domain.
+  Add case in hook_node_grants to grant access to nodes accessed from any domain.

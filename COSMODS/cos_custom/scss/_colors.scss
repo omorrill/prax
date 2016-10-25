@@ -1,0 +1,288 @@
+@import "_config.scss";
+
+@each $dept in $departments {
+  $dept_colors: dept_color_lookup($dept);
+
+  $dept_primary_color: nth($dept_colors, 1);
+  $dept_primary_light_color: nth($dept_colors, 2);
+  $dept_secondary_color: nth($dept_colors, 3);
+  $dept_nav_color: nth($dept_colors, 4);
+  $dept_slider_border_color: nth($dept_colors, 5);
+  $dept_category_filter_color: nth($dept_colors, 6);
+
+  .#{$dept} {
+    // From: cos_custom.scss
+    #highlighted-full {
+      background: $dept_category_filter_color;
+    }
+
+    h1 {
+      color: $dept_primary_color;
+    }
+
+    #block-menu_block-1 ul.menu {
+      li.depth-3 > a {
+        &.active-trail {
+          background-color: $dept_primary_light_color;
+        }
+        &:hover, &:active {
+          background-color: $dept_primary_color;
+        }
+      }
+    }
+
+    #page {
+      #block-domain_conf-domain-secondary-links,
+      #block-cos_general-cos_general_route_planner {
+        h2 {
+          background: $dept_primary_color;
+        }
+        input.get-directions-submit {
+          background: $dept_primary_color;
+          &:hover {
+            background: lighten($dept_primary_color, 12%);
+          }
+        }
+      }
+    }
+
+    .view-id-slider {
+      .views-slideshow-pager-fields {
+        .views-slideshow-pager-field-item {
+          &:hover { background-color: $dept_primary_color; }
+          &.active {
+            background-color: rgba($dept_primary_color, 0.75);
+            &:hover {
+              background-color: $dept_primary_color;
+              &:after {
+                border-right-color: $dept_primary_color;
+              }
+            }
+            &:after {
+              border-right-color: rgba($dept_primary_color, 0.75);
+            }
+          }
+          .views-field-title {
+            border-top-color: $dept_slider_border_color;
+          }
+        }
+      }
+    }
+    .view-id-views.view-display-id-block_2,
+    .view-id-department_views.view-display-id-block_2 {
+      .views-slideshow-pager-fields {
+        .views_slideshow_pager_field_item {
+          &.active {
+            border-color: $dept_primary_color;
+
+            .views-field-title {
+              background-color: $dept_primary_color;
+            }
+          }
+        }
+      }
+    }
+
+    .view-id-main_navigation.view-display-id-attachment_1 {
+      td > .views-field-name {
+        &, a {
+          color: $dept_category_filter_color;
+        }
+      }
+    }
+
+    .view-global-calendar,
+    .view-department-calendar {
+      .date-nav-wrapper {
+        background: $dept_primary_color;
+
+        ul.pager {
+          .date-prev, .date-next {
+            a {
+              background-color: $dept_primary_color;
+
+              &:hover {
+                background-color: lighten($dept_primary_color, 8%);
+              }
+              &:active {
+                @include easy_transition(all, 0);
+                background-color: darken($dept_primary_color, 8%);
+              }
+            }
+          }
+        }
+      }
+      .calendar-calendar {
+        .month-view, .week-view, .day-view {
+          table {
+            border-color: $dept_primary_color;
+
+            tbody {
+              td {
+                border-color: $dept_primary_color;
+
+                &.date-box, &.single-day {
+                  &.today {
+                    border-color: $dept_primary_color;
+                  }
+                }
+                &.multi-day {
+                  div.calendar {
+                    &.monthview, &.weekview, &.dayview {
+                      background: $dept_primary_color;
+
+                      .cutoff {
+                        background: $dept_primary_color;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          #single-day-container {
+            border-top-color: $dept_primary_color;
+          }
+          #multi-day-container {
+            td.calendar-agenda-hour {
+              border-right-color: $dept_primary_color;
+            }
+          }
+        }
+      }
+    }
+
+    .block-facetapi {
+      .content {
+        .facetapi-facet-im-field-department li.expanded {
+          & > a {
+            color: $dept_primary_color;
+          }
+          .item-list {
+            & li.leaf {
+              a.facetapi-active {
+                color: $dept_primary_color;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    form .form-item {
+      input.form-text, textarea {
+        &:focus {
+          border-color: $dept_primary_color;
+        }
+      }
+    }
+    .form-submit {
+      @include button($dept_primary_color);
+    }
+
+    &.page-cat {
+      .drilldown-search-link {
+        background: $dept_primary_color;
+
+        &:hover {
+          background: lighten($dept_primary_color, 10%);
+        }
+      }
+    }
+
+    #alert-bottom {
+      background: $dept_primary_color;
+
+      .view-content .views-field-title {
+        border-top-color: $dept_primary_light_color;
+      }
+    }
+    .node .content, body.cke_editable {
+      a.department_button {
+        @include button($dept_primary_color);
+
+        &:visited {
+          color: $white !important;
+        }
+      }
+
+      table,
+      table.default_table {
+        th {
+          background-color: $dept_primary_color;
+          border-color: $dept_primary_color;
+        }
+      }
+    }
+    fieldset {
+      legend { background-color: $dept_primary_color; }
+      th {
+        background-color: $dept_primary_color;
+        border: 1px solid $dept_primary_color;
+      }
+    }
+
+    // User Login Pages
+    &.page-user {
+      #content-inner .node-header .title-wrapper {
+        background-color: $dept_primary_color;
+      }
+      #content-header {
+      background-color: $dept_primary_color !important;
+
+        .tabs {
+          background-color: $dept_primary_color !important;;
+
+          ul {
+            border-bottom-color: $dept_primary_color !important;
+
+            li a {
+              background-color: lighten($dept_primary_color, 7%) !important;
+              border-color: darken($dept_primary_color, 7%) !important;
+
+              &:hover {
+                background-color: lighten($dept_primary_color, 18%) !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Paygate
+    &.front.domain-paygate #sidebar-first-inner .block h2 {
+      background: $dept_primary_color;
+    }
+    .view-page-products,
+    .view-commerce-cart-form,
+    .view-commerce-cart-summary,
+    .view-commerce-user-orders,
+    .view-commerce-line-item-table,
+    .checkout_review {
+      th {
+        background-color: $dept_primary_color;
+        border: 1px solid $dept_primary_color;
+      }
+      tr {
+        &.pane-title {
+          background-color: $dept_primary_color;
+        }
+      }
+      .commerce-line-item-actions {
+        #edit-checkout {
+          background: $dept_secondary_color;
+
+          &:hover, &:focus {
+            background-color: lighten($dept_secondary_color, 10%);
+          }
+          &:active {
+            background-color: darken($dept_secondary_color, 5%);
+          }
+        }
+      }
+    }
+
+    ::-moz-selection { background: $dept_primary_light_color; }
+         ::selection { background: $dept_primary_light_color; }
+  }
+}

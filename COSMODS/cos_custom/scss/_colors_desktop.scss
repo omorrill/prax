@@ -1,0 +1,120 @@
+@import "_config.scss";
+
+@each $dept in $departments {
+  $dept_colors: dept_color_lookup($dept);
+
+  $dept_primary_color: nth($dept_colors, 1);
+  $dept_primary_light_color: nth($dept_colors, 2);
+  $dept_secondary_color: nth($dept_colors, 3);
+  $dept_nav_color: nth($dept_colors, 4);
+  $dept_slider_border_color: nth($dept_colors, 5);
+  $dept_category_filter_color: nth($dept_colors, 6);
+
+  .#{$dept} {
+
+    // From: desktop.scss:
+    #nice-menu-1,
+    #header-bottom-inner #block-superfish-1 ul.menu,
+    .menu-block-2.menu-name-main-menu > ul.menu {
+      li ul li a {
+        color: $dept_nav_color;
+
+        &:hover {
+          background-color: $dept_nav_color;
+          color: $white;
+        }
+      }
+
+      & > li {
+        & > a {
+          color: $dept_nav_color;
+
+          &:hover, &:active {
+            background-color: $dept_nav_color;
+            color: $white;
+          }
+        }
+        span.submenu-toggle {
+          background-image: url(../images/icons/dd_arrow-#{$dept}.png);
+          border-color: $dept_nav_color;
+
+          &:hover, &:active, &.toggle-active {
+            background-image: url(../images/icons/dd_arrow-hover.png);
+            background-color: $dept_nav_color;
+          }
+        }
+        & > ul.menu {
+          li a {
+            color: $dept_nav_color;
+            &:hover, &:active {
+              background-color: $dept_nav_color;
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+
+    &.front #header-under {
+      background: $dept_primary_color;
+    }
+
+    #header-under {
+      #block-delta_blocks-site-name {
+        .site-name {
+          a {
+            @include portal_menu($dept_primary_color);
+          }
+        }
+      }
+      .block {
+        ul.menu {
+          li {
+            a {
+              @include portal_menu($dept_primary_color);
+            }
+          }
+        }
+      }
+    }
+
+    .sidebar.first {
+      .block {
+        h2 {
+          background-color: $dept_primary_color;
+        }
+      }
+    }
+
+    #content-inner {
+      border-top-color: $dept_primary_color;
+    }
+
+    &.front {
+      #content-inner,
+      #sidebar-first-inner {
+        .block {
+          h2 {
+            color: $dept_primary_color;
+          }
+        }
+      }
+      #content-inner {
+        h2 {
+          color: $dept_primary_color;
+        }
+      }
+    }
+
+    .view-department-calendar .calendar-calendar {
+      .month-view table tbody td.single-day div.calendar.monthview,
+      .week-view  table tbody td div.single-day div.calendar.weekview,
+      .day-view   table tbody td div.single-day div.calendar.dayview {
+        background-color: transparentize($dept_primary_color, .9);
+        border: 1px solid transparentize($dept_primary_color, .7);
+      }
+    }
+
+  }
+}
+
